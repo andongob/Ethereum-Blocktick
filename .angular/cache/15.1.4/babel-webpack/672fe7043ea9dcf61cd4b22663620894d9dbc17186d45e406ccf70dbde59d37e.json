@@ -1,1 +1,0 @@
-{"ast":null,"code":"var Point = require('./point');\nvar Curve = require('./curve');\nvar getCurveByName = require('./names');\nmodule.exports = {\n  Curve: Curve,\n  Point: Point,\n  getCurveByName: getCurveByName\n};","map":null,"metadata":{},"sourceType":"script","externalDependencies":[]}

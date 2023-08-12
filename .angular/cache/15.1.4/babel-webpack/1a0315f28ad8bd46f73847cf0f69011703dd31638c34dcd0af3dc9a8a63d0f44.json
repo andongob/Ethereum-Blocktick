@@ -1,1 +1,0 @@
-{"ast":null,"code":"const schnorr = require('./schnorr');\nschnorr.check = require('./check');\nschnorr.convert = require('./convert');\nschnorr.math = require('./math');\nschnorr.muSig = require('./mu-sig');\nschnorr.taproot = require('./taproot');\nmodule.exports = schnorr;","map":null,"metadata":{},"sourceType":"script","externalDependencies":[]}
