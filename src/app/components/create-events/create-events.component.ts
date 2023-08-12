@@ -64,6 +64,16 @@ export class CreateEventsComponent {
       amount: ''
     });
 
+    this.tokensForm = this.formBuilder.group({
+      amount: ""
+    })
+
+    this.sendTokensForm = this.formBuilder.group({
+      to: "",
+      tokens: ""
+    })
+
+
     this.encrypted = window.localStorage.getItem('seeds');
 
     //this.initWallet('february current defy one inform wet hurry cupboard type enable spare famous'); // trampa
@@ -98,6 +108,9 @@ export class CreateEventsComponent {
     var publicKey = util.privateToPublic(privateKey);
     var address = "0x" + util.pubToAddress(publicKey).toString("hex");
 
+
+    var tokens = await this.contract.methods.balanceOf(address).call();
+
     this.wallet.privateKey = privateKey;
 
     this.getBalance(address);
@@ -105,6 +118,7 @@ export class CreateEventsComponent {
 
  this.wallet.balance = await this.web3.eth.getBalance(address).then((result:any) => {
     return this.web3.utils.fromWei(result, 'ether'); // convierte el balance de Wei a Ether
+    
   });
   }
 
@@ -206,26 +220,20 @@ export class CreateEventsComponent {
     var rawData = {
       from: this.wallet.address,
       to: this.contractAddress,
-      value: sendData.amount,
+      value: sendData.tokens,
       gasPrice: this.web3.utils.toHex(10000000000),
       gasLimit: this.web3.utils.toHex(1000000),
-      nonce: await this.web3.eth.getTransactionCount(this.wallet.address)
+      //nonce: await this.web3.eth.getTransactionCount(this.wallet.address)
     };
 
-    var transaction = new Transaction(rawData, { chain: "sepolia" });
-    transaction.sign(this.wallet.privateKey);
-    var serialized = "0x" + transaction.serialize().toString("hex");
+	var signed = await this.web3.eth.sendTransaction(rawData).then((receipt:any) => {
+	
+  	  console.log("Transaction succeeded", receipt);		
+      this.mining = false;
+      this.lastTransaction = receipt;
 
-    this.web3.eth.sendSignedTransaction(serialized).then(
-      (receipt:any) => {
-        this.mining = false;
-        this.lastTransaction = receipt;
-        console.log(receipt);
-      },
-      (error:any) => {
-        console.error(error);
-      }
-    );
+      this.sendForm.reset();
+    });
 
 
     
