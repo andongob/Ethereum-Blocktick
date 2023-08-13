@@ -1,51 +1,43 @@
-<div style="text-align: center;">
+<div class="center-content">
+  <form [formGroup]="createEventForm" (ngSubmit)="createEvent()">
+    <div class="columns">
+      <div class="column">
+        <div class="form-field">
+          <label for="eventName">Event Name:</label>
+          <input type="text" id="eventName" formControlName="eventName" required>
+        </div>
 
-  <form *ngIf="!wallet.address" [formGroup]="loginForm" (ngSubmit)="sendLogin(loginForm.value)">
-    <div *ngIf="!encrypted">
-      <textarea formControlName="seeds" rows="4" placeholder="Seeds"></textarea>
+        <div class="form-field">
+          <label for="eventOrganizer">Event Organizer:</label>
+          <input type="text" id="eventOrganizer" formControlName="eventOrganizer" required>
+        </div>
+
+        <div class="form-field">
+          <label for="eventCategory">Event Category:</label>
+          <input type="text" id="eventCategory" formControlName="eventCategory" required>
+        </div>
+
+        <div class="form-field">
+          <label for="owner">Owner:</label>
+          <input type="text" id="owner" formControlName="owner" required>
+        </div>
+      </div>
+
+      <div class="column">
+        <div class="drag-drop-area">
+          <label for="imageUpload">Drag & Drop Image:</label>
+          <input type="file" id="imageUpload" (change)="previewImage($event)">
+          <img id="imagePreview" [src]="imageSrc" alt="Preview" *ngIf="imageSrc">
+        </div>
+
+        <!-- Espacio adicional entre campos y botón -->
+        <div class="spacer"></div>
+
+        <!-- Botón para llamar a la función createEvent() -->
+        <div class="button-container">
+          <button type="submit">Create Event</button>
+        </div>
+      </div>
     </div>
-    <div>
-      <input formControlName="password" type="password" placeholder="Password" />
-    </div>
-    <button type="submit">Login</button>
-    <button *ngIf="encrypted" type="button" (click)="removeSeeds()">Logout</button>
-    <button *ngIf="!encrypted" type="button" (click)="loginWithMetamask()">Login with Metamask</button>
   </form>
-  <div *ngIf="wallet.address">
-    <h1>Hello {{ wallet.address }}</h1>
-    <p>Your ETH balance is: <b>{{ wallet.balance }}ETH</b></p>
-    <p>You CBT balance is <b>{{ wallet.tokens }}CBT</b></p>
-    <p><a href="https://sepolia.etherscan.io/address/{{ wallet.address }}" target="_blank">View account on Etherscan</a></p>
-  
-    <h2>Send Ethers</h2>
-    <form [formGroup]="ethersForm" (ngSubmit)="sendForm(ethersForm.value)">
-      <div>
-        <input formControlName="to" type="text" placeholder="Address" [attr.disabled]="mining ? '' : null" />
-      </div>
-      <div>
-        <input formControlName="amount" type="number" placeholder="Amount" [attr.disabled]="mining ? '' : null" />
-      </div>
-      <button type="submit" *ngIf="!mining">Send</button>
-      <button type="button" *ngIf="mining" disabled>Sending…</button>
-    </form>
-  
-    <h2>Buy CBT - netlify</h2>
-    <form [formGroup]="tokensForm" (ngSubmit)="buyForm(tokensForm.value)">
-      <div>
-        <input formControlName="amount" type="number" placeholder="Amount" />
-      </div>
-      <button type="submit" *ngIf="!mining">Buy</button>
-      <button type="button" *ngIf="mining" disabled>Buying…</button>
-    </form>
-  
-  
-    <div *ngIf="lastTransaction.status">
-      <h2>Last transaction</h2>
-      <ul>
-        <li><a href="https://sepolia.etherscan.io/tx/{{ lastTransaction.transactionHash }}" target="_blank">View transaction on Sepolia</a></li>
-      </ul>
-    </div>
-  
-  </div>
-  </div>    
-  
+</div>

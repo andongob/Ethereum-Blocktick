@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormBuilder } from "@angular/forms";
+import { FormBuilder, FormGroup } from "@angular/forms";
 import { Inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 
@@ -21,6 +21,18 @@ import { blockTickABI } from "src/app/blockTickABI";
   styleUrls: ['./create-events.component.scss']
 })
 export class CreateEventsComponent {
+
+  imageSrc: string | ArrayBuffer | null = null; //previsualiza imagen en la creación de eventos
+
+  createEventForm: FormGroup; //crea formulario de evento
+
+  eventData = {
+    eventName: '',
+    eventOrganizer: '',
+    eventCategory: '',
+    owner: '',
+    price: 0
+  };
 
   loginForm: any;
 
@@ -91,6 +103,16 @@ export class CreateEventsComponent {
   this.window = this.document.defaultView; 
   
   this.contract = new this.web3.eth.Contract(blockTickABI.default, this.contractAddress);
+
+    // Inicialización del formulario createEventForm
+    this.createEventForm = this.formBuilder.group({
+      eventName: '',
+      eventOrganizer: '',
+      eventCategory: '',
+      owner: '',
+      price: ''
+    });
+
   }
 
   // february current defy one inform wet hurry cupboard type enable spare famous
@@ -235,8 +257,58 @@ export class CreateEventsComponent {
       this.sendForm.reset();
     });
 
-
-    
+   
   }
+
+  async createEvent() {
+    // Obtener los valores del formulario
+    const eventData = this.createEventForm.value;
+  
+    // Verificar si la dirección de la billetera está disponible y es válida
+    if (!this.wallet || !this.wallet.address) {
+      console.error('Dirección de la billetera no válida.');
+      return;
+    }
+  
+    console.log('Evento a crear:', eventData);
+  
+    // Ahora puedes utilizar eventData para interactuar con tu contrato y realizar la creación del evento
+    this.mining = true;
+  
+    var rawData = {
+      from: this.wallet.address,
+      to: this.contractAddress,
+      value: eventData.price,
+      gasPrice: this.web3.utils.toHex(10000000000),
+      gasLimit: this.web3.utils.toHex(1000000)
+    };
+  
+    console.log('Datos para la transacción:', rawData);
+  
+    try {
+      var signed = await this.web3.eth.sendTransaction(rawData);
+  
+      console.log('Transacción exitosa:', signed);
+      this.mining = false;
+      this.lastTransaction = signed;
+      this.createEventForm.reset();
+    } catch (error) {
+      console.error('Error en la transacción:', error);
+      this.mining = false;
+    }
+  }
+  
+    //previsualiza imagen formulario
+    previewImage(event: any) {
+      const input = event.target;
+      const file = input.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (e: any) => {
+          this.imageSrc = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    }
 
 }
