@@ -1,4 +1,3 @@
-
 export { InicioComponent } from "./inicio/inicio.component";
 export { TicketsComponent } from "./tickets/tickets.component";
 export { EventsComponent } from "./events/events.component";

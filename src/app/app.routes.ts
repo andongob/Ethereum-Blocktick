@@ -10,7 +10,7 @@ import {
 } from "./components/index.paginas";
 
 const app_routes: Routes = [
-    { path: 'inicio', component: InicioComponent },
+    { path: '', component: InicioComponent },
     { path: 'tickets', component: TicketsComponent },
     { path: 'events', component: EventsComponent },
     { path: 'createEvents', component: CreateEventsComponent },
