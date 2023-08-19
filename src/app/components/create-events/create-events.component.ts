@@ -13,7 +13,7 @@ import { Transaction } from "ethereumjs-tx";
 
 
 
-import { blockTickABI } from "src/app/blockTickABI";
+import { ABI as NFTblockTickABI } from 'src/app/components/metamask/NFTblockTickABI';
 
 @Component({
   selector: 'app-create-events',
@@ -102,7 +102,7 @@ export class CreateEventsComponent {
 
   this.window = this.document.defaultView; 
   
-  this.contract = new this.web3.eth.Contract(blockTickABI.default, this.contractAddress);
+  this.contract = new this.web3.eth.Contract(NFTblockTickABI.default, this.contractAddress);
 
     // Inicialización del formulario createEventForm
     this.createEventForm = this.formBuilder.group({
@@ -117,6 +117,9 @@ export class CreateEventsComponent {
 
   // february current defy one inform wet hurry cupboard type enable spare famous
   async initWallet(seeds: string) {
+
+    console.log('Iniciando billetera...');
+
     var mnemonic = new Mnemonic(seeds);
     var seed = await bip39.mnemonicToSeed(mnemonic.toString());
     var path = "m/44'/60'/0'/0/0";
@@ -130,6 +133,7 @@ export class CreateEventsComponent {
     var publicKey = util.privateToPublic(privateKey);
     var address = "0x" + util.pubToAddress(publicKey).toString("hex");
 
+    console.log('Dirección de la billetera:', this.wallet.address);
 
     var tokens = await this.contract.methods.balanceOf(address).call();
 
@@ -263,6 +267,8 @@ export class CreateEventsComponent {
   async createEvent() {
     // Obtener los valores del formulario
     const eventData = this.createEventForm.value;
+
+    console.log('Evento a crear:', eventData);
   
     // Verificar si la dirección de la billetera está disponible y es válida
     if (!this.wallet || !this.wallet.address) {
@@ -270,9 +276,10 @@ export class CreateEventsComponent {
       return;
     }
   
-    console.log('Evento a crear:', eventData);
-  
     // Ahora puedes utilizar eventData para interactuar con tu contrato y realizar la creación del evento
+
+    console.log('Interacción con el contrato: Iniciando');
+
     this.mining = true;
   
     var rawData = {
@@ -284,7 +291,7 @@ export class CreateEventsComponent {
     };
   
     console.log('Datos para la transacción:', rawData);
-  
+
     try {
       var signed = await this.web3.eth.sendTransaction(rawData);
   
@@ -296,6 +303,9 @@ export class CreateEventsComponent {
       console.error('Error en la transacción:', error);
       this.mining = false;
     }
+
+    console.log('Interacción con el contrato: Finalizada');
+
   }
   
     //previsualiza imagen formulario

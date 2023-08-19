@@ -1,37 +1,20 @@
-<div style="text-align: center;">
+<!-- wallet-service.component.html -->
 
-<form *ngIf="!wallet.address" [formGroup]="loginForm" (ngSubmit)="sendLogin(loginForm.value)">
+<div class="center-container">
+  <h2>Wallet Service</h2>
 
-    <div *ngIf="!encrypted"> <!-- *ngIf indica cuando quieres que se muestre el campo -->
-      <textarea formControlName="seeds" rows="4" placeholder="Seeds"></textarea>
-    </div>
-  
-    <div>
-      <input formControlName="password" type="password" placeholder="Password" />
-    </div>
-  
-    <button type="submit">Login</button> <!-- los botones, etiquetas, etc,.. siempre van asociados a un método que se declara en app.components.ts -->
-    <button type="button" (click)="removeSeeds()" *ngIf="encrypted">Clear Seeds</button> <!-- borra las semillas -->
-    <button type="button" (click)="loginWithMetamask()">Login with Metamask</button> 
+  <form [formGroup]="walletService.loginForm" (ngSubmit)="walletService.sendLogin(walletService.loginForm.value)">
+    <!-- Form fields for login -->
   </form>
 
-  
-  <div *ngIf="wallet.address"> 
-    <h1> Cuenta: {{ wallet.address }} </h1> 
-      <p>Tu saldo en ETH es: {{ wallet.balance }}</p>
-      <p><a href="https://goerli.etherscan.io/address/{{ wallet.address }}" target="_blank">Ver tu cuenta en Etherscan (TestNet Sepolia)</a></p>
-    
-    <h2>Envío de Ethers</h2> <!-- formulario envío de Ethers -->
-      <form [formGroup]="sendForm" (ngSubmit)="sendEther(sendForm.value)">
-        <div>
-          <input formControlName="to" type="text" placeholder="To" />
-        </div>
-        <div>
-          <input formControlName="amount" type="number" placeholder="Amount" />
-        </div>
-        <button type="submit">Enviar</button> 
-      </form>
-      
-      
-   </div>
-</div>    
+  <button (click)="walletService.loginWithMetamask()">Login with Metamask</button>
+
+
+  <div>
+    <h3>Wallet Info</h3>
+    <p>Address: {{ walletService.wallet.address }}</p>
+    <p>Balance: {{ walletService.wallet.balance }}</p>
+  </div>
+</div>
+
+

@@ -1,43 +1,69 @@
-<div class="center-content">
-  <form [formGroup]="createEventForm" (ngSubmit)="createEvent()">
-    <div class="columns">
-      <div class="column">
-        <div class="form-field">
-          <label for="eventName">Event Name:</label>
-          <input type="text" id="eventName" formControlName="eventName" required>
-        </div>
+<div style="text-align: center;">
 
-        <div class="form-field">
-          <label for="eventOrganizer">Event Organizer:</label>
-          <input type="text" id="eventOrganizer" formControlName="eventOrganizer" required>
-        </div>
-
-        <div class="form-field">
-          <label for="eventCategory">Event Category:</label>
-          <input type="text" id="eventCategory" formControlName="eventCategory" required>
-        </div>
-
-        <div class="form-field">
-          <label for="owner">Owner:</label>
-          <input type="text" id="owner" formControlName="owner" required>
-        </div>
+  <form *ngIf="!wallet.address" [formGroup]="loginForm" (ngSubmit)="sendLogin(loginForm.value)">
+  
+      <div *ngIf="!encrypted"> <!-- *ngIf indica cuando quieres que se muestre el campo -->
+        <textarea formControlName="seeds" rows="4" placeholder="Seeds"></textarea>
       </div>
-
-      <div class="column">
-        <div class="drag-drop-area">
-          <label for="imageUpload">Drag & Drop Image:</label>
-          <input type="file" id="imageUpload" (change)="previewImage($event)">
-          <img id="imagePreview" [src]="imageSrc" alt="Preview" *ngIf="imageSrc">
-        </div>
-
-        <!-- Espacio adicional entre campos y botón -->
-        <div class="spacer"></div>
-
-        <!-- Botón para llamar a la función createEvent() -->
-        <div class="button-container">
-          <button type="submit">Create Event</button>
-        </div>
+    
+      <div>
+        <input formControlName="password" type="password" placeholder="Password" />
       </div>
-    </div>
-  </form>
-</div>
+    
+      <button type="submit">Login</button> <!-- los botones, etiquetas, etc,.. siempre van asociados a un método que se declara en app.components.ts -->
+      <button type="button" (click)="removeSeeds()" *ngIf="encrypted">Clear Seeds</button> <!-- borra las semillas -->
+      <button type="button" (click)="loginWithMetamask()">Login with Metamask</button> 
+    </form>
+  
+    
+    <div *ngIf="wallet.address"> 
+      <h1> Cuenta: {{ wallet.address }} </h1> 
+        <p>Tu saldo en ETH es: {{ wallet.balance }}</p>
+        <p><a href="https://goerli.etherscan.io/address/{{ wallet.address }}" target="_blank">Ver tu cuenta en Etherscan (TestNet Sepolia)</a></p>
+      
+      <h2>FormularioEvento</h2> <!-- formulario envío de Ethers -->
+      <form [formGroup]="createEventForm" (ngSubmit)="createEvent()">
+        <div class="columns">
+          <div class="column">
+            <div class="form-field">
+              <label for="eventName">Event Name:</label>
+              <input type="text" id="eventName" formControlName="eventName" required>
+            </div>
+    
+            <div class="form-field">
+              <label for="eventOrganizer">Event Organizer:</label>
+              <input type="text" id="eventOrganizer" formControlName="eventOrganizer" required>
+            </div>
+    
+            <div class="form-field">
+              <label for="eventCategory">Event Category:</label>
+              <input type="text" id="eventCategory" formControlName="eventCategory" required>
+            </div>
+    
+            <div class="form-field">
+              <label for="owner">Owner:</label>
+              <input type="text" id="owner" formControlName="owner" required>
+            </div>
+          </div>
+    
+          <div class="column">
+            <div class="drag-drop-area">
+              <label for="imageUpload">Drag & Drop Image:</label>
+              <input type="file" id="imageUpload" (change)="previewImage($event)">
+              <img id="imagePreview" [src]="imageSrc" alt="Preview" *ngIf="imageSrc">
+            </div>
+    
+            <!-- Espacio adicional entre campos y botón -->
+            <div class="spacer"></div>
+    
+            <!-- Botón para llamar a la función createEvent() -->
+            <div class="button-container">
+              <button type="submit">Create Event</button>
+            </div>
+          </div>
+        </div>
+      </form>
+        
+        
+     </div>
+  </div>  

@@ -10,179 +10,109 @@ import * as bip39 from "bip39";
 import * as util from "ethereumjs-util";
 import Web3 from 'web3';
 
+import { WalletService } from 'src/app/wallet.service';
+import { ABI as NFTblockTickABI } from 'src/app/components/metamask/NFTblockTickABI';
+
+
+
 @Component({
   selector: 'app-metamask',
   templateUrl: './metamask.component.html',
   styleUrls: ['./metamask.component.scss']
 })
+
+
 export class MetamaskComponent {
 
-  
-
-  loginForm: any;
-
-  sendForm: any;
-
-  encrypted: any;
-
-  wallet:any = {
-    address: '',
-    privateKey: '',
-  }
+  wallet: any = {
+    address: ""
+  };
 
   web3: any;
 
-  window: any;
+  // NFT CONTRACT
+  nftContract: any;
 
-  mining = false;
+  nftContractAddress: any = '0xC65D9cdcEBF759eC6bc39629EA20A92b2695060b';
 
-  lastTransaction: any;
+  nfts:any[] = [];
 
-  constructor(@Inject(DOCUMENT) private document: Document, private formBuilder: FormBuilder) {
-    this.window = document.defaultView;
+  constructor(public walletService: WalletService) {
+    this.web3 = new Web3;
 
-    this.loginForm = this.formBuilder.group({
-      seeds: '',
-      password: ''
-    });
 
-    this.sendForm = this.formBuilder.group({
-      to: '',
-      amount: ''
-    });
-
-    this.encrypted = window.localStorage.getItem('seeds');
-
-    //this.initWallet('february current defy one inform wet hurry cupboard type enable spare famous'); // trampa
-
-    //this.web3 = new Web3;
-	
-	this.web3 = new Web3(this.window.ethereum); 
-
-	/*
-    this.web3.setProvider(
-      new this.web3.providers.HttpProvider('https://ropsten.infura.io/v3/d09825f256ae4705a74fdee006040903')
-    );
-	*/
+    // NFT CONTRACT
+    this.nftContract = new this.web3.eth.Contract(NFTblockTickABI.default, this.nftContractAddress);
   }
 
-  // february current defy one inform wet hurry cupboard type enable spare famous
-  async initWallet(seeds: string) {
-    var mnemonic = new Mnemonic(seeds);
-    var seed = await bip39.mnemonicToSeed(mnemonic.toString());
-    var path = "m/44'/60'/0'/0/0";
+  async ngOnInit() {
+    this.wallet = await this.walletService.initWallet('february current defy one inform wet hurry cupboard type enable spare famous'); //semillas virtuales
 
-    var wallet = hdkey
-      .fromMasterSeed(seed)
-      .derivePath(path)
-      .getWallet();
-
-    var privateKey = wallet.getPrivateKey();
-    var publicKey = util.privateToPublic(privateKey);
-    var address = "0x" + util.pubToAddress(publicKey).toString("hex");
-
-    this.wallet.privateKey = privateKey;
-
-    this.getBalance(address);
-    this.wallet.address = address; //indica la cuenta address, del div Hello en app.component.html una vez iniciada sesión
-
- this.wallet.balance = await this.web3.eth.getBalance(address).then((result:any) => {
-    return this.web3.utils.fromWei(result, 'ether'); // convierte el balance de Wei a Ether
-  });
+    await this.loadNFTs();
   }
 
-  async getBalance(address:string) {
-    this.wallet.address = address;
-    this.wallet.balance = await this.web3.eth.getBalance(address).then((result:any) => {
-      return this.web3.utils.fromWei(result, 'ether');
-    });
+  async loadNFTs() {
+    let supply = await this.nftContract.methods.totalSupply().call();
+
+    this.nfts = [];
+
+    for (var i = 1; i <= supply; i++) {
+      let url = await this.nftContract.methods.tokenURI(i).call();
+      let nft = await (await fetch(url)).json();
+
+      nft.tokenId = i;
+      nft.owner = await this.nftContract.methods.ownerOf(i).call();
+      nft.price = await this.nftContract.methods.priceOf(i).call();
+      nft.priceUsd = await this.nftContract.methods.usdPriceOf(i).call();
+      nft.disabled = nft.owner.toLowerCase() == this.wallet.address.toLowerCase();
+
+      this.nfts.push(nft);
+    }
   }
 
-  sendLogin(loginData:any) {
-    if (loginData.password == '') {
-      return alert('Introduce tu contraseña');
-    }
-
-    if (this.encrypted) {
-      var decrypt = CryptoJS.AES.decrypt(this.encrypted, loginData.password);
-      loginData.seeds = decrypt.toString(CryptoJS.enc.Utf8);
-    }
-
-    if (!Mnemonic.isValid(loginData.seeds)) {
-      return alert('Semilla inválida');
-    }
-
-    var encrypted = CryptoJS.AES.encrypt(loginData.seeds, loginData.password).toString();
-
-    window.localStorage.setItem('seeds', encrypted);
-
-    this.loginForm.reset();
-
-    this.initWallet(loginData.seed);
-  }
-
-  loginWithMetamask() {
-    if (!this.window.ethereum) {
-      return alert('Metamask no está instalado');
-    }
-
-    this.window.ethereum.enable().then((accounts:any) => {
-      let address = accounts[0];
-      this.getBalance(address);
-	  this.wallet.address = address;
-    });
-  }
-
-  removeSeeds() {
-    window.localStorage.removeItem('seeds');
-    this.encrypted = '';
-    this.wallet = {
-      address: '',
-      balance: ''
-    };
-  }
-
-  async sendEther(sendData:any) {
-    if (sendData.to == '' || sendData.amount == null) {
-      return alert('Campos son obligatorios');
-    }
-
-    if ( ! util.isValidAddress(sendData.to)) {
-      return alert('Dirección inválida');
-    }
-
-    this.mining = true;
-
+  async mintNFT() {
     var rawData = {
       from: this.wallet.address,
-      to: sendData.to,
-      value: sendData.amount,
+      to: this.nftContractAddress,
+      value: 10000000000000000,
       gasPrice: this.web3.utils.toHex(10000000000),
       gasLimit: this.web3.utils.toHex(1000000),
-      //nonce: await this.web3.eth.getTransactionCount(this.wallet.address)
+      nonce: await this.web3.eth.getTransactionCount(this.wallet.address),
+      data: await this.nftContract.methods.mint().encodeABI()
     };
 
-	var signed = await this.web3.eth.sendTransaction(rawData).then((receipt:any) => {
-	
-  	  console.log("Transaction succeeded", receipt);		
-      this.mining = false;
-      this.lastTransaction = receipt;
+    var signed = await this.web3.eth.accounts.signTransaction(rawData, this.wallet.privateKey.toString('hex'));
 
-      this.sendForm.reset();
-    });
-	
-    //var signed = await this.web3.eth.accounts.signTransaction(rawData, this.wallet.privateKey.toString('hex'));
-
-	/*
-    this.web3.eth.sendSignedTransaction(signed.rawTransaction).then((receipt:any) => {
-      this.mining = false;
-      this.lastTransaction = receipt;
-
-      this.sendForm.reset();
-    });
-	*/
+    this.web3.eth.sendSignedTransaction(signed.rawTransaction).then(
+      (receipt: any) => {
+        this.loadNFTs();
+      },
+      (error: any) => {
+        console.log(error)
+      }
+    );
   }
 
+  async buyNFT(nft:any) {
+    var rawData = {
+      from: this.wallet.address,
+      to: this.nftContractAddress,
+      value: nft.price * 1.1,
+      gasPrice: this.web3.utils.toHex(10000000000),
+      gasLimit: this.web3.utils.toHex(1000000),
+      nonce: await this.web3.eth.getTransactionCount(this.wallet.address),
+      data: await this.nftContract.methods.buy(nft.tokenId).encodeABI()
+    };
 
+    var signed = await this.web3.eth.accounts.signTransaction(rawData, this.wallet.privateKey.toString('hex'));
+
+    this.web3.eth.sendSignedTransaction(signed.rawTransaction).then(
+      (receipt: any) => {
+        this.loadNFTs();
+      },
+      (error: any) => {
+        console.log(error)
+      }
+    );
+  }
 }
-

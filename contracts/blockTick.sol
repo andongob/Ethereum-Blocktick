@@ -9,38 +9,41 @@ contract Ticket is ERC721URIStorage, Ownable {
     using Counters for Counters.Counter;
     Counters.Counter private tokenIdCounter;
 
-    uint256 public ticketPrice = 1 ether;
+    uint256 public ticketPrice = 0.000000000000000001 ether; //1 wei
     mapping(address => uint256[]) public ticketHolders;
 
-    constructor() ERC721("TicketNFT", "TICKET") {
+    constructor() ERC721("BlocktickNFT", "BKT") {
     }
 
-    function buyTickets(address _user, uint256 _amount) payable public {
+    function buyTickets(address, uint256 _amount) payable public {
         require(msg.value >= ticketPrice * _amount, "Saldo insuficiente");
         require(_amount == 1, "Lo sentimos, solo puedes comprar un ticket");
         require(ticketHolders[msg.sender].length == 0, "Vaya ya tienes un ticket, no es posible comprar mas");
-        uint256[] memory tokenIds = _mintNFTs(_user, _amount);
-        ticketHolders[_user] = tokenIds;
+        uint256[] memory tokenIds = _mintNFTs(msg.sender, _amount);
+        ticketHolders[msg.sender] = tokenIds;
     }
 
     function useTickets(address _user, uint256 _amount) public {
-        require(ticketHolders[_user].length >= _amount, "No tienes tickets suficientes");
+        require(ticketHolders[msg.sender].length >= _amount, "No tienes tickets suficientes");
         
         for (uint256 i = 0; i < _amount; i++) {
             uint256 tokenId = ticketHolders[_user][ticketHolders[_user].length - 1];
-            ticketHolders[_user].pop();
+            ticketHolders[msg.sender].pop();
             _burn(tokenId);
         }
     }
 
-    function _mintNFTs(address _user, uint256 _amount) internal returns (uint256[] memory) {
+    function _mintNFTs(address, uint256 _amount) internal returns (uint256[] memory) {
         require(_amount == 1, "Lo sentimos, solo puedes comprar un ticket"); 
         uint256[] memory newTokenIds = new uint256[](_amount);
-        
+
+        string memory ipfsUrl = "https://blocktick.infura-ipfs.io/ipfs/QmTp7Zdmk4ESqCDMzZHY8NgnK3pUvrymq9BYxZZBnNPVmt";
+
         for (uint256 i = 0; i < _amount; i++) {
             uint256 tokenId = tokenIdCounter.current();
-            _mint(_user, tokenId);
-            _setTokenURI(tokenId, string(abi.encodePacked(tokenId)));
+            _mint(msg.sender, tokenId);
+            //_setTokenURI(tokenId, string(abi.encodePacked(tokenId)));
+            _setTokenURI(tokenId, ipfsUrl);
             tokenIdCounter.increment();
             newTokenIds[i] = tokenId;
         }

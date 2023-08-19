@@ -1,4 +1,4 @@
-<div class="ae-grid au-xs-ta-center au-mb-4">
+ <div class="ae-grid au-xs-ta-center au-mb-4">
       <div class="ae-grid__item item-lg-4 ae-kappa au-mb-3"><img src="assets/img/team-1.jpg" alt="" class="au-mb-3">
         <h5 class="ae-u-bolder au-mt-2">Robert T. Williams</h5>
         <p class="ae-u-bolder au-mb-3">Graphic Designer</p>
@@ -14,5 +14,36 @@
         <p class="ae-u-bolder au-mb-3">Art Director</p>
         <p class="au-lg-ta-left au-mb-3 au-pl-4 au-pr-4">Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p><a href="#0" class="ae-u-bolder au-underline">@patrickanderson</a>
       </div>
+    </div> 
+
+    <!--NO TOCAR LO DE ARRIBA AQUÍ IRÁ EL BOTÓN DE COMPRA DE NFT/TICKETS-->
+
+
+    
+    <!-- metamask.component.html -->
+    
+    <div class="center-container">
+      <h2>Tickets Component</h2>
+    
+      <div class="wallet-info">
+        <p><strong>Wallet Address:</strong> {{ wallet.address }}</p>
+        <p><strong>Wallet Balance:</strong> {{ wallet.balance }} ETH</p>
+      </div>
+    
+      <button (click)="loadNFTs()">Load NFTs</button>
+    
+      <div class="nft-list">
+        <div *ngFor="let nft of nfts" class="nft-item">
+          <img [src]="nft.image" alt="NFT Image">
+          <p><strong>Name:</strong> {{ nft.name }}</p>
+          <p><strong>Description:</strong> {{ nft.description }}</p>
+          <!-- ... other NFT properties ... -->
+          <button [disabled]="nft.disabled" (click)="buyNFT(nft)">Buy NFT</button>
+        </div>
+      </div>
+    
+      <button (click)="mintNFT()">Mint New NFT</button>
     </div>
     
+    
+        

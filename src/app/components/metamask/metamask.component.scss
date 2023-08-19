@@ -1,0 +1,18 @@
+/* Aplica estos estilos a los elementos que quieres reducir el espacio vertical */
+.ae-grid {
+    margin: 0; /* Elimina el margen exterior */
+  }
+  
+  .ae-grid__item {
+    margin-bottom: -1000rem; /* Ajusta el espaciado vertical entre los elementos */
+  }
+
+
+.center-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh; /* Asegura que ocupa el alto completo de la ventana */
+  }
+  
