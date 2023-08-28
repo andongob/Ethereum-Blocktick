@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { Inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
@@ -11,7 +11,7 @@ import * as util from "ethereumjs-util";
 import Web3 from 'web3';
 
 import { WalletService } from 'src/app/wallet.service';
-import { ABI as NFTblockTickABI } from 'src/app/components/metamask/NFTblockTickABI';
+import { ABI as NFTblockTickABI } from 'src/app/components/tickets/NFTblockTickABI';
 
 
 
@@ -22,7 +22,7 @@ import { ABI as NFTblockTickABI } from 'src/app/components/metamask/NFTblockTick
 })
 
 
-export class MetamaskComponent {
+export class MetamaskComponent implements OnInit  {
 
   wallet: any = {
     address: ""
@@ -30,10 +30,15 @@ export class MetamaskComponent {
 
   web3: any;
 
+  isUserLoggedIn(): boolean {
+    return this.walletService.wallet.address !== '' && this.walletService.web3.utils.isAddress(this.walletService.wallet.address);
+  }
+   
+
   // NFT CONTRACT
   nftContract: any;
 
-  nftContractAddress: any = '0xC65D9cdcEBF759eC6bc39629EA20A92b2695060b';
+  nftContractAddress: any = '0x1241b3410Cd85093C515c090A85b3163239CfD76';
 
   nfts:any[] = [];
 
@@ -41,12 +46,17 @@ export class MetamaskComponent {
     this.web3 = new Web3;
 
 
+    this.web3.setProvider(
+      new this.web3.providers.HttpProvider('https://sepolia.infura.io/v3/87388b2cafcd4bcdbb26947767a1869f')
+    );  
+
+
     // NFT CONTRACT
     this.nftContract = new this.web3.eth.Contract(NFTblockTickABI.default, this.nftContractAddress);
   }
 
   async ngOnInit() {
-    this.wallet = await this.walletService.initWallet('february current defy one inform wet hurry cupboard type enable spare famous'); //semillas virtuales
+    this.wallet = await this.walletService.initWallet("aqui_van_las_semillas");
 
     await this.loadNFTs();
   }
@@ -54,11 +64,15 @@ export class MetamaskComponent {
   async loadNFTs() {
     let supply = await this.nftContract.methods.totalSupply().call();
 
+    console.log('Total Supply:', supply);
+
     this.nfts = [];
 
     for (var i = 1; i <= supply; i++) {
       let url = await this.nftContract.methods.tokenURI(i).call();
       let nft = await (await fetch(url)).json();
+
+      console.log('Loaded NFT:', nft);
 
       nft.tokenId = i;
       nft.owner = await this.nftContract.methods.ownerOf(i).call();
@@ -68,6 +82,9 @@ export class MetamaskComponent {
 
       this.nfts.push(nft);
     }
+
+    console.log('NFTs:', this.nfts);
+    
   }
 
   async mintNFT() {

@@ -11,7 +11,7 @@ import * as util from "ethereumjs-util";
 import Web3 from 'web3';
 
 import { WalletService } from 'src/app/wallet.service';
-import { ABI as NFTblockTickABI } from 'src/app/components/metamask/NFTblockTickABI';
+import { ABI as NFTblockTickABI } from 'src/app/components/tickets/NFTblockTickABI';
 
 @Component({
   selector: 'app-tickets',
@@ -25,10 +25,15 @@ export class TicketsComponent {
 
   web3: any;
 
+  isUserLoggedIn(): boolean {
+    return this.walletService.wallet.address !== '' && this.walletService.web3.utils.isAddress(this.walletService.wallet.address);
+  }
+  
+
   // NFT CONTRACT
   nftContract: any;
 
-  nftContractAddress: any = '0xC65D9cdcEBF759eC6bc39629EA20A92b2695060b';
+  nftContractAddress: any = '0x1241b3410Cd85093C515c090A85b3163239CfD76';
 
   nfts:any[] = [];
 

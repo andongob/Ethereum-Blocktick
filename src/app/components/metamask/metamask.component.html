@@ -12,9 +12,23 @@
 
   <div>
     <h3>Wallet Info</h3>
-    <p>Address: {{ walletService.wallet.address }}</p>
-    <p>Balance: {{ walletService.wallet.balance }}</p>
+    <p *ngIf="isUserLoggedIn()">Address: {{ walletService.wallet.address }}</p>
+    <p *ngIf="walletService.wallet.balance">Balance: {{ walletService.wallet.balance }}</p>
+    <p *ngIf="nfts.length > 0">NFTs: {{ nfts.length }}</p>
+
+    <div *ngIf="">
+      <h3>Your NFTs:</h3>
+      <div class="nft-list">
+        <div *ngFor="let nft of nfts" class="nft-item">
+          <img [src]="nft.image" alt="NFT Image">
+          <p><strong>Name:</strong> {{ nft.name }}</p>
+          <p><strong>Description:</strong> {{ nft.description }}</p>
+          <p><strong>Token ID:</strong> {{ nft.tokenId }}</p>
+          <!-- ... other NFT properties ... -->
+        </div>
+      </div>
   </div>
+  
 </div>
 
 

@@ -13,7 +13,7 @@ import { Transaction } from "ethereumjs-tx";
 
 
 
-import { ABI as NFTblockTickABI } from 'src/app/components/metamask/NFTblockTickABI';
+import { ABI as NFTblockTickABI } from 'src/app/components/tickets/NFTblockTickABI';
 
 @Component({
   selector: 'app-create-events',
