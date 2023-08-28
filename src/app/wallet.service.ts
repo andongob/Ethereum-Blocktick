@@ -147,6 +147,8 @@ export class WalletService {
     });
   }
 
+
+
   removeSeeds() {
     window.localStorage.removeItem('seeds');
     this.encrypted = '';

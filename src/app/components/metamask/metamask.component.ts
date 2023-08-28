@@ -61,6 +61,17 @@ export class MetamaskComponent implements OnInit  {
     await this.loadNFTs();
   }
 
+  logout() {
+    // Aquí puedes agregar la lógica para desloguear de la cuenta de Metamask
+    // Por ejemplo, puedes restablecer las variables o limpiar los datos relacionados con la cuenta
+  
+    // Ejemplo:
+    this.walletService.wallet = {
+      address: '',
+      privateKey: ''
+    };
+  }
+
   async loadNFTs() {
     let supply = await this.nftContract.methods.totalSupply().call();
 
