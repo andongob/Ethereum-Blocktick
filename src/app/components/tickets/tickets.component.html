@@ -16,31 +16,35 @@
   </div>
 </div> 
 
-    <!--NO TOCAR LO DE ARRIBA AQUÍ IRÁ EL BOTÓN DE COMPRA DE NFT/TICKETS-->
+<!--NO TOCAR LO DE ARRIBA AQUÍ IRÁ EL BOTÓN DE COMPRA DE NFT/TICKETS-->
 
 
-    
-    <!-- ticket.component.html -->
-    
-    <div class="center-container">
-      <h2>Tickets Component</h2>
-    
-      <div class="wallet-info">
-        <p><strong>Wallet Address:</strong> {{ wallet.address }}</p>
-        <p><strong>Wallet Balance:</strong> {{ wallet.balance }} ETH</p>
-      </div>
-    
-      <button (click)="loadNFTs()">Load NFTs</button>
-    
-      <div class="nft-list">
-        <div *ngFor="let nft of nfts" class="nft-item">
-          <img [src]="nft.image" alt="NFT Image">
-          <p><strong>Name:</strong> {{ nft.name }}</p>
-          <p><strong>Description:</strong> {{ nft.description }}</p>
-          <!-- ... other NFT properties ... -->
-          <button [disabled]="nft.disabled" (click)="buyNFT(nft)">Buy NFT</button>
-        </div>
-      </div>
-    
-      <button (click)="mintNFT()">Mint New NFT</button>
+
+<!-- metamask.component.html -->
+
+<div class="center-container">
+  <div>
+    <h2>Tickets</h2>
+    <p *ngIf="isUserLoggedIn()">Address: {{ walletService.wallet.address }}</p>
+    <div class="button-group">
+      <button (click)="buyTickets(1)">Buy Tickets</button>
+      <button (click)="useTickets(1)">Use Tickets</button>
     </div>
+    <div class="button-group">
+      <button (click)="walletService.loginWithMetamask()">Conectar Metamask</button>
+      <button (click)="logout()">Desconectar Metamask</button>
+    </div>
+    <ul>
+      <li *ngFor="let nft of nfts">
+        <p>Token ID: {{ nft.tokenId }}</p>
+        <p>Owner: {{ nft.owner }}</p>
+        <p>Price: {{ nft.price }}</p>
+        <p>Price USD: {{ nft.priceUsd }}</p>
+        <p [hidden]="!nft.disabled">Disabled</p>
+      </li>
+    </ul>
+  </div>
+</div>
+
+
+    
