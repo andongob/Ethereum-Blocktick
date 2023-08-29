@@ -1,23 +1,74 @@
-.ae-grid {
-  margin: 0;
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
-.ae-grid__item {
-  margin-bottom: -20rem; /* Ajusta el espaciado vertical entre los elementos, puedes cambiar el valor según tus necesidades */
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin: -15px;
+}
+
+.col-lg-4 {
+  flex: 0 0 33.333333%;
+  max-width: 33.333333%;
+  padding: 15px;
+}
+
+.mb-3 {
+  margin-bottom: 1rem;
+}
+
+.mt-2 {
+  margin-top: 0.5rem;
+}
+
+.font-weight-bold {
+  font-weight: bold;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.pl-4 {
+  padding-left: 1rem;
+}
+
+.pr-4 {
+  padding-right: 1rem;
+}
+
+.text-decoration-none {
+  text-decoration: none;
 }
 
 .center-container {
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
-  min-height: 100vh;
+  align-items: center;
+  height: 100vh;
+}
+
+h2 {
+  text-align: center;
 }
 
 .button-group {
-  margin-bottom: 1rem; /* Ajusta el espaciado vertical entre los grupos de botones */
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
 }
 
-.button-group button {
-  margin-right: 0.5rem; /* Ajusta el espaciado horizontal entre los botones dentro de cada grupo */
+button {
+  margin-right: 1rem;
+}
+
+ul {
+  list-style-type: none;
+}
+
+li {
+  margin-bottom: 1rem;
 }
