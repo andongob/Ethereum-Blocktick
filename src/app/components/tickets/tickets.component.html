@@ -25,14 +25,14 @@
 <div class="center-container">
   <div>
     <h2>Tickets</h2>
+    <div class="button-group">
+      <button (click)="walletService.loginWithMetamask()">Conectar Metamask</button>
+      <button (click)="logout()">Desconectar Metamask</button>
+    </div>
     <p *ngIf="isUserLoggedIn()">Address: {{ walletService.wallet.address }}</p>
     <div class="button-group">
       <button (click)="buyTickets(1)">Buy Tickets</button>
       <button (click)="useTickets(1)">Use Tickets</button>
-    </div>
-    <div class="button-group">
-      <button (click)="walletService.loginWithMetamask()">Conectar Metamask</button>
-      <button (click)="logout()">Desconectar Metamask</button>
     </div>
     <ul>
       <li *ngFor="let nft of nfts">
