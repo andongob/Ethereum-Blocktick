@@ -1,4 +1,4 @@
-<div class="container">
+<!-- <div class="container">
   <div class="row">
     <div class="col-lg-4 mb-3">
       <img src="assets/img/team-1.jpg" alt="" class="mb-3">
@@ -22,28 +22,43 @@
       <a href="#0" class="font-weight-bold text-decoration-none">@patrickanderson</a>
     </div>
   </div>
-</div>
+</div> -->
 
-<div class="center-container">
-  <div>
-    <h2>Tickets</h2>
-    <div class="button-group">
-      <button (click)="walletService.loginWithMetamask()">Conectar Metamask</button>
-      <button (click)="logout()">Desconectar Metamask</button>
-    </div>
-    <p *ngIf="isUserLoggedIn()">Address: {{ walletService.wallet.address }}</p>
-    <div class="button-group">
-      <button (click)="buyTickets(1)">Buy Tickets</button>
-      <button (click)="useTickets(1)">Use Tickets</button>
-    </div>
-    <ul>
-      <li *ngFor="let nft of nfts">
-        <p>Token ID: {{ nft.tokenId }}</p>
-        <p>Owner: {{ nft.owner }}</p>
-        <p>Price: {{ nft.price }}</p>
-        <p>Price USD: {{ nft.priceUsd }}</p>
-        <p [hidden]="!nft.disabled">Disabled</p>
-      </li>
-    </ul>
+<!-- tickets.component.html -->
+
+<div class="container">
+  <h1>blockTick dApp</h1>
+  <div class="button-group">
+    <button (click)="walletService.loginWithMetamask()">Conectar Metamask</button>
+    <button (click)="logout()">Desconectar Metamask</button>
   </div>
+  <div *ngIf="wallet.address">
+    <h2>Información de la Billetera</h2>
+    <p>Dirección de Billetera: {{ wallet.address }}</p>
+  </div>
+
+  <div *ngIf="nft">
+    <h2>Detalles del NFT</h2>
+    <p>ID del NFT: {{ nft.id }}</p>
+    <p>Nombre del NFT: {{ nft.name }}</p>
+    <!-- Agrega más propiedades del NFT según sea necesario -->
+  </div>
+
+  <h2>Lista de NFTs</h2>
+  <ul>
+    <li *ngFor="let nft of nfts">
+      <p>ID del NFT: {{ nft.tokenId }}</p>
+      <p>Propietario: {{ nft.owner }}</p>
+      <p>Precio: {{ nft.price }}</p>
+      <p>Precio en USD: {{ nft.priceUsd }}</p>
+      <button [disabled]="nft.disabled" (click)="buyTickets(1)">Comprar Ticket</button>
+    </li>
+  </ul>
+
+  <h2>Mint NFTs</h2>
+  <button (click)="_mintNFTs(1)">Mint NFT</button>
+
+  <h2>Operaciones con Tickets</h2>
+  <button (click)="useTickets(1)">Usar Ticket</button>
+  
 </div>

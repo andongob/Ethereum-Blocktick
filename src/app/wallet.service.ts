@@ -68,35 +68,37 @@ export class WalletService {
   }
 
   // february current defy one inform wet hurry cupboard type enable spare famous
-  async initWallet(seeds: string) {
+  async initWallet(seeds: string): Promise<any> {
     var mnemonic = new Mnemonic(seeds);
     var seed = await bip39.mnemonicToSeed(mnemonic.toString());
     var path = "m/44'/60'/0'/0/0";
-
+  
     var wallet = hdkey
       .fromMasterSeed(seed)
       .derivePath(path)
       .getWallet();
-
+  
     var privateKey = wallet.getPrivateKey();
     var publicKey = util.privateToPublic(privateKey);
     var addressBuffer = util.pubToAddress(publicKey);
     var address = "0x" + Buffer.from(addressBuffer).toString("hex");
-    //var address = "0x" + util.pubToAddress(publicKey).toString("hex");
-
+  
     console.log("privateKey:", privateKey.toString("hex"));
     console.log("publicKey:", publicKey.join(""));
     console.log("address:", address);
-
+  
     this.wallet.privateKey = privateKey;
-
+    this.wallet.address = address; // Asigna la dirección a this.wallet.address
+  
     this.getBalance(address);
-    this.wallet.address = address; //indica la cuenta address, del div Hello en app.component.html una vez iniciada sesión
-
- this.wallet.balance = await this.web3.eth.getBalance(address).then((result:any) => {
-    return this.web3.utils.fromWei(result, 'ether'); // convierte el balance de Wei a Ether
-  });
+    
+    this.wallet.balance = await this.web3.eth.getBalance(address).then((result:any) => {
+      return this.web3.utils.fromWei(result, 'ether'); // convierte el balance de Wei a Ether
+    });
+  
+    return this.wallet; // Devuelve el objeto con la propiedad 'address'
   }
+  
 
   async getBalance(address: string) {
     this.wallet.address = this.walletAddress;
