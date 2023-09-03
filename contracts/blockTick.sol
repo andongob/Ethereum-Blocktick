@@ -33,6 +33,7 @@ contract Ticket is ERC721URIStorage, Ownable {
         }
     }
 
+
     function _mintNFTs(address, uint256 _amount) internal returns (uint256[] memory) {
         require(_amount == 1, "Lo sentimos, solo puedes comprar un ticket"); 
         uint256[] memory newTokenIds = new uint256[](_amount);

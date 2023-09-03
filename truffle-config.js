@@ -1,5 +1,5 @@
 const HDWalletProvider = require("@truffle/hdwallet-provider");
-const mnemonicPhrase = "evoke web find inform dry stay will broom soup nuclear spoil about";
+const mnemonicPhrase = "wolf finger garlic donate cloth gallery fury put tube normal square end";
 
 /**
  * Use this file to configure your truffle project. It's seeded with some
@@ -61,36 +61,17 @@ module.exports = {
    */
 
   networks: {
-
-
-    sepolia: {
-      provider: () => new HDWalletProvider({
-      mnemonic: {
-      phrase: "evoke web find inform dry stay will broom soup nuclear spoil about"
-      },
-      providerOrUrl: "https://sepolia.infura.io/v3/87388b2cafcd4bcdbb26947767a1869f"
-      }),
-      network_id: 11155111, // Sepolia's network ID
-      gas: 4000000, // Adjust the gas limit as per your requirements
-      gasPrice: 10000000000, // Set the gas price to an appropriate value
-      confirmations: 2, // Set the number of confirmations needed for a transaction
-      timeoutBlocks: 200, // Set the timeout for transactions
-      skipDryRun: true // Skip the dry run option
-     }
-     
-
-
     // Useful for testing. The `development` name is special - truffle uses it by default
     // if it's defined here and no other network is specified at the command line.
     // You should run a client (like ganache, geth, or parity) in a separate terminal
     // tab if you use this network and you must also set the `host`, `port` and `network_id`
     // options below to some value.
     //
-    // development: {
-    //  host: "127.0.0.1",     // Localhost (default: none)
-    //  port: 8545,            // Standard Ethereum port (default: none)
-    //  network_id: "*",       // Any network (default: none)
-    // },
+     development: {
+      host: "127.0.0.1",     // Localhost (default: none)
+      port: 9545,            // Standard Ethereum port (default: none), este es el puerto que interactua con Metamask
+      network_id: "1337",       // Any network (default: none)
+     },
     //
     // An additional network, but with some advanced options…
     // advanced: {
@@ -130,13 +111,13 @@ module.exports = {
     solc: {
       version: "0.8.19",      // Fetch exact version from solc-bin (default: truffle's version)
       // docker: true,        // Use "0.5.1" you've installed locally with docker (default: false)
-       settings: {          // See the solidity docs for advice about optimization and evmVersion
-        optimizer: {
-          enabled: false,
-         runs: 200
-        },
+      // settings: {          // See the solidity docs for advice about optimization and evmVersion
+      //  optimizer: {
+      //    enabled: false,
+      //    runs: 200
+      //  },
       //  evmVersion: "byzantium"
-       }
+      // }
     }
   },
 

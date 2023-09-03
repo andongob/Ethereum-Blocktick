@@ -25,8 +25,12 @@ export class TicketsComponent implements OnInit {
   web3: any;
   nft: any; // Propiedad para almacenar los detalles del NFT
 
+  walletAddress: string = '';
+  ticketAmount: number = 0;
+  etherAmount: number = 0;
+
   nftContract: any;
-  nftContractAddress: any = '0x1241b3410Cd85093C515c090A85b3163239CfD76';
+  nftContractAddress: any = '0x33578C5548e8ed6984d0a3705234996EF3d8386D';
   nfts: any[] = [];
 
   isUserLoggedIn(): boolean {
@@ -36,16 +40,14 @@ export class TicketsComponent implements OnInit {
     return false;
   }
 
-  logout() {
-    // Aquí puedes agregar la lógica para desloguear de la cuenta de Metamask
-    // Por ejemplo, puedes restablecer las variables o limpiar los datos relacionados con la cuenta
-  
-    // Ejemplo:
-    this.walletService.wallet = {
+  disconnectWallet() {
+    this.wallet = {
       address: '',
       privateKey: ''
     };
+    this.walletService.wallet = this.wallet; // También puedes actualizar el servicio si es necesario
   }
+  
 
   constructor(public walletService: WalletService, private nftService: NFTblockTickService) {
     this.web3 = new Web3();
@@ -103,17 +105,21 @@ async ngOnInit() {
     }
   }
 
-  async buyTickets(amount: number) {
+  async buyTickets() {
+    // Obtén el valor del precio del ticket y el número de tickets de las propiedades del componente
     const ticketPrice = BigInt(await this.nftContract.methods.ticketPrice().call());
+    const amount = this.ticketAmount; // Usa la propiedad ticketAmount para la cantidad de tickets
+
+    // Calcula el valor en wei necesario
     const value = BigInt(ticketPrice) * BigInt(amount) * BigInt(11) / BigInt(10);
-    const contract = new this.web3.eth.Contract(NFTblockTickABI, '0x1241b3410Cd85093C515c090A85b3163239CfD76');
+    const contract = new this.web3.eth.Contract(NFTblockTickABI, '0x33578C5548e8ed6984d0a3705234996EF3d8386D');
 
     const rawData = {
       from: this.wallet.address,
       to: this.nftContractAddress,
       value: value,
-      gasPrice: this.web3.utils.toHex(10000000000),
-      gasLimit: this.web3.utils.toHex(1000000),
+      gasPrice: this.web3.utils.toHex(1000000000),
+      gasLimit: this.web3.utils.toHex(100000),
       nonce: await this.web3.eth.getTransactionCount(this.wallet.address),
       data: await this.nftContract.methods.buyTickets(this.wallet.address, amount).encodeABI()
     };
@@ -129,6 +135,7 @@ async ngOnInit() {
       }
     );
   }
+
 
   async useTickets(amount: number) {
     const ticketHolders = await this.nftContract.methods.ticketHolders(this.wallet.address).call();

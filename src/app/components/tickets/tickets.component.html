@@ -1,5 +1,5 @@
-<!-- <div class="container">
-  <div class="row">
+ <div class="container">
+ <!-- <div class="row">
     <div class="col-lg-4 mb-3">
       <img src="assets/img/team-1.jpg" alt="" class="mb-3">
       <h5 class="font-weight-bold mt-2">Robert T. Williams</h5>
@@ -26,34 +26,38 @@
 
 <!-- tickets.component.html -->
 
-<div class="container">
-  <h1>blockTick dApp</h1>
-  <div class="button-group">
-    <button (click)="walletService.loginWithMetamask()">Conectar Metamask</button>
-    <button (click)="logout()">Desconectar Metamask</button>
-  </div>
-  <div *ngIf="wallet.address">
-    <h2>Información de la Billetera</h2>
-    <p>Dirección de Billetera: {{ wallet.address }}</p>
-  </div>
+<h1>blockTick dApp</h1>
+<div class="button-group">
+  <button (click)="walletService.loginWithMetamask()">Conectar Metamask</button>
+  <button (click)="disconnectWallet()">Desconectar Metamask</button>
+</div>
+<div *ngIf="wallet.address">
+  <h2>Información de la Billetera</h2>
+  <p>Dirección de Billetera: {{ wallet.address }}</p>
+</div>
 
-  <div *ngIf="nft">
-    <h2>Detalles del NFT</h2>
-    <p>ID del NFT: {{ nft.id }}</p>
-    <p>Nombre del NFT: {{ nft.name }}</p>
-    <!-- Agrega más propiedades del NFT según sea necesario -->
-  </div>
 
-  <h2>Lista de NFTs</h2>
-  <ul>
-    <li *ngFor="let nft of nfts">
-      <p>ID del NFT: {{ nft.tokenId }}</p>
-      <p>Propietario: {{ nft.owner }}</p>
-      <p>Precio: {{ nft.price }}</p>
-      <p>Precio en USD: {{ nft.priceUsd }}</p>
-      <button [disabled]="nft.disabled" (click)="buyTickets(1)">Comprar Ticket</button>
-    </li>
-  </ul>
+<div>
+  <h2>Comprar Tickets</h2>
+  <form (submit)="buyTickets()">
+    <div class="form-group">
+      <label for="walletAddress">Dirección de la billetera:</label>
+      <input type="text" class="form-control" id="walletAddress" [(ngModel)]="walletAddress" required>
+    </div>
+    <div class="form-group">
+      <label for="ticketAmount">Cantidad de tickets:</label>
+      <input type="number" class="form-control" id="ticketAmount" [(ngModel)]="ticketAmount" required>
+    </div>
+    <div class="form-group">
+      <label for="etherAmount">Cantidad de ether (wei):</label>
+      <input type="number" class="form-control" id="etherAmount" [(ngModel)]="etherAmount" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Comprar Tickets</button>
+  </form>
+</div>
+<!--------------------------------------------------------------->
+
+
 
   <h2>Mint NFTs</h2>
   <button (click)="_mintNFTs(1)">Mint NFT</button>

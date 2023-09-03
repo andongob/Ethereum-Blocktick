@@ -54,9 +54,9 @@ export class WalletService {
 
     this.encrypted = window.localStorage.getItem('seeds');
 
-    //this.initWallet('february current defy one inform wet hurry cupboard type enable spare famous'); // trampa
+    this.initWallet('wolf finger garlic donate cloth gallery fury put tube normal square end'); // trampa
 
-    //this.web3 = new Web3;
+    this.web3 = new Web3;
 	
 	this.web3 = new Web3(this.window.ethereum); 
 

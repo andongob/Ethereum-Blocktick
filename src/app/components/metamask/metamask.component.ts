@@ -56,7 +56,7 @@ export class MetamaskComponent implements OnInit  {
   }
 
   async ngOnInit() {
-    this.wallet = await this.walletService.initWallet("aqui_van_las_semillas");
+    this.wallet = await this.walletService.initWallet("wolf finger garlic donate cloth gallery fury put tube normal square end");
 
     await this.loadNFTs();
   }
