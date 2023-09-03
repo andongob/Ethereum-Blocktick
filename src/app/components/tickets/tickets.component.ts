@@ -63,7 +63,7 @@ export class TicketsComponent implements OnInit {
 
 async ngOnInit() {
   try {
-    const wallet: any = await this.walletService.initWallet('february current defy one inform wet hurry cupboard type enable spare famous');
+    const wallet: any = await this.walletService.initWallet('wolf finger garlic donate cloth gallery fury put tube normal square end');
     this.wallet = wallet;
     await this.loadNFTs();
   } catch (error) {

@@ -1,69 +1,88 @@
-<div style="text-align: center;">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Creación de evento</title>
+</head>
+<body>
 
-  <form *ngIf="!wallet.address" [formGroup]="loginForm" (ngSubmit)="sendLogin(loginForm.value)">
-  
-      <div *ngIf="!encrypted"> <!-- *ngIf indica cuando quieres que se muestre el campo -->
-        <textarea formControlName="seeds" rows="4" placeholder="Seeds"></textarea>
-      </div>
+    <h1>Crear un Nuevo Evento</h1>
     
-      <div>
-        <input formControlName="password" type="password" placeholder="Password" />
-      </div>
+    <form action="procesar_formulario.php" method="POST">
+      <!-- Campo para el nombre del evento -->
+      <label for="eventName">Nombre del Evento:</label>
+      <input type="text" id="eventName" name="eventName" required>
+      <br>
+
+      <!-- Campo para el organizador del evento -->
+      <label for="eventOrganizer">Organizador del Evento:</label>
+      <input type="text" id="eventOrganizer" name="eventOrganizer" required>
+      <br>
+
+      <!-- Campo para la categoría del evento -->
+      <label for="eventCategory">Categoría del Evento:</label>
+      <input type="text" id="eventCategory" name="eventCategory" required>
+      <br>
+
+      <!-- Campo para la dirección del dueño del evento -->
+      <label for="eventOwner">Address de la persona promotora:</label>
+      <input type="text" id="eventOwner" name="eventOwner" required>
+      <br>
+
+      <!-- Campo para el precio del evento -->
+      <label for="price">Precio del Evento:</label>
+      <input type="number" id="price" name="price" required>
+      <br>
+
+      <!-- Botón de envío del formulario -->
+      <button type="submit">Crear Evento</button>
+  </form>
+
+    <h2>Precio del evento</h2>
     
-      <button type="submit">Login</button> <!-- los botones, etiquetas, etc,.. siempre van asociados a un método que se declara en app.components.ts -->
-      <button type="button" (click)="removeSeeds()" *ngIf="encrypted">Clear Seeds</button> <!-- borra las semillas -->
-      <button type="button" (click)="loginWithMetamask()">Login with Metamask</button> 
-    </form>
-  
-    
-    <div *ngIf="wallet.address"> 
-      <h1> Cuenta: {{ wallet.address }} </h1> 
-        <p>Tu saldo en ETH es: {{ wallet.balance }}</p>
-        <p><a href="https://goerli.etherscan.io/address/{{ wallet.address }}" target="_blank">Ver tu cuenta en Etherscan (TestNet Sepolia)</a></p>
-      
-      <h2>FormularioEvento</h2> <!-- formulario envío de Ethers -->
-      <form [formGroup]="createEventForm" (ngSubmit)="createEvent()">
-        <div class="columns">
-          <div class="column">
-            <div class="form-field">
-              <label for="eventName">Event Name:</label>
-              <input type="text" id="eventName" formControlName="eventName" required>
-            </div>
-    
-            <div class="form-field">
-              <label for="eventOrganizer">Event Organizer:</label>
-              <input type="text" id="eventOrganizer" formControlName="eventOrganizer" required>
-            </div>
-    
-            <div class="form-field">
-              <label for="eventCategory">Event Category:</label>
-              <input type="text" id="eventCategory" formControlName="eventCategory" required>
-            </div>
-    
-            <div class="form-field">
-              <label for="owner">Owner:</label>
-              <input type="text" id="owner" formControlName="owner" required>
-            </div>
-          </div>
-    
-          <div class="column">
-            <div class="drag-drop-area">
-              <label for="imageUpload">Drag & Drop Image:</label>
-              <input type="file" id="imageUpload" (change)="previewImage($event)">
-              <img id="imagePreview" [src]="imageSrc" alt="Preview" *ngIf="imageSrc">
-            </div>
-    
-            <!-- Espacio adicional entre campos y botón -->
-            <div class="spacer"></div>
-    
-            <!-- Botón para llamar a la función createEvent() -->
-            <div class="button-container">
-              <button type="submit">Create Event</button>
-            </div>
-          </div>
-        </div>
-      </form>
-        
-        
-     </div>
-  </div>  
+    <!-- Botón para comprar el ticket -->
+    <button id="buyTicketButton">Precio Ticket</button>
+
+    <!-- Mensaje de estado de la transacción -->
+    <div id="transactionStatus"></div>
+
+    <script>
+        //  JavaScript para interactuar con la función buyTicket
+        document.getElementById('buyTicketButton').addEventListener('click', async () => {
+            try {
+                //  del contrato
+                const contract = new web3.eth.Contract(factoryABI, '0x33578C5548e8ed6984d0a3705234996EF3d8386D');
+
+                // valor en wei que se enviará con la transacción
+                const ticketPriceWei = await contract.methods.getPrice().call();
+                const amount = 1; // Cantidad de tickets a comprar (puedes cambiarlo según tus necesidades)
+                const totalValueWei = ticketPriceWei * amount;
+
+                // billetera del usuario 
+                await this.walletService.initWallet;
+
+                // dirección de la billetera del usuario
+                const userAddress = this.walletService.wallet.walletAddress;
+
+                // transacción para comprar el ticket
+                const result = await contract.methods.buyTicket().send({
+                    from: userAddress,
+                    value: totalValueWei,
+                });
+
+                if (result.status) {
+                    document.getElementById('transactionStatus').textContent = 'Compra de ticket exitosa. Hash de la transacción: ' + result.transactionHash;
+                    // Puedes realizar acciones adicionales después de una compra exitosa
+                } else {
+                    document.getElementById('transactionStatus').textContent = 'La compra de ticket falló.';
+                    // Maneja el caso en el que la compra falla
+                }
+            } catch (error) {
+                document.getElementById('transactionStatus').textContent = 'Error comprando ticket: ' + error.message;
+                // Maneja el error de la compra de ticket
+            }
+        });
+    </script>
+</body>
+</html>

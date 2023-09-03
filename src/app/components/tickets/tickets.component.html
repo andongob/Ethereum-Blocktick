@@ -34,15 +34,17 @@
 <div *ngIf="wallet.address">
   <h2>Información de la Billetera</h2>
   <p>Dirección de Billetera: {{ wallet.address }}</p>
+  <p *ngIf="walletService.wallet.balance">Balance: {{ walletService.wallet.balance }}</p>
 </div>
 
 
 <div>
-  <h2>Comprar Tickets</h2>
+  <h2>Comprar Tickets</h2>  
   <form (submit)="buyTickets()">
     <div class="form-group">
       <label for="walletAddress">Dirección de la billetera:</label>
       <input type="text" class="form-control" id="walletAddress" [(ngModel)]="walletAddress" required>
+
     </div>
     <div class="form-group">
       <label for="ticketAmount">Cantidad de tickets:</label>

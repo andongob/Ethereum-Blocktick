@@ -1,324 +1,79 @@
-import { Component } from '@angular/core';
-import { FormBuilder, FormGroup } from "@angular/forms";
+import { Component, OnInit } from '@angular/core';
+import { NFTblockTickService } from 'src/app/nft-blocktick.service'; 
+import { FormBuilder } from '@angular/forms';
 import { Inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 
 import * as Mnemonic from "bitcore-mnemonic";
+import * as CryptoJS from "crypto-js";
 import { hdkey } from "ethereumjs-wallet";
 import * as bip39 from "bip39";
 import * as util from "ethereumjs-util";
-import * as CryptoJS from "crypto-js";
 import Web3 from 'web3';
-import { Transaction } from "ethereumjs-tx";
-
-
-
-import { ABI as NFTblockTickABI } from 'src/app/components/tickets/NFTblockTickABI';
+import { WalletService } from 'src/app/wallet.service';
+import { ABI as factoryABI } from 'src/app/components/events/blockTick_factory';
 
 @Component({
   selector: 'app-create-events',
   templateUrl: './create-events.component.html',
   styleUrls: ['./create-events.component.scss']
 })
-export class CreateEventsComponent {
-
-  imageSrc: string | ArrayBuffer | null = null; //previsualiza imagen en la creación de eventos
-
-  createEventForm: FormGroup; //crea formulario de evento
-
-  eventData = {
-    eventName: '',
-    eventOrganizer: '',
-    eventCategory: '',
-    owner: '',
-    price: 0
-  };
-
-  loginForm: any;
-
-  ethersForm: any;
-
-  tokensForm: any;
-
-  sendTokensForm: any;
-
-  sendForm: any;
-
-  encrypted: any;
-
-  wallet:any = {
-    address: '',
-    privateKey: '',
-  }
-
+export class CreateEventsComponent implements OnInit {
   web3: any;
+  contractAddress: string = '0x33578C5548e8ed6984d0a3705234996EF3d8386D'; // dirección del contrato TicketAsset
+  walletAddress: string = ''; // la dirección de la billetera del usuario
+  connectWallet: any;
 
-  window: any;
+  constructor(public walletService: WalletService) {
+    this.web3 = new Web3();
+    this.web3.setProvider(new this.web3.providers.HttpProvider('https://sepolia.infura.io/v3/87388b2cafcd4bcdbb26947767a1869f')); 
+  }
 
-  mining = false;
-
-  lastTransaction: any;
-
-  contract: any;
-
-  contractAddress: string = '0x571481B3C9a810099F3b8130e2cF4E4C6705ecE6';
-
-  constructor(@Inject(DOCUMENT) private document: Document, private formBuilder: FormBuilder) {
-    this.window = document.defaultView;
-
-    this.loginForm = this.formBuilder.group({
-      seeds: '',
-      password: ''
-    });
-
-    this.sendForm = this.formBuilder.group({
-      to: '',
-      amount: ''
-    });
-
-    this.tokensForm = this.formBuilder.group({
-      amount: ""
-    })
-
-    this.sendTokensForm = this.formBuilder.group({
-      to: "",
-      tokens: ""
-    })
-
-
-    this.encrypted = window.localStorage.getItem('seeds');
-
-    //this.initWallet('february current defy one inform wet hurry cupboard type enable spare famous'); // trampa
-
-    //this.web3 = new Web3;
-	
-	this.web3 = new Web3(this.window.ethereum); 
-
-	/*
-    this.web3.setProvider(
-      new this.web3.providers.HttpProvider('https://ropsten.infura.io/v3/d09825f256ae4705a74fdee006040903')
-    );
-	*/
-
-  this.window = this.document.defaultView; 
+  async ngOnInit() {
   
-  this.contract = new this.web3.eth.Contract(NFTblockTickABI.default, this.contractAddress);
-
-    // Inicialización del formulario createEventForm
-    this.createEventForm = this.formBuilder.group({
-      eventName: '',
-      eventOrganizer: '',
-      eventCategory: '',
-      owner: '',
-      price: ''
-    });
-
-  }
-
-  // february current defy one inform wet hurry cupboard type enable spare famous
-  async initWallet(seeds: string) {
-
-    console.log('Iniciando billetera...');
-
-    var mnemonic = new Mnemonic(seeds);
-    var seed = await bip39.mnemonicToSeed(mnemonic.toString());
-    var path = "m/44'/60'/0'/0/0";
-
-    var wallet = hdkey
-      .fromMasterSeed(seed)
-      .derivePath(path)
-      .getWallet();
-
-    var privateKey = wallet.getPrivateKey();
-    var publicKey = util.privateToPublic(privateKey);
-    var address = "0x" + util.pubToAddress(publicKey).toString("hex");
-
-    console.log('Dirección de la billetera:', this.wallet.address);
-
-    var tokens = await this.contract.methods.balanceOf(address).call();
-
-    this.wallet.privateKey = privateKey;
-
-    this.getBalance(address);
-    this.wallet.address = address; //indica la cuenta address, del div Hello en app.component.html una vez iniciada sesión
-
- this.wallet.balance = await this.web3.eth.getBalance(address).then((result:any) => {
-    return this.web3.utils.fromWei(result, 'ether'); // convierte el balance de Wei a Ether
-    
-  });
-  }
-
-  async getBalance(address:string) {
-    this.wallet.address = address;
-    this.wallet.balance = await this.web3.eth.getBalance(address).then((result:any) => {
-      return this.web3.utils.fromWei(result, 'ether');
-    });
-  }
-
-  sendLogin(loginData:any) {
-    if (loginData.password == '') {
-      return alert('Introduce tu contraseña');
+    if (this.isUserLoggedIn()) {
+      this.walletAddress = this.walletService.wallet.walletAddress;
+    } else {
+      
     }
-
-    if (this.encrypted) {
-      var decrypt = CryptoJS.AES.decrypt(this.encrypted, loginData.password);
-      loginData.seeds = decrypt.toString(CryptoJS.enc.Utf8);
-    }
-
-    if (!Mnemonic.isValid(loginData.seeds)) {
-      return alert('Semilla inválida');
-    }
-
-    var encrypted = CryptoJS.AES.encrypt(loginData.seeds, loginData.password).toString();
-
-    window.localStorage.setItem('seeds', encrypted);
-
-    this.loginForm.reset();
-
-    this.initWallet(loginData.seed);
   }
 
-  loginWithMetamask() {
-    if (!this.window.ethereum) {
-      return alert('Metamask no está instalado');
-    }
-
-    this.window.ethereum.enable().then((accounts:any) => {
-      let address = accounts[0];
-      this.getBalance(address);
-	  this.wallet.address = address;
-    });
-  }
-
-  removeSeeds() {
-    window.localStorage.removeItem('seeds');
-    this.encrypted = '';
-    this.wallet = {
-      address: '',
-      balance: ''
-    };
-  }
-
-  async sendEther(sendData:any) {
-    if (sendData.to == '' || sendData.amount == null) {
-      return alert('Campos son obligatorios');
-    }
-
-    if ( ! util.isValidAddress(sendData.to)) {
-      return alert('Dirección inválida');
-    }
-
-    this.mining = true;
-
-    var rawData = {
-      from: this.wallet.address,
-      to: sendData.to,
-      value: sendData.amount,
-      gasPrice: this.web3.utils.toHex(10000000000),
-      gasLimit: this.web3.utils.toHex(1000000),
-      //nonce: await this.web3.eth.getTransactionCount(this.wallet.address)
-    };
-
-	var signed = await this.web3.eth.sendTransaction(rawData).then((receipt:any) => {
-	
-  	  console.log("Transaction succeeded", receipt);		
-      this.mining = false;
-      this.lastTransaction = receipt;
-
-      this.sendForm.reset();
-    });
-	
-    //var signed = await this.web3.eth.accounts.signTransaction(rawData, this.wallet.privateKey.toString('hex'));
-
-	/*
-    this.web3.eth.sendSignedTransaction(signed.rawTransaction).then((receipt:any) => {
-      this.mining = false;
-      this.lastTransaction = receipt;
-
-      this.sendForm.reset();
-    });
-	*/
-  }
-
-  async buyForm(sendData:any) {
-    this.mining = true;
-
-    var rawData = {
-      from: this.wallet.address,
-      to: this.contractAddress,
-      value: sendData.tokens,
-      gasPrice: this.web3.utils.toHex(10000000000),
-      gasLimit: this.web3.utils.toHex(1000000),
-      //nonce: await this.web3.eth.getTransactionCount(this.wallet.address)
-    };
-
-	var signed = await this.web3.eth.sendTransaction(rawData).then((receipt:any) => {
-	
-  	  console.log("Transaction succeeded", receipt);		
-      this.mining = false;
-      this.lastTransaction = receipt;
-
-      this.sendForm.reset();
-    });
-
+  isUserLoggedIn(): boolean {
    
+    return this.walletService && this.walletService.wallet && this.walletService.wallet.walletAddress;
   }
 
-  async createEvent() {
-    // Obtener los valores del formulario
-    const eventData = this.createEventForm.value;
-
-    console.log('Evento a crear:', eventData);
-  
-    // Verificar si la dirección de la billetera está disponible y es válida
-    if (!this.wallet || !this.wallet.address) {
-      console.error('Dirección de la billetera no válida.');
-      return;
-    }
-  
-    // Ahora puedes utilizar eventData para interactuar con tu contrato y realizar la creación del evento
-
-    console.log('Interacción con el contrato: Iniciando');
-
-    this.mining = true;
-  
-    var rawData = {
-      from: this.wallet.address,
-      to: this.contractAddress,
-      value: eventData.price,
-      gasPrice: this.web3.utils.toHex(10000000000),
-      gasLimit: this.web3.utils.toHex(1000000)
-    };
-  
-    console.log('Datos para la transacción:', rawData);
-
+  async buyTicket() {
     try {
-      var signed = await this.web3.eth.sendTransaction(rawData);
-  
-      console.log('Transacción exitosa:', signed);
-      this.mining = false;
-      this.lastTransaction = signed;
-      this.createEventForm.reset();
-    } catch (error) {
-      console.error('Error en la transacción:', error);
-      this.mining = false;
-    }
 
-    console.log('Interacción con el contrato: Finalizada');
+      const contract = new this.web3.eth.Contract(factoryABI, '0x33578C5548e8ed6984d0a3705234996EF3d8386D');
 
-  }
-  
-    //previsualiza imagen formulario
-    previewImage(event: any) {
-      const input = event.target;
-      const file = input.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = (e: any) => {
-          this.imageSrc = e.target.result;
-        };
-        reader.readAsDataURL(file);
+
+      const ticketPriceWei = await contract.methods.getPrice().call();
+      const amount = 1; 
+      const totalValueWei = ticketPriceWei * amount;
+
+      // Conecta a la billetera del usuario 
+      await this.walletService.initWallet;
+
+
+      const userAddress = this.walletService.wallet.walletAddress;
+
+      const result = await contract.methods.buyTicket().send({
+        from: userAddress,
+        value: totalValueWei,
+      });
+
+      if (result.status) {
+        console.log('Compra de ticket exitosa. Hash de la transacción:', result.transactionHash);
+ 
+      } else {
+        console.error('La compra de ticket falló.');
+
       }
-    }
+    } catch (error) {
+      console.error('Error comprando ticket:', error);
 
+    }
+  }
 }
