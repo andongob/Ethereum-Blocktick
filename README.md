@@ -92,25 +92,10 @@ Definición de usuarios (o perfiles de usuario) que interactuarán en el sistema
 |**Código**|**Descripción**|**Prioridad**|**Dependencia**|
 | :- | :- | :- | :- |
 |CU1|*Customer Login to wallet*|1||
-||*Buy tickets*|||
-||*Create Events*|||
-||*Consult events*|||
+||*Buy tickets*|2||
+||*Create Events*|4||
+||*Consult events*|5||
 |||||
-
-
-
-
-
-
-
-
-
-
-
-## <a name="_toc97314080"></a><a name="_toc132831729"></a>***Diagrama UML***
-
-![](./img/Aspose.Words.bf69a840-4be1-487b-83a4-e77a894902c9.003.png)
-
 
 
 
