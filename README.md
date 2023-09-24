@@ -1,9 +1,4 @@
-Documento Diseño y Análisis Funcional
-
-
-
-
-
+# Documento Diseño y Análisis Funcional
 
 ### BLOCKTICK
 
@@ -91,10 +86,10 @@ Definición de usuarios (o perfiles de usuario) que interactuarán en el sistema
 
 |**Código**|**Descripción**|**Prioridad**|**Dependencia**|
 | :- | :- | :- | :- |
-|CU1|*Customer Login to wallet*|1||
-||*Buy tickets*|2||
-||*Create Events*|4||
-||*Consult events*|5||
+|CU1|*Registro de usuarios*|1|Los usuarios pueden registrarse en la plataforma utilizando su wallet.|
+||*Compra de Tickets NFT*|2|Los usuarios pueden buscar eventos disponibles en la plataforma y comprar tickets NFT para los eventos que les interesen|
+||*Creación de Evento*|4|Los organizadores pueden crear un evento proporcionando detalles como el nombre del evento, la fecha, la ubicación y la descripción|
+||*enta/Intercambio de Tickets NFT*|5||
 |||||
 
 
@@ -155,10 +150,10 @@ Definición de usuarios (o perfiles de usuario) que interactuarán en el sistema
 # <a name="_toc97314083"></a><a name="_toc132831732"></a>**Detalle Casos de uso del Sistema**
 
 
-|**CU1**|*Nombre caso de uso*|
+|**CU1**|*Registro de Usuario*|
 | :- | :- |
-|**Descripción**||
-|**Pantalla**||
+|**Descripción**|Los usuarios pueden registrarse en la plataforma utilizando su dirección de correo electrónico u otros métodos de autenticación|
+|**Pantalla**|Landing Page|
 |**Rol**||
 |**Flujo**||
 |**Flujo alternativo**||
