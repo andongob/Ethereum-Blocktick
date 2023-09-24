@@ -5,7 +5,7 @@ Documento Diseño y Análisis Funcional
 
 
 
-####BLOCKTICK
+###BLOCKTICK
 
 
 
@@ -58,12 +58,12 @@ REGISTRO DE CAMBIOS
 
 
 
-1  # <a name="_toc97314074"></a><a name="_toc132831724"></a>**Introducción**
+# <a name="_toc97314074"></a><a name="_toc132831724"></a>**Introducción**
 El presente proyecto presenta una plataforma web en el que las propietarias de salas o grupos que hagan bolos en estas salas puedan promocionar sus bolos, de esta plataforma se excluyen cualquier otro recinto que no sea una sala de conciertos.
 
 La tecnología de blockchain presenta la ventaja de ser una plataforma que puede acabar con la reventa en el caso de grandes eventos, pero este proyecto pretende dar la oportunidad a pequeños eventos en los que las personas puedan interactuar directamente con el promotor de dicho evento sin necesidad de intermediarios que puedan encarecer el servicio ofrecido.
 
-1  ## <a name="_toc132831725"></a>***Objetivos***
+## <a name="_toc132831725"></a>***Objetivos***
 
 
 La dAPP descrita a continuación será una plataforma donde las personas usuarias interesadas podrán crear eventos y poner a la venta tickets (NFT) que podrán ser vendidos/intercambios en dicha plataforma a otros usuarios interesados en la asistencia a dicho evento
@@ -71,8 +71,8 @@ La dAPP descrita a continuación será una plataforma donde las personas usuaria
 
 
 ` `Documento diseño y análisis funcional![](./img/Aspose.Words.bf69a840-4be1-487b-83a4-e77a894902c9.002.png) - Proyecto 
-1  # <a name="_toc97314077"></a><a name="_toc132831726"></a>**Especificación de Casos de uso del Sistema**
-   1  ## <a name="_toc97314078"></a><a name="_toc132831727"></a>***Actores del sistema***
+ # <a name="_toc97314077"></a><a name="_toc132831726"></a>**Especificación de Casos de uso del Sistema**
+## <a name="_toc97314078"></a><a name="_toc132831727"></a>***Actores del sistema***
 Definición de usuarios (o perfiles de usuario) que interactuarán en el sistema
 
 
@@ -87,7 +87,7 @@ Definición de usuarios (o perfiles de usuario) que interactuarán en el sistema
 |**Descripción**|Usuario interesado – persona asistente al evento (**customer**)|
 |**Comentarios**|*Persona física que quiere asistir a un evento musical*|
 
-1  ## <a name="_toc97314079"></a><a name="_toc132831728"></a>***Listado Casos de uso del Sistema***
+## <a name="_toc97314079"></a><a name="_toc132831728"></a>***Listado Casos de uso del Sistema***
 
 |**Código**|**Descripción**|**Prioridad**|**Dependencia**|
 | :- | :- | :- | :- |
@@ -107,7 +107,7 @@ Definición de usuarios (o perfiles de usuario) que interactuarán en el sistema
 
 
 
-1  ## <a name="_toc97314080"></a><a name="_toc132831729"></a>***Diagrama UML***
+## <a name="_toc97314080"></a><a name="_toc132831729"></a>***Diagrama UML***
 
 ![](./img/Aspose.Words.bf69a840-4be1-487b-83a4-e77a894902c9.003.png)
 
@@ -138,12 +138,12 @@ Definición de usuarios (o perfiles de usuario) que interactuarán en el sistema
 
 
 
-1  ## <a name="_toc97314081"></a><a name="_toc132831730"></a>***Diagrama de secuencia***
+## <a name="_toc97314081"></a><a name="_toc132831730"></a>***Diagrama de secuencia***
 
 ![](./img/Aspose.Words.bf69a840-4be1-487b-83a4-e77a894902c9.004.png)
 
 
-1  ## <a name="_toc97314082"></a><a name="_toc132831731"></a>***Interfaces y pantallas***
+## <a name="_toc97314082"></a><a name="_toc132831731"></a>***Interfaces y pantallas***
 
 
 **Landing Page**
@@ -167,7 +167,7 @@ Definición de usuarios (o perfiles de usuario) que interactuarán en el sistema
 
 ![](Aspose.Words.bf69a840-4be1-487b-83a4-e77a894902c9.008.png)
 
-1  # <a name="_toc97314083"></a><a name="_toc132831732"></a>**Detalle Casos de uso del Sistema**
+# <a name="_toc97314083"></a><a name="_toc132831732"></a>**Detalle Casos de uso del Sistema**
 
 
 |**CU1**|*Nombre caso de uso*|
@@ -181,8 +181,8 @@ Definición de usuarios (o perfiles de usuario) que interactuarán en el sistema
 
 
 
-1  # <a name="_toc97314084"></a><a name="_toc132831733"></a>**Entidades del sistema** 
-   1  ## <a name="_toc132831734"></a>***Descripción entidades del sistema***
+# <a name="_toc97314084"></a><a name="_toc132831733"></a>**Entidades del sistema** 
+## <a name="_toc132831734"></a>***Descripción entidades del sistema***
 
 
 |**1**|*Nombre entidad*|
@@ -196,7 +196,7 @@ Diagrama de clases
 
 ![](Aspose.Words.bf69a840-4be1-487b-83a4-e77a894902c9.009.png)
 
-1  # <a name="_toc97314086"></a><a name="_toc132831735"></a>**Definición de Smart Contracts**
+# <a name="_toc97314086"></a><a name="_toc132831735"></a>**Definición de Smart Contracts**
 
 **Descripción entidades del sistema: cada una de las partes del smartContract**
 
