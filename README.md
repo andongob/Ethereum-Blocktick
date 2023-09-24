@@ -29,21 +29,19 @@ REGISTRO DE CAMBIOS
 # Contenido
 [1	Introducción](#_toc132831724)
 
-[1.1	Objetivos](#_toc132831725)
+[2	Objetivos](#_toc132831725)
 
-[2	Especificación de Casos de uso del Sistema](#_toc132831726)
+[3	Especificación de Casos de uso del Sistema](#_toc132831726)
 
-[2.1	Actores del sistema	](#_toc132831727)
+[4	Detalle Casos de uso del Sistema](#_toc132831732)
 
-[2.2	Listado Casos de uso del Sistema](#_toc132831728)
+[5	Actores del sistema	](#_toc132831727)
 
-[2.4	Diagrama de secuencia	](#_toc132831730)
+[6	Diagrama de secuencia	](#_toc132831730)
 
-[2	Interfaces y pantallas](#_toc132831731)
+[7	Interfaces y pantallas](#_toc132831731)
 
-[3	Detalle Casos de uso del Sistema](#_toc132831732)
-
-[4	Diagrama de clases y Entidades del sistema	](#_toc132831735)
+[8	Diagrama de clases y Entidades del sistema	](#_toc132831735)
 
 
 
@@ -78,39 +76,32 @@ Definición de usuarios (o perfiles de usuario) que interactuarán en el sistema
 
 ## <a name="_toc97314079"></a><a name="_toc132831728"></a>***Listado Casos de uso del Sistema***
 
-|**Código**|**Descripción**|**Prioridad**|**Dependencia**|
-| :- | :- | :- | :- |
-|CU1|*Registro de usuarios*|1|Los usuarios pueden registrarse en la plataforma utilizando su wallet.|
-||*Compra de Tickets NFT*|2|Los usuarios pueden buscar eventos disponibles en la plataforma y comprar tickets NFT para los eventos que les interesen|
-||*Creación de Evento*|4|Los organizadores pueden crear un evento proporcionando detalles como el nombre del evento, la fecha, la ubicación y la descripción|
-||*Venta/Intercambio de Tickets NFT*|5|Intercambiar tickets con otros usuarios|
-|||||
+
+# <a name="_toc97314083"></a><a name="_toc132831732"></a>**Detalle Casos de uso del Sistema**
+
+
+|**CU1**|*Registro de Usuario*|
+| :- | :- |
+|**Descripción**|Los usuarios pueden registrarse en la plataforma utilizando su dirección de correo electrónico u otros métodos de autenticación|
+|**Pantalla**|Landing Page|
+|**Rol**|Actor|
+
+|**CU2**|*Creación de evento*|
+| :- | :- |
+|**Descripción**|Los organizadores pueden crear un evento proporcionando detalles como el nombre del evento, la fecha, la ubicación y la descripción. Pueden definir la cantidad de tickets disponibles para la venta y establecer un precio en criptomonedas o tokens NFT.|
+|**Pantalla**|Create Form|
+|**Rol**|Actor|
+
+|**CU3**|*Venta de Tickets*|
+| :- | :- |
+|**Descripción**|A través de las transacciones en la cadena de bloques, en esta caso Ethereum, mediante la wallet de Metamask los usuarios pueden crear eventos o adquirir NFTs.|
+|**Pantalla**|Tickets page|
+|**Rol**|Actor|
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+![](Aspose.Words.bf69a840-4be1-487b-83a4-e77a894902c9.009.png)
 
 ## <a name="_toc97314081"></a><a name="_toc132831730"></a>***Diagrama de secuencia***
 
@@ -148,31 +139,7 @@ Prototipo de diseño para visualizar la creación de eventos y que datos son nec
 
 ![](./img/Aspose.Words.bf69a840-4be1-487b-83a4-e77a894902c9.008.png)
 
-# <a name="_toc97314083"></a><a name="_toc132831732"></a>**Detalle Casos de uso del Sistema**
 
-
-|**CU1**|*Registro de Usuario*|
-| :- | :- |
-|**Descripción**|Los usuarios pueden registrarse en la plataforma utilizando su dirección de correo electrónico u otros métodos de autenticación|
-|**Pantalla**|Landing Page|
-|**Rol**|Actor|
-
-|**CU2**|*Creación de evento*|
-| :- | :- |
-|**Descripción**|Los organizadores pueden crear un evento proporcionando detalles como el nombre del evento, la fecha, la ubicación y la descripción. Pueden definir la cantidad de tickets disponibles para la venta y establecer un precio en criptomonedas o tokens NFT.|
-|**Pantalla**|Create Form|
-|**Rol**|Actor|
-
-|**CU3**|*Venta de Tickets*|
-| :- | :- |
-|**Descripción**|A través de las transacciones en la cadena de bloques, en esta caso Ethereum, mediante la wallet de Metamask los usuarios pueden crear eventos o adquirir NFTs.|
-|**Pantalla**|Tickets page|
-|**Rol**|Actor|
-
-
-
-
-![](Aspose.Words.bf69a840-4be1-487b-83a4-e77a894902c9.009.png)
 
 # <a name="_toc97314086"></a><a name="_toc132831735"></a>**Diagrama de clases y Entidades del sistema**
 
