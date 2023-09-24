@@ -1,20 +1,11 @@
-Análisis funcional
-![](./img/Aspose.Words.bf69a840-4be1-487b-83a4-e77a894902c9.001.png)
-
-
-
-
-
-
-
-
-
-
-
 Documento Diseño y Análisis Funcional
 
 
-BLOCKTICK
+
+
+
+
+####BLOCKTICK
 
 
 
@@ -22,13 +13,12 @@ HOJA DE CONTROL
 
 
 
-|**Proyecto**|Proyecto|||
+|**Proyecto**|BlockTick - Compra venta de tickets y creación de eventos|||
 | :- | :- | :- | :- |
 |**Entregable**|Documento diseño y análisis funcional|||
-|**Autor**|[Compañía]|||
-|**Versión/Edición**|0100|**Fecha Versión**|01/03/2023|
-|**Aprobado por**||**Fecha Aprobación**|DD/MM/AAAA|
-|||**Nº Total de Páginas**|X|
+|**Autor**|[Ana Ndongo]|||
+|**Versión/Edición**|0100|**Fecha Versión**|24/09/2023|
+
 
 
 REGISTRO DE CAMBIOS
@@ -42,29 +32,29 @@ REGISTRO DE CAMBIOS
 
 
 # Contenido
-[1	Introducción	3](#_toc132831724)
+[1	Introducción](#_toc132831724)
 
-[1.1	Objetivos	3](#_toc132831725)
+[1.1	Objetivos](#_toc132831725)
 
-[2	Especificación de Casos de uso del Sistema	4](#_toc132831726)
+[2	Especificación de Casos de uso del Sistema](#_toc132831726)
 
-[2.1	Actores del sistema	4](#_toc132831727)
+[2.1	Actores del sistema	](#_toc132831727)
 
-[2.2	Listado Casos de uso del Sistema	4](#_toc132831728)
+[2.2	Listado Casos de uso del Sistema](#_toc132831728)
 
-[2.3	Diagrama UML	4](#_toc132831729)
+[2.3	Diagrama UML](#_toc132831729)
 
-[2.4	Diagrama de secuencia	5](#_toc132831730)
+[2.4	Diagrama de secuencia	](#_toc132831730)
 
-[2.5	Interfaces y pantallas	7](#_toc132831731)
+[2.5	Interfaces y pantallas](#_toc132831731)
 
-[3	Detalle Casos de uso del Sistema	9](#_toc132831732)
+[3	Detalle Casos de uso del Sistema](#_toc132831732)
 
-[4	Entidades del sistema	10](#_toc132831733)
+[4	Entidades del sistema](#_toc132831733)
 
-[4.1	Descripción entidades del sistema	10](#_toc132831734)
+[4.1	Descripción entidades del sistema](#_toc132831734)
 
-[5	Definición de Smart Contracts	12](#_toc132831735)
+[5	Definición de Smart Contracts	](#_toc132831735)
 
 
 
@@ -78,7 +68,7 @@ La tecnología de blockchain presenta la ventaja de ser una plataforma que puede
 
 La dAPP descrita a continuación será una plataforma donde las personas usuarias interesadas podrán crear eventos y poner a la venta tickets (NFT) que podrán ser vendidos/intercambios en dicha plataforma a otros usuarios interesados en la asistencia a dicho evento
 
-Página 13 de 13
+
 
 ` `Documento diseño y análisis funcional![](./img/Aspose.Words.bf69a840-4be1-487b-83a4-e77a894902c9.002.png) - Proyecto 
 1  # <a name="_toc97314077"></a><a name="_toc132831726"></a>**Especificación de Casos de uso del Sistema**
@@ -202,9 +192,9 @@ Definición de usuarios (o perfiles de usuario) que interactuarán en el sistema
 |**Acciones**||
 <a name="_toc97314085"></a>Diagrama Entidad Relación E/R
 
-**Hacer diagrama con Visual Paradigm (plantilla CLASS: <https://online.visual-paradigm.com/app/diagrams/#diagram:proj=0&type=ClassDiagram&width=11&height=8.5&unit=inch>**)
+Diagrama de clases
 
-
+![](Aspose.Words.bf69a840-4be1-487b-83a4-e77a894902c9.009.png)
 
 1  # <a name="_toc97314086"></a><a name="_toc132831735"></a>**Definición de Smart Contracts**
 
