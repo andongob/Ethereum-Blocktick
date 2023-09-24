@@ -39,9 +39,11 @@ REGISTRO DE CAMBIOS
 
 [6	Diagrama de secuencia	](#_toc132831730)
 
+[8	Diagrama de clases y Entidades del sistema	](#_toc132831735)
+
 [7	Interfaces y pantallas](#_toc132831731)
 
-[8	Diagrama de clases y Entidades del sistema	](#_toc132831735)
+
 
 
 
@@ -109,38 +111,6 @@ Este diagrama de secuencias captura las interacciones típicas que un usuario pu
 
 ![](./img/Aspose.Words.bf69a840-4be1-487b-83a4-e77a894902c9.004.png)
 
-
-## <a name="_toc97314082"></a><a name="_toc132831731"></a>***Interfaces y pantallas***
-
-
-**Landing Page**
-
-Prototipo de diseño para el landing page el cual invita a los usuarios a unirse,  participar y registrarse en la plataforma
-
-![](./img/Aspose.Words.bf69a840-4be1-487b-83a4-e77a894902c9.005.png)
-
-**Ticket page**
-
-Prototipo de diseño para visualizar los tickets en la plataforma
-
-![](./img/Aspose.Words.bf69a840-4be1-487b-83a4-e77a894902c9.006.png)
-
-
-
-**Event Page**
-
-Prototipo de diseño para visualizar los eventos dados de alta en la plataforma
-
-![](./img/Aspose.Words.bf69a840-4be1-487b-83a4-e77a894902c9.007.png)
-
-**Create Form**
-
-Prototipo de diseño para visualizar la creación de eventos y que datos son necesarios para que las personas u organizaciones puedan dar de alta un evento
-
-![](./img/Aspose.Words.bf69a840-4be1-487b-83a4-e77a894902c9.008.png)
-
-
-
 # <a name="_toc97314086"></a><a name="_toc132831735"></a>**Diagrama de clases y Entidades del sistema**
 
 **Descripción entidades del sistema: cada una de las partes del smartContract**
@@ -183,6 +153,40 @@ Prototipo de diseño para visualizar la creación de eventos y que datos son nec
 |**getPrice**|*N/A*|*price*||
 |**Relación con otros SC**|**BlockTick**|||
 |**observaciones**|Este es un Contract Factory|||
+
+
+
+
+
+
+## <a name="_toc97314082"></a><a name="_toc132831731"></a>***Interfaces y pantallas***
+
+
+**Landing Page**
+
+Prototipo de diseño para el landing page el cual invita a los usuarios a unirse,  participar y registrarse en la plataforma
+
+![](./img/Aspose.Words.bf69a840-4be1-487b-83a4-e77a894902c9.005.png)
+
+**Ticket page**
+
+Prototipo de diseño para visualizar los tickets en la plataforma
+
+![](./img/Aspose.Words.bf69a840-4be1-487b-83a4-e77a894902c9.006.png)
+
+
+
+**Event Page**
+
+Prototipo de diseño para visualizar los eventos dados de alta en la plataforma
+
+![](./img/Aspose.Words.bf69a840-4be1-487b-83a4-e77a894902c9.007.png)
+
+**Create Form**
+
+Prototipo de diseño para visualizar la creación de eventos y que datos son necesarios para que las personas u organizaciones puedan dar de alta un evento
+
+![](./img/Aspose.Words.bf69a840-4be1-487b-83a4-e77a894902c9.008.png)
 
 
 
