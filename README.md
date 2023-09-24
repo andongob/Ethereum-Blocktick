@@ -37,19 +37,13 @@ REGISTRO DE CAMBIOS
 
 [2.2	Listado Casos de uso del Sistema](#_toc132831728)
 
-[2.3	Diagrama UML](#_toc132831729)
-
 [2.4	Diagrama de secuencia	](#_toc132831730)
 
-[2.5	Interfaces y pantallas](#_toc132831731)
+[2	Interfaces y pantallas](#_toc132831731)
 
 [3	Detalle Casos de uso del Sistema](#_toc132831732)
 
-[4	Entidades del sistema](#_toc132831733)
-
-[4.1	Descripción entidades del sistema](#_toc132831734)
-
-[5	Definición de Smart Contracts	](#_toc132831735)
+[4	Diagrama de clases y Entidades del sistema	](#_toc132831735)
 
 
 
@@ -71,15 +65,15 @@ La dAPP descrita a continuación será una plataforma donde las personas usuaria
 Definición de usuarios (o perfiles de usuario) que interactuarán en el sistema
 
 
-|**1**|*Nombre Rol*|
+|**1**|*Persona promotora u organización*|
 | :- | :- |
-|**Descripción**|Usuario interesado – promotora de conciertos en salas exclusivamente (**promoter**)|
+|**Descripción**| Promotora de conciertos en salas exclusivamente (**promoter**)|
 |**Comentarios**|<p>*Persona física o jurídica que promueve un evento o espectáculo y lo publicita* </p><p>*Para venta de entrada dentro de la plataforma*</p><p></p>|
 
 
-|**2**|*Nombre Rol*|
+|**2**|*Persona compradora o asistente*|
 | :- | :- |
-|**Descripción**|Usuario interesado – persona asistente al evento (**customer**)|
+|**Descripción**|Persona asistente al evento (**customer**)|
 |**Comentarios**|*Persona física que quiere asistir a un evento musical*|
 
 ## <a name="_toc97314079"></a><a name="_toc132831728"></a>***Listado Casos de uso del Sistema***
@@ -178,24 +172,9 @@ Prototipo de diseño para visualizar la creación de eventos y que datos son nec
 
 
 
-
-
-# <a name="_toc97314084"></a><a name="_toc132831733"></a>**Entidades del sistema** 
-## <a name="_toc132831734"></a>***Descripción entidades del sistema***
-
-
-|**1**|*Nombre entidad*|
-| :- | :- |
-|**Descripción**||
-|**Atributos**||
-|**Acciones**||
-<a name="_toc97314085"></a>Diagrama Entidad Relación E/R
-
-Diagrama de clases
-
 ![](Aspose.Words.bf69a840-4be1-487b-83a4-e77a894902c9.009.png)
 
-# <a name="_toc97314086"></a><a name="_toc132831735"></a>**Definición de Smart Contracts**
+# <a name="_toc97314086"></a><a name="_toc132831735"></a>**Diagrama de clases y Entidades del sistema**
 
 **Descripción entidades del sistema: cada una de las partes del smartContract**
 
