@@ -1,5 +1,5 @@
 Análisis funcional
-![](Aspose.Words.bf69a840-4be1-487b-83a4-e77a894902c9.001.png)
+![](./img/Aspose.Words.bf69a840-4be1-487b-83a4-e77a894902c9.001.png)
 
 
 
@@ -80,7 +80,7 @@ La dAPP descrita a continuación será una plataforma donde las personas usuaria
 
 Página 13 de 13
 
-` `Documento diseño y análisis funcional![](Aspose.Words.bf69a840-4be1-487b-83a4-e77a894902c9.002.png) - Proyecto 
+` `Documento diseño y análisis funcional![](./img/Aspose.Words.bf69a840-4be1-487b-83a4-e77a894902c9.002.png) - Proyecto 
 1  # <a name="_toc97314077"></a><a name="_toc132831726"></a>**Especificación de Casos de uso del Sistema**
    1  ## <a name="_toc97314078"></a><a name="_toc132831727"></a>***Actores del sistema***
 Definición de usuarios (o perfiles de usuario) que interactuarán en el sistema
@@ -119,7 +119,7 @@ Definición de usuarios (o perfiles de usuario) que interactuarán en el sistema
 
 1  ## <a name="_toc97314080"></a><a name="_toc132831729"></a>***Diagrama UML***
 
-![](Aspose.Words.bf69a840-4be1-487b-83a4-e77a894902c9.003.png)
+![](./img/Aspose.Words.bf69a840-4be1-487b-83a4-e77a894902c9.003.png)
 
 
 
@@ -150,7 +150,7 @@ Definición de usuarios (o perfiles de usuario) que interactuarán en el sistema
 
 1  ## <a name="_toc97314081"></a><a name="_toc132831730"></a>***Diagrama de secuencia***
 
-![](Aspose.Words.bf69a840-4be1-487b-83a4-e77a894902c9.004.png)
+![](./img/Aspose.Words.bf69a840-4be1-487b-83a4-e77a894902c9.004.png)
 
 
 1  ## <a name="_toc97314082"></a><a name="_toc132831731"></a>***Interfaces y pantallas***
@@ -158,11 +158,11 @@ Definición de usuarios (o perfiles de usuario) que interactuarán en el sistema
 
 **Landing Page**
 
-![](Aspose.Words.bf69a840-4be1-487b-83a4-e77a894902c9.005.png)
+![](./img/Aspose.Words.bf69a840-4be1-487b-83a4-e77a894902c9.005.png)
 
 **Ticket page**
 
-![](Aspose.Words.bf69a840-4be1-487b-83a4-e77a894902c9.006.png)
+![](./img/Aspose.Words.bf69a840-4be1-487b-83a4-e77a894902c9.006.png)
 
 
 
@@ -171,7 +171,7 @@ Definición de usuarios (o perfiles de usuario) que interactuarán en el sistema
 
 **Event Page**
 
-![](Aspose.Words.bf69a840-4be1-487b-83a4-e77a894902c9.007.png)
+![](./img/Aspose.Words.bf69a840-4be1-487b-83a4-e77a894902c9.007.png)
 
 **Create Form**
 
@@ -204,7 +204,7 @@ Definición de usuarios (o perfiles de usuario) que interactuarán en el sistema
 
 **Hacer diagrama con Visual Paradigm (plantilla CLASS: <https://online.visual-paradigm.com/app/diagrams/#diagram:proj=0&type=ClassDiagram&width=11&height=8.5&unit=inch>**)
 
-![](img\uml_1.JPG)
+![](./img/uml_1.JPG)
 
 1  # <a name="_toc97314086"></a><a name="_toc132831735"></a>**Definición de Smart Contracts**
 
