@@ -165,7 +165,7 @@ Definición de usuarios (o perfiles de usuario) que interactuarán en el sistema
 
 **Create Form**
 
-![](Aspose.Words.bf69a840-4be1-487b-83a4-e77a894902c9.008.png)
+![](./img/Aspose.Words.bf69a840-4be1-487b-83a4-e77a894902c9.008.png)
 
 # <a name="_toc97314083"></a><a name="_toc132831732"></a>**Detalle Casos de uso del Sistema**
 
