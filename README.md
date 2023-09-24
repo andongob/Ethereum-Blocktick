@@ -89,7 +89,7 @@ Definición de usuarios (o perfiles de usuario) que interactuarán en el sistema
 |CU1|*Registro de usuarios*|1|Los usuarios pueden registrarse en la plataforma utilizando su wallet.|
 ||*Compra de Tickets NFT*|2|Los usuarios pueden buscar eventos disponibles en la plataforma y comprar tickets NFT para los eventos que les interesen|
 ||*Creación de Evento*|4|Los organizadores pueden crear un evento proporcionando detalles como el nombre del evento, la fecha, la ubicación y la descripción|
-||*enta/Intercambio de Tickets NFT*|5||
+||*Venta/Intercambio de Tickets NFT*|5|Intercambiar tickets con otros usuarios|
 |||||
 
 
@@ -120,6 +120,8 @@ Definición de usuarios (o perfiles de usuario) que interactuarán en el sistema
 
 ## <a name="_toc97314081"></a><a name="_toc132831730"></a>***Diagrama de secuencia***
 
+Este diagrama de secuencias captura las interacciones típicas que un usuario puede realizar en la plataforma, desde la creación de un evento hasta la compra de tickets, la venta e intercambio de tickets NFT, y la interacción con otras funciones importantes. Sirve como una representación visual de cómo los actores interactúan con la plataforma para lograr sus objetivos y realizar actividades relacionadas con la gestión de eventos y tickets NFT.
+
 ![](./img/Aspose.Words.bf69a840-4be1-487b-83a4-e77a894902c9.004.png)
 
 
@@ -128,22 +130,27 @@ Definición de usuarios (o perfiles de usuario) que interactuarán en el sistema
 
 **Landing Page**
 
+Prototipo de diseño para el landing page el cual invita a los usuarios a unirse,  participar y registrarse en la plataforma
+
 ![](./img/Aspose.Words.bf69a840-4be1-487b-83a4-e77a894902c9.005.png)
 
 **Ticket page**
+
+Prototipo de diseño para visualizar los tickets en la plataforma
 
 ![](./img/Aspose.Words.bf69a840-4be1-487b-83a4-e77a894902c9.006.png)
 
 
 
-
-
-
 **Event Page**
+
+Prototipo de diseño para visualizar los eventos dados de alta en la plataforma
 
 ![](./img/Aspose.Words.bf69a840-4be1-487b-83a4-e77a894902c9.007.png)
 
 **Create Form**
+
+Prototipo de diseño para visualizar la creación de eventos y que datos son necesarios para que las personas u organizaciones puedan dar de alta un evento
 
 ![](./img/Aspose.Words.bf69a840-4be1-487b-83a4-e77a894902c9.008.png)
 
@@ -154,9 +161,21 @@ Definición de usuarios (o perfiles de usuario) que interactuarán en el sistema
 | :- | :- |
 |**Descripción**|Los usuarios pueden registrarse en la plataforma utilizando su dirección de correo electrónico u otros métodos de autenticación|
 |**Pantalla**|Landing Page|
-|**Rol**||
-|**Flujo**||
-|**Flujo alternativo**||
+|**Rol**|Actor|
+
+|**CU2**|*Creación de evento*|
+| :- | :- |
+|**Descripción**|Los organizadores pueden crear un evento proporcionando detalles como el nombre del evento, la fecha, la ubicación y la descripción. Pueden definir la cantidad de tickets disponibles para la venta y establecer un precio en criptomonedas o tokens NFT.|
+|**Pantalla**|Create Form|
+|**Rol**|Actor|
+
+|**CU3**|*Venta de Tickets*|
+| :- | :- |
+|**Descripción**|A través de las transacciones en la cadena de bloques, en esta caso Ethereum, mediante la wallet de Metamask los usuarios pueden crear eventos o adquirir NFTs.|
+|**Pantalla**|Tickets page|
+|**Rol**|Actor|
+
+
 
 
 
