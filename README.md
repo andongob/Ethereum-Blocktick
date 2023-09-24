@@ -204,7 +204,7 @@ Definición de usuarios (o perfiles de usuario) que interactuarán en el sistema
 
 **Hacer diagrama con Visual Paradigm (plantilla CLASS: <https://online.visual-paradigm.com/app/diagrams/#diagram:proj=0&type=ClassDiagram&width=11&height=8.5&unit=inch>**)
 
-![](Aspose.Words.bf69a840-4be1-487b-83a4-e77a894902c9.009.png)
+![](img\uml_1.JPG)
 
 1  # <a name="_toc97314086"></a><a name="_toc132831735"></a>**Definición de Smart Contracts**
 
