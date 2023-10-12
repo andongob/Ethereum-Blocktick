@@ -11,7 +11,7 @@ import * as util from "ethereumjs-util";
 import Web3 from 'web3';
 
 import { WalletService } from 'src/app/wallet.service';
-import { ABI as NFTblockTickABI } from 'src/app/components/tickets/NFTblockTickABI';
+import { ABI as NFTblockTickABI } from 'src/ABI/NFTblockTickABI';
 
 
 

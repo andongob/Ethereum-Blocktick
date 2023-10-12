@@ -1,6 +1,3 @@
-const HDWalletProvider = require("@truffle/hdwallet-provider");
-const mnemonicPhrase = "wolf finger garlic donate cloth gallery fury put tube normal square end";
-
 /**
  * Use this file to configure your truffle project. It's seeded with some
  * common settings for different networks and features like migrations,
@@ -47,7 +44,8 @@ const mnemonicPhrase = "wolf finger garlic donate cloth gallery fury put tube no
 // require('dotenv').config();
 // const { MNEMONIC, PROJECT_ID } = process.env;
 
-// const HDWalletProvider = require('@truffle/hdwallet-provider');
+const MNEMONIC = 'member cushion summer grid staff card owner hazard multiply trial panel now';
+const HDWalletProvider = require('@truffle/hdwallet-provider');
 
 module.exports = {
   /**
@@ -67,11 +65,13 @@ module.exports = {
     // tab if you use this network and you must also set the `host`, `port` and `network_id`
     // options below to some value.
     //
-     development: {
-      host: "127.0.0.1",     // Localhost (default: none)
-      port: 9545,            // Standard Ethereum port (default: none), este es el puerto que interactua con Metamask
-      network_id: "5777",       // Any network (default: none)
-     },
+
+    // CONFIGURACION PARA DEPLIEGU CON GANACHE EN LOCAL
+    development: {
+     host: "127.0.0.1",     // Localhost (default: none)
+     port: 9545,            // Standard Ethereum port (default: none)
+     network_id: "*",       // Any network (default: none)
+    },
     //
     // An additional network, but with some advanced options…
     // advanced: {
@@ -85,13 +85,16 @@ module.exports = {
     //
     // Useful for deploying to a public network.
     // Note: It's important to wrap the provider as a function to ensure truffle uses a new provider every time.
-    // goerli: {
-    //   provider: () => new HDWalletProvider(MNEMONIC, `https://goerli.infura.io/v3/${PROJECT_ID}`),
-    //   network_id: 5,       // Goerli's id
-    //   confirmations: 2,    // # of confirmations to wait between deployments. (default: 0)
-    //   timeoutBlocks: 200,  // # of blocks before a deployment times out  (minimum/default: 50)
-    //   skipDryRun: true     // Skip dry run before migrations? (default: false for public nets )
-    // },
+   
+    //CONFIGURACIÓN DE RED PARA SEPOLIA: Cudado con los costes de gas, hay que ajustarlos bien
+   
+    sepolia: {
+      provider: () => new HDWalletProvider(MNEMONIC, "https://sepolia.infura.io/v3/87388b2cafcd4bcdbb26947767a1869f"),
+      network_id: 11155111,       // Sepolia's id
+      confirmations: 2,    // # of confirmations to wait between deployments. (default: 0)
+      timeoutBlocks: 200,  // # of blocks before a deployment times out  (minimum/default: 50)
+      skipDryRun: true     // Skip dry run before migrations? (default: false for public nets )
+    },
     //
     // Useful for private networks
     // private: {

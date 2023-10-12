@@ -2,8 +2,14 @@
 // `ng build` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
-export const environment = {
+/*export const environment = {
   production: false
+};*/
+
+export const environment = {
+  production: false,
+  networkId: 11155111,
+  provider: 'https://sepolia.infura.io/v3/87388b2cafcd4bcdbb26947767a1869f',
 };
 
 /*

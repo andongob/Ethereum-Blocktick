@@ -1,17 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { NFTblockTickService } from 'src/app/nft-blocktick.service'; // Importa el servicio NFTService
-import { FormBuilder } from '@angular/forms';
-import { Inject } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
-
-import * as Mnemonic from "bitcore-mnemonic";
-import * as CryptoJS from "crypto-js";
-import { hdkey } from "ethereumjs-wallet";
-import * as bip39 from "bip39";
-import * as util from "ethereumjs-util";
 import Web3 from 'web3';
 import { WalletService } from 'src/app/wallet.service';
-import { ABI as NFTblockTickABI } from 'src/app/components/tickets/NFTblockTickABI';
+import { ABI as NFTblockTickABI } from 'src/ABI/NFTblockTickABI';
 
 @Component({
   selector: 'app-tickets',
@@ -20,18 +10,41 @@ import { ABI as NFTblockTickABI } from 'src/app/components/tickets/NFTblockTickA
 })
 export class TicketsComponent implements OnInit {
   wallet: any = {
-    address: ""
+    address: ''
   };
   web3: any;
-  nft: any; // Propiedad para almacenar los detalles del NFT
-
   walletAddress: string = '';
   ticketAmount: number = 0;
+  ticketPrice: number = 1;
   etherAmount: number = 0;
-
+  contract: any; // Instancia del contrato EventNFTManager
+  transactionResult: string = '';
   nftContract: any;
-  nftContractAddress: any = '0x33578C5548e8ed6984d0a3705234996EF3d8386D';
-  nfts: any[] = [];
+  nftContractAddress: any = '0xDb885a7cd58aD7cA96fAb45A0F8574140627002B';
+
+
+
+  constructor(public walletService: WalletService) {
+    this.web3 = new Web3(new Web3.providers.HttpProvider('https://sepolia.infura.io/v3/87388b2cafcd4bcdbb26947767a1869f'));
+    this.nftContract = new this.web3.eth.Contract(NFTblockTickABI.default, this.nftContractAddress);
+
+    console.log('nftContract:', this.nftContract);
+
+    this.wallet = {
+      address: '',
+      privateKey: ''
+    };
+  }
+
+  async ngOnInit() {
+    try {
+      await this.walletService.initWallet('member cushion summer grid staff card owner hazard multiply trial panel now');
+      this.wallet = this.walletService.wallet;
+      // await this.loadNFTs();
+    } catch (error) {
+      console.error('Error al inicializar la billetera:', error);
+    }
+  }
 
   isUserLoggedIn(): boolean {
     if (this.walletService && this.walletService.wallet && this.walletService.wallet.walletAddress) {
@@ -49,133 +62,70 @@ export class TicketsComponent implements OnInit {
   }
   
 
-  constructor(public walletService: WalletService, private nftService: NFTblockTickService) {
-    this.web3 = new Web3();
-    this.web3.setProvider(new this.web3.providers.HttpProvider('https://sepolia.infura.io/v3/87388b2cafcd4bcdbb26947767a1869f'));
-    this.nftContract = new this.web3.eth.Contract(NFTblockTickABI.default, this.nftContractAddress);
-
-    this.wallet = {
-      address: '',
-      privateKey: ''
-    };
-
-  }
-
-async ngOnInit() {
-  try {
-    const wallet: any = await this.walletService.initWallet('wolf finger garlic donate cloth gallery fury put tube normal square end');
-    this.wallet = wallet;
-    await this.loadNFTs();
-  } catch (error) {
-    console.error('Error al inicializar la billetera:', error);
-  }
-}
-
-
-  async cargarDetalleNFT(nftId: number) {
-    try {
-      // Utiliza el servicio para cargar los detalles del NFT por su ID
-      this.nft = await this.nftService.getNFTDetails(nftId);
-    } catch (error) {
-      console.error('Error al cargar los detalles del NFT:', error);
-    }
-  }
-
-  async loadNFTs() {
-    this.nfts = [];
-    let nft: {
-      tokenId: number;
-      owner: any;
-      price: any;
-      priceUsd: any;
-      disabled: boolean;
-    } | undefined;
-    for (var i = 1; i <= 10; i++) {
-      nft = {
-        tokenId: i,
-        owner: await this.nftContract.methods.ownerOf(i).call(),
-        price: await this.nftContract.methods.priceOf(i).call(),
-        priceUsd: await this.nftContract.methods.usdPriceOf(i).call(),
-        disabled: false
-      };
-      if (nft.owner.toLowerCase() == this.wallet.address.toLowerCase()) {
-        nft.disabled = true;
-      }
-      this.nfts.push(nft);
-    }
-  }
-
   async buyTickets() {
     // Obtén el valor del precio del ticket y el número de tickets de las propiedades del componente
-    const ticketPrice = BigInt(await this.nftContract.methods.ticketPrice().call());
-    const amount = this.ticketAmount; // Usa la propiedad ticketAmount para la cantidad de tickets
+    const ticketPrice = await this.nftContract.methods.ticketPrice().call();
+    const amount = 1; // Comprar 1 ticket
 
     // Calcula el valor en wei necesario
-    const value = BigInt(ticketPrice) * BigInt(amount) * BigInt(11) / BigInt(10);
-    const contract = new this.web3.eth.Contract(NFTblockTickABI, '0x33578C5548e8ed6984d0a3705234996EF3d8386D');
+    const value = ticketPrice * amount;
 
-    const rawData = {
-      from: this.wallet.address,
-      to: this.nftContractAddress,
-      value: value,
-      gasPrice: this.web3.utils.toHex(1000000000),
-      gasLimit: this.web3.utils.toHex(100000),
-      nonce: await this.web3.eth.getTransactionCount(this.wallet.address),
-      data: await this.nftContract.methods.buyTickets(this.wallet.address, amount).encodeABI()
-    };
-    const signed = await this.web3.eth.accounts.signTransaction(rawData, this.wallet.privateKey.toString('hex'));
-    console.log('Raw transaction:', signed.rawTransaction); // Agregado console.log
-    this.web3.eth.sendSignedTransaction(signed.rawTransaction).then(
-      (receipt: any) => {
-        console.log('Transaction receipt:', receipt); // Agregado console.log
-        this.loadNFTs();
-      },
-      (error: any) => {
-        console.log('Transaction error:', error); // Agregado console.log
-      }
-    );
-  }
+    try {
+      const fromAddress = '0x5af1c8af38844b0fce9b0798c968f721cd0b484f'; // Reemplaza con la dirección del remitente real
 
-
-  async useTickets(amount: number) {
-    const ticketHolders = await this.nftContract.methods.ticketHolders(this.wallet.address).call();
-    if (ticketHolders.length < amount) {
-      throw new Error("No tienes tickets suficientes");
-    }
-    for (let i = 0; i < amount; i++) {
-      const tokenId = ticketHolders[ticketHolders.length - 1];
-      ticketHolders.pop();
-      const rawData = {
-        from: this.wallet.address,
+      // Crea una transacción y firma
+      const tx = {
+        from: fromAddress,
         to: this.nftContractAddress,
-        value: 0,
-        gasPrice: this.web3.utils.toHex(10000000000),
-        gasLimit: this.web3.utils.toHex(1000000),
-        nonce: await this.web3.eth.getTransactionCount(this.wallet.address),
-        data: await this.nftContract.methods.useTickets(this.wallet.address, amount).encodeABI()
+        value: value,
+        gas: 200000,
+        data: this.nftContract.methods.buyTickets(fromAddress, amount).encodeABI()
       };
-      const signed = await this.web3.eth.accounts.signTransaction(rawData, this.wallet.privateKey.toString('hex'));
-      this.web3.eth.sendSignedTransaction(signed.rawTransaction).then(
-        (receipt: any) => {
-          this.loadNFTs();
-        },
-        (error: any) => {
-          console.log(error);
-        }
-      );
+
+      // Firma la transacción con la clave privada (debes gestionar esto de manera segura)
+      const signedTx = await this.web3.eth.accounts.signTransaction(tx, 'YOUR_PRIVATE_KEY');
+
+      // Envía la transacción firmada
+      const result = await this.web3.eth.sendSignedTransaction(signedTx.rawTransaction);
+
+      console.log('Resultado de la compra de tickets:', result);
+      // Actualiza el estado de tu aplicación o muestra un mensaje de confirmación aquí
+    } catch (error) {
+      console.error('Error al comprar tickets:', error);
+      // Maneja el error apropiadamente (muestra un mensaje de error, etc.)
     }
   }
 
-  async _mintNFTs(amount: number) {
-    const ipfsUrl = "https://blocktick.infura-ipfs.io/ipfs/QmTp7Zdmk4ESqCDMzZHY8NgnK3pUvrymq9BYxZZBnNPVmt";
-    const newTokenIds: number[] = [];
-    for (let i = 0; i < amount; i++) {
-      const tokenId = await this.nftContract.methods.tokenIdCounter().call();
-      await this.nftContract.methods._mint(this.wallet.address, tokenId).send({ from: this.wallet.address });
-      await this.nftContract.methods._setTokenURI(tokenId, ipfsUrl).send({ from: this.wallet.address });
-      newTokenIds.push(tokenId);
-    }
-    return newTokenIds;
-  }
+  async buyOneTicketForMe() {
+    // Comprar 1 ticket para el usuario actual
+    const amount = 1;
 
+    // Obtén el valor del precio del ticket
+    const ticketPrice = await this.nftContract.methods.ticketPrice().call();
+
+    try {
+      const fromAddress = '0x5af1c8af38844b0fce9b0798c968f721cd0b484f'; // Reemplaza con la dirección del remitente real
+
+      // Crea una transacción y firma
+      const tx = {
+        from: fromAddress,
+        to: this.nftContractAddress,
+        value: ticketPrice,
+        gas: 200000,
+        data: this.nftContract.methods.buyOneTicketForMe().encodeABI()
+      };
+
+      // Firma la transacción con la clave privada (debes gestionar esto de manera segura)
+      const signedTx = await this.web3.eth.accounts.signTransaction(tx, 'YOUR_PRIVATE_KEY');
+
+      // Envía la transacción firmada
+      const result = await this.web3.eth.sendSignedTransaction(signedTx.rawTransaction);
+
+      console.log('Resultado de la compra de un ticket para el usuario actual:', result);
+      // Actualiza el estado de tu aplicación o muestra un mensaje de confirmación aquí
+    } catch (error) {
+      console.error('Error al comprar un ticket para el usuario actual:', error);
+      // Maneja el error apropiadamente (muestra un mensaje de error, etc.)
+    }
+  }
 }

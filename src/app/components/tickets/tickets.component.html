@@ -1,70 +1,36 @@
- <div class="container">
- <!-- <div class="row">
-    <div class="col-lg-4 mb-3">
-      <img src="assets/img/team-1.jpg" alt="" class="mb-3">
-      <h5 class="font-weight-bold mt-2">Robert T. Williams</h5>
-      <p class="font-weight-bold mb-3">Graphic Designer</p>
-      <p class="text-left mb-3 pl-4 pr-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p>
-      <a href="#0" class="font-weight-bold text-decoration-none">@robertwilliams</a>
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Compra de Ticket</title>
+</head>
+
+<body>
+    <div class="center-content">
+
+        <h1>BlockTick dApp</h1>
+        <div class="button-group">
+            <button (click)="walletService.loginWithMetamask()">Conectar Metamask</button>
+            <button (click)="disconnectWallet()">Desconectar Metamask</button>
+        </div>
+        <div *ngIf="wallet.address">
+            <h2>Información de la Billetera</h2>
+            <p>Dirección de Billetera: {{ wallet.address }}</p>
+            <p *ngIf="walletService.wallet.balance">Balance: {{ walletService.wallet.balance }}</p>
+        </div>
+
+        <h3>Compra de un Ticket para el Usuario Actual</h3>
+
+        <!-- Formulario para comprar un ticket para el usuario actual -->
+        <form id="buyOneTicketForm" (ngSubmit)="buyOneTicketForMe()">
+            <label for="ticketPriceUser">Precio del Ticket:</label>
+            <input type="number" id="ticketPriceUser" name="ticketPriceUser" [value]="ticketPrice" readonly>
+            <br><br>
+            <button type="submit">Comprar 1 Ticket para Mí</button>
+        </form>
+
+        <div id="transactionStatus">{{ transactionResult }}</div>
     </div>
-    <div class="col-lg-4 mb-3">
-      <img src="assets/img/team-2.jpg" alt="" class="mb-3">
-      <h5 class="font-weight-bold mt-2">Angelina B. Widow</h5>
-      <p class="font-weight-bold mb-3">Founder / CEO</p>
-      <p class="text-left mb-3 pl-4 pr-4">Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit.</p>
-      <a href="#0" class="font-weight-bold text-decoration-none">@angelinawidow</a>
-    </div>
-    <div class="col-lg-4 mb-3">
-      <img src="assets/img/team-3.jpg" alt="" class="mb-3">
-      <h5 class="font-weight-bold mt-2">Patrick Anderson</h5>
-      <p class="font-weight-bold mb-3">Art Director</p>
-      <p class="text-left mb-3 pl-4 pr-4">Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-      <a href="#0" class="font-weight-bold text-decoration-none">@patrickanderson</a>
-    </div>
-  </div>
-</div> -->
+</body>
 
-<!-- tickets.component.html -->
-
-<h1>blockTick dApp</h1>
-<div class="button-group">
-  <button (click)="walletService.loginWithMetamask()">Conectar Metamask</button>
-  <button (click)="disconnectWallet()">Desconectar Metamask</button>
-</div>
-<div *ngIf="wallet.address">
-  <h2>Información de la Billetera</h2>
-  <p>Dirección de Billetera: {{ wallet.address }}</p>
-  <p *ngIf="walletService.wallet.balance">Balance: {{ walletService.wallet.balance }}</p>
-</div>
-
-
-<div>
-  <h2>Comprar Tickets</h2>  
-  <form (submit)="buyTickets()">
-    <div class="form-group">
-      <label for="walletAddress">Dirección de la billetera:</label>
-      <input type="text" class="form-control" id="walletAddress" [(ngModel)]="walletAddress" required>
-
-    </div>
-    <div class="form-group">
-      <label for="ticketAmount">Cantidad de tickets:</label>
-      <input type="number" class="form-control" id="ticketAmount" [(ngModel)]="ticketAmount" required>
-    </div>
-    <div class="form-group">
-      <label for="etherAmount">Cantidad de ether (wei):</label>
-      <input type="number" class="form-control" id="etherAmount" [(ngModel)]="etherAmount" required>
-    </div>
-    <button type="submit" class="btn btn-primary">Comprar Tickets</button>
-  </form>
-</div>
-<!--------------------------------------------------------------->
-
-
-
-  <h2>Mint NFTs</h2>
-  <button (click)="_mintNFTs(1)">Mint NFT</button>
-
-  <h2>Operaciones con Tickets</h2>
-  <button (click)="useTickets(1)">Usar Ticket</button>
-  
-</div>
+</html>

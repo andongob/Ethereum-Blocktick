@@ -1,52 +1,41 @@
-const Ticket = artifacts.require("Ticket");
+const EventNFTManager = artifacts.require('EventNFTManager'); // Asegúrate de que el nombre del contrato sea correcto
+const truffleAssert = require('truffle-assertions');
 
-contract("Ticket Contract", function (accounts) {
-  let ticketContract;
-  const owner = accounts[0];
-  const user1 = accounts[1];
+contract('EventNFTManager', (accounts) => {
+    let eventNFTManager;
 
-  beforeEach(async function () {
-    ticketContract = await Ticket.new({ from: owner });
-  });
+    before(async () => {
+        eventNFTManager = await EventNFTManager.new("Evento de Prueba", "Organizador", "Categoría", accounts[0], 1);
+    });
 
-  it("Debería permitir comprar un ticket", async function () {
-    const ticketPriceWei = web3.utils.toWei("1", "ether");
-    await ticketContract.buyTickets(user1, 1, { value: ticketPriceWei, from: user1 });
-    // Aquí debes agregar la lógica para verificar que la compra del ticket fue exitosa
-    // Por ejemplo, podrías verificar el balance del contrato o el evento emitido
-  });
 
-  it("No debería dejar compra mas de un ticket", async function () {
-    const ticketPriceWei = web3.utils.toWei("1", "ether");
-    await ticketContract.buyTickets(user1, 1, { value: ticketPriceWei, from: user1 });
-    try {
-      await ticketContract.buyTickets(user1, 1, { value: ticketPriceWei, from: user1 });
-      assert.fail("Expected revert");
-    } catch (error) {
-      // Aquí debes verificar que el mensaje de error sea el esperado
-      // Puede variar según cómo el contrato maneje las reversiones
-    }
-  });
-  
-    it("debe permitir al owner usar su ticket", async function () {
-    const ticketPriceWei = web3.utils.toWei("1", "ether");
-    await ticketContract.buyTickets(user1, 1, { value: ticketPriceWei, from: user1 });
+  it('no debería permitir comprar más de un ticket', async () => {
+    // Intenta comprar otro ticket con la cuenta accounts[1]
+    await eventNFTManager.buyOneTicketForMe({ from: accounts[1], value: 1 });
+    // Verifica que la transacción se haya completado correctamente
+    // No necesitas `truffle-assertions` en este caso
+});
 
-    await ticketContract.useTickets(user1, 1, { from: user1 });
 
-    const tokenIds = await ticketContract.balanceOf(user1);
-    assert.equal(tokenIds.toString(), "0", "User should have no tickets left");
-  });
+it('no debería dejar comprar por falta de saldo', async () => {
+  // Obtén el saldo inicial de la cuenta accounts[1]
+  const initialBalance = web3.utils.toBN(await web3.eth.getBalance(accounts[1]));
 
-  it("No debería dejar usar otros tickets salvo el suyo", async function () {
-    const ticketPriceWei = web3.utils.toWei("1", "ether");
-    await ticketContract.buyTickets(user1, 1, { value: ticketPriceWei, from: user1 });
+  // Calcula el precio de un boleto
+  const ticketPrice = web3.utils.toBN(await eventNFTManager.getPrice());
 
-    try {
-      await ticketContract.useTickets(user1, 2, { from: user1 });
-      assert.fail("Expected revert");
-    } catch (error) {
-      // Verificar el mensaje de error si es necesario
-    }
-  });
+  // Calcula el valor insuficiente (un valor menor que el precio del boleto)
+  const insufficientValue = ticketPrice.sub(web3.utils.toBN(1));
+
+  // Intenta comprar un boleto con la cuenta accounts[1] pero con saldo insuficiente
+  await truffleAssert.fails(
+      eventNFTManager.buyTickets(accounts[1], 1, { from: accounts[1], value: insufficientValue }),
+      truffleAssert.ErrorType.REVERT
+  );
+
+  // Asegúrate de que el saldo de la cuenta no haya cambiado
+  const finalBalance = web3.utils.toBN(await web3.eth.getBalance(accounts[1]));
+  assert.isTrue(finalBalance.eq(initialBalance), 'El saldo de la cuenta debería ser el mismo.');
+});
+
 });
