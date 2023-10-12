@@ -8,7 +8,6 @@
 <body>
     <div class="center-content">
 
-        <h1>BlockTick dApp</h1>
         <div class="button-group">
             <button (click)="walletService.loginWithMetamask()">Conectar Metamask</button>
             <button (click)="disconnectWallet()">Desconectar Metamask</button>
@@ -23,10 +22,10 @@
 
         <!-- Formulario para comprar un ticket para el usuario actual -->
         <form id="buyOneTicketForm" (ngSubmit)="buyOneTicketForMe()">
-            <label for="ticketPriceUser">Precio del Ticket:</label>
+            <label for="ticketPriceUser">Precio del Ticket (wei):</label>
             <input type="number" id="ticketPriceUser" name="ticketPriceUser" [value]="ticketPrice" readonly>
             <br><br>
-            <button type="submit">Comprar 1 Ticket para Mí</button>
+            <button type="submit">Comprar 1 Ticket</button>
         </form>
 
         <div id="transactionStatus">{{ transactionResult }}</div>
