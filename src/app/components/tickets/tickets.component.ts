@@ -91,6 +91,7 @@ export class TicketsComponent implements OnInit {
     }
   }
   
+  
 
   isUserLoggedIn(): boolean {
     if (this.walletService && this.walletService.wallet && this.walletService.wallet.walletAddress) {
