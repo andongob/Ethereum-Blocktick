@@ -13,9 +13,10 @@
             <button (click)="disconnectWallet()">Desconectar Metamask</button>
         </div>
         <div *ngIf="wallet.address">
-            <h2>Información de la Billetera</h2>
-            <p>Dirección de Billetera: {{ wallet.address }}</p>
-            <p *ngIf="walletService.wallet.balance">Balance: {{ walletService.wallet.balance }}</p>
+          <h2>Información de la Billetera</h2>
+          <p>Dirección de Billetera: {{ wallet.address }}</p>
+          <p *ngIf="walletService.wallet.balance">Balance: {{ walletService.wallet.balance }}</p>
+          <p>Red: {{ network }}</p>
         </div>
 
         <h3>Compra de un Ticket para el Usuario Actual</h3>

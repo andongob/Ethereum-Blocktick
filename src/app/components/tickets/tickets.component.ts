@@ -41,7 +41,7 @@ export class TicketsComponent implements OnInit {
 
   async ngOnInit() {
     try {
-      await this.walletService.initWallet('member cushion summer grid staff card owner hazard multiply trial panel now');
+      //await this.walletService.initWallet('member cushion summer grid staff card owner hazard multiply trial panel now');
       this.wallet = this.walletService.wallet;
       // await this.loadNFTs();
     } catch (error) {
