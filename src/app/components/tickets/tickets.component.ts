@@ -23,7 +23,7 @@ export class TicketsComponent implements OnInit {
   nftContract: any;
   nftContractAddress: any = '0xDb885a7cd58aD7cA96fAb45A0F8574140627002B';
   gas: string = '200000';
-
+  network: string = 'Desconocida';
 
 
   constructor(public walletService: WalletService) {
@@ -38,6 +38,7 @@ export class TicketsComponent implements OnInit {
     };
   }
 
+
   async ngOnInit() {
     try {
       await this.walletService.initWallet('member cushion summer grid staff card owner hazard multiply trial panel now');
@@ -46,7 +47,50 @@ export class TicketsComponent implements OnInit {
     } catch (error) {
       console.error('Error al inicializar la billetera:', error);
     }
+    try {
+      const networkId = await this.getNetworkId();
+      if (networkId !== null) {
+        this.network = networkId.toString();
+      } else {
+        this.network = 'Desconocido';
+      }
+    } catch (error) {
+      console.error('Error al inicializar la red:', error);
+      this.network = 'Desconocido';
+    }
   }
+
+  async getNetworkId() {
+    try {
+      const networkId = await this.web3.eth.net.getId();
+      return networkId;
+    } catch (error) {
+      console.error('Error al obtener la versión de la red:', error);
+      return null;
+    }
+  }
+
+  async getNetwork(): Promise<string> {
+    try {
+      const networkId = await this.web3.eth.net.getId();
+      switch (networkId) {
+        case 1:
+          return 'Mainnet';
+        case 3:
+          return 'Ropsten';
+        case 4:
+          return 'Rinkeby';
+        case 42:
+          return 'Kovan';
+        default:
+          return 'Desconocida';
+      }
+    } catch (error) {
+      console.error('Error al obtener la versión de la red:', error);
+      return 'Desconocida';
+    }
+  }
+  
 
   isUserLoggedIn(): boolean {
     if (this.walletService && this.walletService.wallet && this.walletService.wallet.walletAddress) {
@@ -68,28 +112,35 @@ export class TicketsComponent implements OnInit {
     // Obtén el valor del precio del ticket y el número de tickets de las propiedades del componente
     const ticketPrice = await this.nftContract.methods.ticketPrice().call();
     const amount = 1; // Comprar 1 ticket
-
+  
     // Calcula el valor en wei necesario
     const value = ticketPrice * amount;
-
+  
     try {
-      const fromAddress = '0x5af1c8af38844b0fce9b0798c968f721cd0b484f'; // Reemplaza con la dirección del remitente real
-
-      // Crea una transacción y firma
+      if (!window.ethereum || !window.ethereum.selectedAddress) {
+        // No se encontró una cuenta conectada en MetaMask
+        console.error('No se encontró una cuenta conectada en MetaMask.');
+        // Muestra un mensaje al usuario para que conecte su billetera
+        return;
+      }
+  
+      const fromAddress = window.ethereum.selectedAddress;
+  
+      // Crea una transacción
       const tx = {
         from: fromAddress,
         to: this.nftContractAddress,
         value: value,
-        gas: this.gas,
+        gas: this.gas, // Asegúrate de que gas sea un valor adecuado
         data: this.nftContract.methods.buyTickets(fromAddress, amount).encodeABI()
       };
-
-      // Firma la transacción con la clave privada (debes gestionar esto de manera segura)
-      const signedTx = await this.web3.eth.accounts.signTransaction(tx, 'YOUR_PRIVATE_KEY');
-
-      // Envía la transacción firmada
-      const result = await this.web3.eth.sendSignedTransaction(signedTx.rawTransaction);
-
+  
+      // Solicita a MetaMask que firme y envíe la transacción
+      const result = await window.ethereum.request({
+        method: 'eth_sendTransaction',
+        params: [tx]
+      });
+  
       console.log('Resultado de la compra de tickets:', result);
       // Actualiza el estado de tu aplicación o muestra un mensaje de confirmación aquí
     } catch (error) {
@@ -97,6 +148,7 @@ export class TicketsComponent implements OnInit {
       // Maneja el error apropiadamente (muestra un mensaje de error, etc.)
     }
   }
+  
 
   async buyOneTicketForMe() {
     // Comprar 1 ticket para el usuario actual

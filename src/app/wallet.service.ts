@@ -54,7 +54,7 @@ export class WalletService {
 
     this.encrypted = window.localStorage.getItem('seeds');
 
-    this.initWallet('member cushion summer grid staff card owner hazard multiply trial panel now'); // trampa
+    //this.initWallet('member cushion summer grid staff card owner hazard multiply trial panel now'); // trampa
 
     this.web3 = new Web3;
 	
