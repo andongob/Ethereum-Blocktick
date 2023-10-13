@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import Web3 from 'web3';
 import { WalletService } from 'src/app/wallet.service';
 import { ABI as NFTblockTickABI } from 'src/ABI/NFTblockTickABI';
+declare let window: any;
 
 @Component({
   selector: 'app-tickets',
@@ -21,6 +22,7 @@ export class TicketsComponent implements OnInit {
   transactionResult: string = '';
   nftContract: any;
   nftContractAddress: any = '0xDb885a7cd58aD7cA96fAb45A0F8574140627002B';
+  gas: string = '200000';
 
 
 
@@ -78,7 +80,7 @@ export class TicketsComponent implements OnInit {
         from: fromAddress,
         to: this.nftContractAddress,
         value: value,
-        gas: 200000,
+        gas: this.gas,
         data: this.nftContract.methods.buyTickets(fromAddress, amount).encodeABI()
       };
 
@@ -99,33 +101,48 @@ export class TicketsComponent implements OnInit {
   async buyOneTicketForMe() {
     // Comprar 1 ticket para el usuario actual
     const amount = 1;
-
+  
     // Obtén el valor del precio del ticket
     const ticketPrice = await this.nftContract.methods.ticketPrice().call();
-
+  
     try {
-      const fromAddress = '0x5af1c8af38844b0fce9b0798c968f721cd0b484f'; // Reemplaza con la dirección del remitente real
-
-      // Crea una transacción y firma
-      const tx = {
-        from: fromAddress,
-        to: this.nftContractAddress,
-        value: ticketPrice,
-        gas: 200000,
-        data: this.nftContract.methods.buyOneTicketForMe().encodeABI()
-      };
-
-      // Firma la transacción con la clave privada (debes gestionar esto de manera segura)
-      const signedTx = await this.web3.eth.accounts.signTransaction(tx, 'YOUR_PRIVATE_KEY');
-
-      // Envía la transacción firmada
-      const result = await this.web3.eth.sendSignedTransaction(signedTx.rawTransaction);
-
-      console.log('Resultado de la compra de un ticket para el usuario actual:', result);
-      // Actualiza el estado de tu aplicación o muestra un mensaje de confirmación aquí
+      // Comprueba si MetaMask está instalado y configurado en el navegador
+      if (typeof window !== 'undefined' && 'ethereum' in window) {
+        const ethereum = window['ethereum'];
+  
+        // Solicita al usuario que apruebe la transacción
+        const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+  
+        if (accounts.length === 0) {
+          // El usuario no aprobó la transacción
+          console.error('El usuario no aprobó la transacción.');
+          return;
+        }
+  
+        const fromAddress = accounts[0];
+  
+        // Crea una transacción
+        const tx = {
+          from: fromAddress,
+          to: this.nftContractAddress,
+          value: ticketPrice,
+          gas: this.gas,
+          data: this.nftContract.methods.buyOneTicketForMe().encodeABI()
+        };
+  
+        // Envía la transacción a través de MetaMask
+        const result = await ethereum.request({ method: 'eth_sendTransaction', params: [tx] });
+  
+        console.log('Resultado de la compra de un ticket para el usuario actual:', result);
+        // Actualiza el estado de tu aplicación o muestra un mensaje de confirmación aquí
+      } else {
+        console.error('MetaMask no está instalado o configurado en el navegador.');
+        // Muestra un mensaje al usuario para que instale y configure MetaMask
+      }
     } catch (error) {
       console.error('Error al comprar un ticket para el usuario actual:', error);
       // Maneja el error apropiadamente (muestra un mensaje de error, etc.)
     }
   }
+  
 }
