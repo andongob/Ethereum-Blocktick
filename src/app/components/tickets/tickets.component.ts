@@ -119,15 +119,15 @@ export class TicketsComponent implements OnInit {
   
     try {
       if (!window.ethereum || !window.ethereum.selectedAddress) {
-        // No se encontró una cuenta conectada en MetaMask
+
         console.error('No se encontró una cuenta conectada en MetaMask.');
-        // Muestra un mensaje al usuario para que conecte su billetera
+
         return;
       }
   
       const fromAddress = window.ethereum.selectedAddress;
   
-      // Crea una transacción
+      //  transacción
       const tx = {
         from: fromAddress,
         to: this.nftContractAddress,
@@ -143,23 +143,23 @@ export class TicketsComponent implements OnInit {
       });
   
       console.log('Resultado de la compra de tickets:', result);
-      // Actualiza el estado de tu aplicación o muestra un mensaje de confirmación aquí
+
     } catch (error) {
       console.error('Error al comprar tickets:', error);
-      // Maneja el error apropiadamente (muestra un mensaje de error, etc.)
+
     }
   }
   
 
   async buyOneTicketForMe() {
-    // Comprar 1 ticket para el usuario actual
+
     const amount = 1;
   
-    // Obtén el valor del precio del ticket
+    // Obtiene el valor del precio del ticket
     const ticketPrice = await this.nftContract.methods.ticketPrice().call();
   
     try {
-      // Comprueba si MetaMask está instalado y configurado en el navegador
+
       if (typeof window !== 'undefined' && 'ethereum' in window) {
         const ethereum = window['ethereum'];
   
@@ -167,14 +167,14 @@ export class TicketsComponent implements OnInit {
         const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
   
         if (accounts.length === 0) {
-          // El usuario no aprobó la transacción
+
           console.error('El usuario no aprobó la transacción.');
           return;
         }
   
         const fromAddress = accounts[0];
   
-        // Crea una transacción
+        // transacción
         const tx = {
           from: fromAddress,
           to: this.nftContractAddress,
@@ -187,14 +187,14 @@ export class TicketsComponent implements OnInit {
         const result = await ethereum.request({ method: 'eth_sendTransaction', params: [tx] });
   
         console.log('Resultado de la compra de un ticket para el usuario actual:', result);
-        // Actualiza el estado de tu aplicación o muestra un mensaje de confirmación aquí
+
       } else {
         console.error('MetaMask no está instalado o configurado en el navegador.');
-        // Muestra un mensaje al usuario para que instale y configure MetaMask
+
       }
     } catch (error) {
       console.error('Error al comprar un ticket para el usuario actual:', error);
-      // Maneja el error apropiadamente (muestra un mensaje de error, etc.)
+
     }
   }
   
