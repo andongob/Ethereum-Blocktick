@@ -101,7 +101,7 @@ export class CreateEventsComponent implements OnInit {
       address: '',
       privateKey: ''
     };
-    this.walletService.wallet = this.wallet; // También puedes actualizar el servicio si es necesario
+    this.walletService.wallet = this.wallet; 
   }
 
   async createEvent(eventName: string, eventOrganizer: string, eventCategory: string, ticketPrice: number) {
@@ -116,7 +116,7 @@ export class CreateEventsComponent implements OnInit {
         // Llama a la función createEvent del contrato y envía la transacción a través de MetaMask
         await this.contract.methods.createEvent(eventName, eventOrganizer, eventCategory, amountInWei).send({
           from: owner,
-          gas: this.gas // Asegúrate de que el valor de gas sea el adecuado
+          gas: this.gas 
         });
 
         console.log('Evento creado con éxito.');
