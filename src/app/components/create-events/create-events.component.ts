@@ -15,20 +15,20 @@ export class CreateEventsComponent implements OnInit {
     address: ''
   };
   web3: any;
-  contractAddress: string = '0xDb885a7cd58aD7cA96fAb45A0F8574140627002B'; // dirección del contrato TicketAsset
+  contractAddress: string = '0x524b604B81aF68C06D9E09f45C6918825A55393B'; // dirección del contrato TicketAsset
   walletAddress: string = ''; // la dirección de la billetera del usuario
   connectWallet: any;
   contract: any;
   gas: string = '200000';
   network: string = 'Desconocida';
 
-  constructor(public walletService: WalletService) {
+  constructor(public walletService: WalletService) { 
     // Inicializa Web3 con el proveedor de MetaMask si está disponible
     if (typeof window !== 'undefined' && typeof window.ethereum !== 'undefined') {
       this.web3 = new Web3(window.ethereum);
       window.ethereum.enable().then(() => {
         // Configura el contrato con su ABI y dirección
-        this.contract = new this.web3.eth.Contract(factoryABI.default, '0xDb885a7cd58aD7cA96fAb45A0F8574140627002B');
+        this.contract = new this.web3.eth.Contract(factoryABI.default, '0x524b604B81aF68C06D9E09f45C6918825A55393B');
       });
     } else {
       console.error('MetaMask no está instalado o configurado en el navegador.');

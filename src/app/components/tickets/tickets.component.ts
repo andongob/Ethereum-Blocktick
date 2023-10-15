@@ -21,9 +21,10 @@ export class TicketsComponent implements OnInit {
   contract: any; // Instancia del contrato EventNFTManager
   transactionResult: string = '';
   nftContract: any;
-  nftContractAddress: any = '0xDb885a7cd58aD7cA96fAb45A0F8574140627002B';
+  nftContractAddress: any = '0x117978D5A8BDcf6f230c90DE7F49066aB7C1fc7D';
   gas: string = '200000';
   network: string = 'Desconocida';
+  hasNFT: any;
 
 
   constructor(public walletService: WalletService) {
@@ -57,6 +58,10 @@ export class TicketsComponent implements OnInit {
     } catch (error) {
       console.error('Error al inicializar la red:', error);
       this.network = 'Desconocido';
+    }
+    if (this.isUserLoggedIn()) {
+      this.walletAddress = this.walletService.wallet.walletAddress;
+      this.checkUserNFT(); // Comprueba si el usuario ya tiene un NFT
     }
   }
 
@@ -197,5 +202,22 @@ export class TicketsComponent implements OnInit {
 
     }
   }
+
+  async checkUserNFT() {
+    try {
+      // Comprueba si el usuario ya tiene un NFT en su billetera llamando a la función en tu contrato
+      const hasNFT = await this.nftContract.methods.hasNFT(this.walletAddress).call();
+      this.hasNFT = hasNFT;
+      
+      if (hasNFT) {
+        console.log('El usuario YA tiene un NFT en su billetera.');
+      } else {
+        console.log('El usuario NO tiene un NFT en su billetera.');
+      }
+    } catch (error) {
+      console.error('Error al verificar si el usuario tiene un NFT:', error);
+    }
+  }
+  
   
 }
