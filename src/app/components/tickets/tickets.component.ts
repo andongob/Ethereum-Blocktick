@@ -205,7 +205,7 @@ export class TicketsComponent implements OnInit {
 
   async checkUserNFT() {
     try {
-      // Comprueba si el usuario ya tiene un NFT en su billetera llamando a la función en tu contrato
+      // Comprueba si el usuario ya tiene un NFT en su billetera
       const hasNFT = await this.nftContract.methods.hasNFT(this.walletAddress).call();
       this.hasNFT = hasNFT;
       
