@@ -1,25 +1,30 @@
 <div class="center-content">
     <div class="button-group">
-        <button (click)="walletService.loginWithMetamask()">Conectar Metamask</button>
-        <button (click)="disconnectWallet()">Desconectar Metamask</button>
+      <button (click)="walletService.loginWithMetamask()">Conectar Metamask</button>
+      <button (click)="disconnectWallet()">Desconectar Metamask</button>
     </div>
     <div *ngIf="wallet.address">
-        <h2>Información de la Billetera</h2>
-        <p>Dirección de Billetera: {{ wallet.address }}</p>
-        <p *ngIf="walletService.wallet.balance">Balance: {{ walletService.wallet.balance }}</p>
-        <p>Red: {{ network }}</p>
+      <h2>Información de la Billetera</h2>
+      <p>Dirección de Billetera: {{ wallet.address }}</p>
+      <p *ngIf="walletService.wallet.balance">Balance: {{ walletService.wallet.balance }}</p>
+      <p>Red: {{ network }}</p>
     </div>
-
+  
     <h3>Compra de un Ticket para el Usuario Actual</h3>
-
+  
     <!-- Formulario para comprar un ticket para el usuario actual -->
     <form id="buyOneTicketForm" (ngSubmit)="buyOneTicketForMe()">
         <label for="ticketPriceUser">Precio del Ticket (wei):</label>
         <input type="number" id="ticketPriceUser" name="ticketPriceUser" [value]="ticketPrice" readonly>
         <br><br>
-        <button type="submit" *ngIf="!hasNFT">Comprar 1 Ticket</button>
-        <p *ngIf="hasNFT">Ya dispones de un NFT. Puedes comprar un ticket.</p>
-    </form>
-
+      
+        <p *ngIf="balanceOf === 0">
+          <button type="submit">Comprar 1 Ticket</button>
+        </p>
+        <p *ngIf="balanceOf === 1">Tienes un TICKET. No puedes comprar más.</p>
+      </form>
+     
+        
     <div id="transactionStatus">{{ transactionResult }}</div>
-</div>
+  </div>
+  

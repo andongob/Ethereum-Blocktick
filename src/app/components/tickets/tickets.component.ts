@@ -24,12 +24,16 @@ export class TicketsComponent implements OnInit {
   nftContractAddress: any = '0x117978D5A8BDcf6f230c90DE7F49066aB7C1fc7D';
   gas: string = '200000';
   network: string = 'Desconocida';
-  hasNFT: any;
+  balanceOf: number = 0;
+
 
 
   constructor(public walletService: WalletService) {
     this.web3 = new Web3(new Web3.providers.HttpProvider('https://sepolia.infura.io/v3/87388b2cafcd4bcdbb26947767a1869f'));
     this.nftContract = new this.web3.eth.Contract(NFTblockTickABI.default, this.nftContractAddress);
+    // Suponiendo que aquí inicializas y asignas this.contract
+    this.contract = new this.web3.eth.Contract(NFTblockTickABI.default, this.nftContractAddress);
+
 
     console.log('nftContract:', this.nftContract);
 
@@ -37,6 +41,8 @@ export class TicketsComponent implements OnInit {
       address: '',
       privateKey: ''
     };
+
+    
   }
 
 
@@ -44,6 +50,7 @@ export class TicketsComponent implements OnInit {
     try {
       //await this.walletService.initWallet('member cushion summer grid staff card owner hazard multiply trial panel now');
       this.wallet = this.walletService.wallet;
+      //this.checkBalanceOf(); // Comprueba el balance para verificar si el usuario tiene un NFT
       // await this.loadNFTs();
     } catch (error) {
       console.error('Error al inicializar la billetera:', error);
@@ -61,9 +68,11 @@ export class TicketsComponent implements OnInit {
     }
     if (this.isUserLoggedIn()) {
       this.walletAddress = this.walletService.wallet.walletAddress;
-      this.checkUserNFT(); // Comprueba si el usuario ya tiene un NFT
+
     }
   }
+  
+  
 
   async getNetworkId() {
     try {
@@ -158,66 +167,55 @@ export class TicketsComponent implements OnInit {
 
   async buyOneTicketForMe() {
 
-    const amount = 1;
-  
-    // Obtiene el valor del precio del ticket
     const ticketPrice = await this.nftContract.methods.ticketPrice().call();
   
     try {
-
       if (typeof window !== 'undefined' && 'ethereum' in window) {
         const ethereum = window['ethereum'];
   
-        // Solicita al usuario que apruebe la transacción
+
         const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
   
         if (accounts.length === 0) {
-
           console.error('El usuario no aprobó la transacción.');
           return;
         }
   
         const fromAddress = accounts[0];
   
-        // transacción
-        const tx = {
-          from: fromAddress,
-          to: this.nftContractAddress,
-          value: ticketPrice,
-          gas: this.gas,
-          data: this.nftContract.methods.buyOneTicketForMe().encodeABI()
-        };
+        // cantidad de NFTs que el usuario posee
+        const nftBalance = await this.nftContract.methods.balanceOf(fromAddress).call();
   
-        // Envía la transacción a través de MetaMask
-        const result = await ethereum.request({ method: 'eth_sendTransaction', params: [tx] });
+        if (parseInt(nftBalance) === 0) {
+   
+          console.log('El usuario no tiene NFTs para este evento. Puede comprar un ticket.');
   
-        console.log('Resultado de la compra de un ticket para el usuario actual:', result);
+      
+          const tx = {
+            from: fromAddress,
+            to: this.nftContractAddress,
+            value: ticketPrice,
+            gas: this.gas,
+            data: this.nftContract.methods.buyOneTicketForMe().encodeABI()
+          };
+  
+          // Envía la transacción a través de MetaMask
+          const result = await ethereum.request({ method: 'eth_sendTransaction', params: [tx]});
+          console.log('Resultado de la compra de un NFT para el usuario actual:', result);
+        } else {
+         
+          console.log('El usuario YA tiene un NFT para este evento.');
 
+        }
       } else {
         console.error('MetaMask no está instalado o configurado en el navegador.');
-
       }
     } catch (error) {
-      console.error('Error al comprar un ticket para el usuario actual:', error);
-
+      console.error('Error al comprar un NFT para el usuario actual:', error);
     }
   }
+}  
 
-  async checkUserNFT() {
-    try {
-      // Comprueba si el usuario ya tiene un NFT en su billetera
-      const hasNFT = await this.nftContract.methods.hasNFT(this.walletAddress).call();
-      this.hasNFT = hasNFT;
-      
-      if (hasNFT) {
-        console.log('El usuario YA tiene un NFT en su billetera.');
-      } else {
-        console.log('El usuario NO tiene un NFT en su billetera.');
-      }
-    } catch (error) {
-      console.error('Error al verificar si el usuario tiene un NFT:', error);
-    }
-  }
+
+
   
-  
-}

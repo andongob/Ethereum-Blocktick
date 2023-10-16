@@ -18,6 +18,7 @@ import Web3 from 'web3';
 })
 
 export class WalletService {
+  
   loginForm: any;
 
   sendForm: any;
@@ -38,6 +39,10 @@ export class WalletService {
   lastTransaction: any;
 
   walletAddress: string = '';
+
+  hasNFT: any;
+
+  nftContract: any;
 
   constructor(@Inject(DOCUMENT) private document: Document, private formBuilder: FormBuilder) {
     this.window = document.defaultView;
@@ -147,6 +152,8 @@ export class WalletService {
       this.getBalance(address);
 	  this.wallet.address = address;
     });
+
+
   }
 
 
