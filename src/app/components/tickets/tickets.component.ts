@@ -18,7 +18,7 @@ export class TicketsComponent implements OnInit {
   ticketAmount: number = 0;
   ticketPrice: number = 1;
   etherAmount: number = 0;
-  contract: any; // Instancia del contrato EventNFTManager
+  contract: any; 
   transactionResult: string = '';
   nftContract: any;
   nftContractAddress: any = '0x117978D5A8BDcf6f230c90DE7F49066aB7C1fc7D';
@@ -31,7 +31,7 @@ export class TicketsComponent implements OnInit {
   constructor(public walletService: WalletService) {
     this.web3 = new Web3(new Web3.providers.HttpProvider('https://sepolia.infura.io/v3/87388b2cafcd4bcdbb26947767a1869f'));
     this.nftContract = new this.web3.eth.Contract(NFTblockTickABI.default, this.nftContractAddress);
-    // Suponiendo que aquí inicializas y asignas this.contract
+
     this.contract = new this.web3.eth.Contract(NFTblockTickABI.default, this.nftContractAddress);
 
 
@@ -50,8 +50,8 @@ export class TicketsComponent implements OnInit {
     try {
       //await this.walletService.initWallet('member cushion summer grid staff card owner hazard multiply trial panel now');
       this.wallet = this.walletService.wallet;
-      //this.checkBalanceOf(); // Comprueba el balance para verificar si el usuario tiene un NFT
-      // await this.loadNFTs();
+
+
     } catch (error) {
       console.error('Error al inicializar la billetera:', error);
     }
@@ -119,12 +119,12 @@ export class TicketsComponent implements OnInit {
       address: '',
       privateKey: ''
     };
-    this.walletService.wallet = this.wallet; // También puedes actualizar el servicio si es necesario
+    this.walletService.wallet = this.wallet; 
   }
   
 
   async buyTickets() {
-    // Obtén el valor del precio del ticket y el número de tickets de las propiedades del componente
+    // Obtiene el valor del precio del ticket y el número de tickets de las propiedades del componente
     const ticketPrice = await this.nftContract.methods.ticketPrice().call();
     const amount = 1; // Comprar 1 ticket
   
@@ -185,6 +185,9 @@ export class TicketsComponent implements OnInit {
   
         // cantidad de NFTs que el usuario posee
         const nftBalance = await this.nftContract.methods.balanceOf(fromAddress).call();
+        this.balanceOf = parseInt(nftBalance);
+
+        console.log('BalanceOf:', this.balanceOf);
   
         if (parseInt(nftBalance) === 0) {
    

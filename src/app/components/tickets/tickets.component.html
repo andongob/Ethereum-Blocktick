@@ -21,10 +21,10 @@
         <p *ngIf="balanceOf === 0">
           <button type="submit">Comprar 1 Ticket</button>
         </p>
-        <p *ngIf="balanceOf === 1">Tienes un TICKET. No puedes comprar más.</p>
+        <p *ngIf="balanceOf === 1" class="message">Tienes un TICKET. No puedes comprar más.</p>
+
       </form>
-     
-        
+    
     <div id="transactionStatus">{{ transactionResult }}</div>
   </div>
   
