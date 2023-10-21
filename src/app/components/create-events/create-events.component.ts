@@ -10,7 +10,10 @@ declare let window: any;
   templateUrl: './create-events.component.html',
   styleUrls: ['./create-events.component.scss']
 })
+
+
 export class CreateEventsComponent implements OnInit {
+
   wallet: any = {
     address: ''
   };
@@ -22,7 +25,14 @@ export class CreateEventsComponent implements OnInit {
   gas: string = '200000';
   network: string = 'Desconocida';
 
+/**
+ * Constructor de la clase TicketsComponent.
+ *
+ * @param {WalletService} walletService - El servicio de billetera utilizado para interactuar con MetaMask.
+ */
+
   constructor(public walletService: WalletService) { 
+
     // Inicializa Web3 con el proveedor de MetaMask si está disponible
     if (typeof window !== 'undefined' && typeof window.ethereum !== 'undefined') {
       this.web3 = new Web3(window.ethereum);
@@ -35,7 +45,9 @@ export class CreateEventsComponent implements OnInit {
     }
   }
 
+
   async ngOnInit() {
+
     try {
       //await this.walletService.initWallet('member cushion summer grid staff card owner hazard multiply trial panel now');
       this.wallet = this.walletService.wallet;
@@ -55,7 +67,10 @@ export class CreateEventsComponent implements OnInit {
       this.network = 'Desconocido';
     }
   }
-
+/**
+ * 
+ * @returns 
+ */
   async getNetworkId() {
     try {
       const networkId = await this.web3.eth.net.getId();

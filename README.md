@@ -12,7 +12,8 @@ HOJA DE CONTROL
 | :- | :- | :- | :- |
 |**Entregable**|Documento diseño y análisis funcional|||
 |**Autor**|[Ana Ndongo]|||
-|**Versión/Edición**|0100|**Fecha Versión**|24/09/2023|
+|**Versión/Edición**|0100|**Fecha Versión**|24/09/2023||
+|**Versión/Edición**|0200|**Fecha Versión**|21/10/2023||
 
 
 

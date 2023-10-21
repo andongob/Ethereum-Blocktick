@@ -19,7 +19,7 @@
     "moduleResolution": "node",
     "importHelpers": true,
     "target": "ES2022",
-    "module": "es2020",
+    "module": "AMD",
     "lib": [
       "es2020",
       "dom"
@@ -31,5 +31,10 @@
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
     "strictTemplates": true
-  }
+
+  },
+  "typedocOptions": {
+    "entryPoints": ["src"],
+    "out": "docs"
+}
 }
