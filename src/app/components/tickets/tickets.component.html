@@ -14,16 +14,17 @@
   
     <!-- Formulario para comprar un ticket para el usuario actual -->
     <form id="buyOneTicketForm" (ngSubmit)="buyOneTicketForMe()">
-        <label for="ticketPriceUser">Precio del Ticket (wei):</label>
-        <input type="number" id="ticketPriceUser" name="ticketPriceUser" [value]="ticketPrice" readonly>
-        <br><br>
-      
-        <p *ngIf="balanceOf === 0">
-          <button type="submit">Comprar 1 Ticket</button>
-        </p>
-        <p *ngIf="balanceOf === 1" class="message">Tienes un TICKET. No puedes comprar más.</p>
+      <label for="ticketPriceUser">Precio del Ticket (wei):</label>
+      <input type="number" id="ticketPriceUser" name="ticketPriceUser" [value]="ticketPrice" readonly>
+      <br><br>
+    
+      <p *ngIf="balanceOf === 0">
+        <button type="submit">Comprar 1 Ticket</button>
+      </p>
+      <p *ngIf="balanceOf === 1" class="message">Tienes un TICKET. No puedes comprar más.</p>
 
-      </form>
+    </form>
+    
     
     <div id="transactionStatus">{{ transactionResult }}</div>
   </div>
