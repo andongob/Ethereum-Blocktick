@@ -19,13 +19,34 @@
       <br><br>
     
       <p *ngIf="balanceOf === 0">
-        <button type="submit">Comprar 1 Ticket</button>
+        <button (click)="buyOneTicketForMe()" [disabled]="isProcessingTransaction">Comprar 1 Ticket</button>
       </p>
-      <p *ngIf="balanceOf === 1" class="message">Tienes un TICKET. No puedes comprar más.</p>
 
-    </form>
-    
+      <p *ngIf="balanceOf === 1" class="error-message">Tienes un TICKET. No puedes comprar más.</p>
+
+    </form>   
     
     <div id="transactionStatus">{{ transactionResult }}</div>
+
+
+    <!-- Maneja errores de stado de la transacción mientras al conectar con metamask para comprar un ticket-->
+    <div *ngIf="transactionStatus === 'processing'">
+      <p class="error-message">Procesando transacción...</p>
+    </div>
+    <div *ngIf="transactionStatus === 'success'">
+      <p class="success-message">La transacción se ha completado con éxito.</p>
+    </div>
+    <div *ngIf="transactionStatus === 'user_denied'" >
+      <p class="error-message">El usuario denegó la transacción.</p>
+    </div>
+    <div *ngIf="transactionStatus === 'canceled'">
+      <p class="error-message">El usuario canceló la transacción.</p>
+    </div>
+    <div *ngIf="transactionStatus === 'error'">
+      <p class="error-message">Ocurrió un error al procesar la transacción.</p>
+    </div>
+    
+    
+    
   </div>
   

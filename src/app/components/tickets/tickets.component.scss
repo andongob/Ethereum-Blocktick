@@ -76,9 +76,19 @@ label {
   margin-top: 20px; /* Espacio entre los botones y el contenido superior */
 }
 
-.message {
+.error-message {
   background-color: #f1f1f1; /* Cambia el color de fondo según tus preferencias */
   color: #e91c1c; /* Cambia el color del texto según tus preferencias */
+  padding: 10px;
+  border: 1px solid #ccc; /* Agrega un borde si lo deseas */
+  border-radius: 5px; /* Agrega bordes redondeados si lo deseas */
+  text-align: center; /* Centra el texto dentro del elemento */
+  margin-top: 10px; /* Agrega un margen superior si es necesario */
+}
+
+.success-message {
+  background-color: #f1f1f1; /* Cambia el color de fondo según tus preferencias */
+  color: #02632a; /* Cambia el color del texto según tus preferencias */
   padding: 10px;
   border: 1px solid #ccc; /* Agrega un borde si lo deseas */
   border-radius: 5px; /* Agrega bordes redondeados si lo deseas */
