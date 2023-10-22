@@ -13,6 +13,8 @@ import * as util from '@ethereumjs/util';
 import * as CryptoJS from "crypto-js";
 import Web3 from 'web3';
 
+declare let window: any;
+
 @Injectable({
   providedIn: 'root'
 })
@@ -180,6 +182,21 @@ sendLogin(loginData: any) {
   this.loginForm.reset();
 
   this.initWallet(loginData.seeds);
+}
+
+
+async checkNetwork(): Promise<void> {
+  if (!window.ethereum) {
+    return alert('MetaMask no está instalado');
+  }
+
+  window.ethereum.on('networkChanged', (networkId: string) => {
+    if (networkId === '11155111') {
+      // Usuario en la red correcta (Sepolia)
+    } else {
+      alert('Cambia a la red Sepolia en MetaMask para continuar.');
+    }
+  });
 }
 
 

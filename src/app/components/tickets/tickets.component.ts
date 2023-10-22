@@ -76,7 +76,9 @@ constructor(public walletService: WalletService) {
  * Realiza la inicialización necesaria de datos y propiedades al cargar el componente.
  * @returns {void} No devuelve ningún valor específico.
  */
-async ngOnInit() {
+async ngOnInit(): Promise<void> {
+      // Llama a la función para verificar la red
+      this.walletService.checkNetwork();
   try {
     // Inicializa la billetera utilizando una semilla (comentada en el código).
     //await this.walletService.initWallet('member cushion summer grid staff card owner hazard multiply trial panel now');
@@ -158,6 +160,9 @@ async getNetwork(): Promise<string> {
     return 'Desconocida';
   }
 }
+
+
+
 
 /**
  * Comprueba si un usuario está actualmente conectado.
@@ -260,6 +265,7 @@ async buyOneTicketForMe() {
 
   this.isProcessingTransaction = true;
 
+
  try {
     // Verifica si window y window.ethereum están disponibles
   if (typeof window !== 'undefined' && 'ethereum' in window) {
@@ -293,8 +299,6 @@ interface Transaction {
   gas: string;
   data: string;
 }
-
-
     const tx: Transaction = {
       from: fromAddress,
       to: this.nftContractAddress,
@@ -338,6 +342,7 @@ catch (error: any) {
   }
 }
 }
+
 }
 
 
