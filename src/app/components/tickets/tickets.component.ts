@@ -247,15 +247,20 @@ async buyTickets() {
   
 
 /**
- * Compra un ticket para el usuario actual mediante MetaMask y Ethereum.
+ * @función
  *
- * @función Esta función permite al usuario comprar un ticket para el evento actual a través de MetaMask y Ethereum.
- * @description Obtiene el precio de un ticket, verifica si el usuario está conectado a MetaMask y tiene una cuenta seleccionada.
+ * @descripción Compra un ticket para el usuario actual mediante MetaMask y Ethereum.
+ *
+ * Esta función permite al usuario comprar un ticket para el evento actual a través de MetaMask y Ethereum.
+ * Obtiene el precio de un ticket, verifica si el usuario está conectado a MetaMask y tiene una cuenta seleccionada.
  * Si el usuario está conectado y no tiene ningún NFT para este evento, genera una transacción para comprar un ticket y la envía a través de MetaMask.
  * Si el usuario ya tiene un NFT para este evento, muestra un mensaje en la consola.
  * Si el usuario no está conectado a MetaMask o MetaMask no está instalado, muestra un mensaje de error.
- * 
+ *
  * @returns {void} No devuelve ningún valor.
+ *
+ * @remarks Asegúrate de que MetaMask esté instalado y configurado en el navegador antes de llamar a esta función.
+ * Esta función cambia el estado de la transacción, que puede ser "processing", "success", "user_denied", "canceled" o "error".
  */
 async buyOneTicketForMe() {
 

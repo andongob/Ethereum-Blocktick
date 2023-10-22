@@ -184,9 +184,21 @@ sendLogin(loginData: any) {
   this.initWallet(loginData.seeds);
 }
 
-
+/**
+ * @funcion
+ *
+ * @descripcion Verifica la red de Ethereum a la que está conectado el usuario a través de MetaMask.
+ *
+ * Esta función utiliza el objeto 'window.ethereum' proporcionado por MetaMask para detectar cambios en la red de Ethereum
+ * y muestra un mensaje de alerta si el usuario no está en la red correcta (Sepolia).
+ *
+ * @returns Una promesa que no resuelve ningún valor cuando la función ha completado su tarea.
+ *
+ * @remarks Asegúrate de que MetaMask esté instalado y configurado en el navegador antes de llamar a esta función.
+ */
 async checkNetwork(): Promise<void> {
   if (!window.ethereum) {
+    // Si MetaMask no está instalado, muestra un mensaje de alerta.
     return alert('MetaMask no está instalado');
   }
 
