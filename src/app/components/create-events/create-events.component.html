@@ -1,47 +1,34 @@
 <div class="center-content">
-  <div class="button-group">
-    <button (click)="walletService.loginWithMetamask()">Conectar Metamask</button>
-    <button (click)="disconnectWallet()">Desconectar Metamask</button>
-  </div>
+<div class="d-flex justify-content-center align-items-center">
+  <h2>Crear Evento</h2>
 
-  <div *ngIf="wallet.address">
-    <h2>Información de la Billetera</h2>
-    <p>Dirección de Billetera: {{ wallet.address }}</p>
-    <p *ngIf="walletService.wallet.balance">Balance: {{ walletService.wallet.balance }}</p>
-    <p>Red: {{ network }}</p>
-  </div>
-
-
-    <div class="d-flex justify-content-center align-items-center">
-      <h2>Crear Evento</h2>
+  <form (submit)="createEvent()">
+    <div class="form-group">
+      <label for="eventName">Nombre del Evento:</label>
+      <input type="text" id="eventName" class="form-control" required [(ngModel)]="eventName" name="eventName">
+    </div>
   
-      <form (submit)="createEvent(eventNameInput.value, eventOrganizerInput.value, eventCategoryInput.value, ticketPriceInput.valueAsNumber)">
-        <div class="form-group">
-            <label for="eventName">Nombre del Evento:</label>
-            <input type="text" id="eventName" class="form-control" required #eventNameInput>
-        </div>
-    
-        <div class="form-group">
-            <label for="eventOrganizer">Organizador del Evento:</label>
-            <input type="text" id="eventOrganizer" class="form-control" required #eventOrganizerInput>
-        </div>
-    
-        <div class="form-group">
-            <label for="eventCategory">Categoría del Evento:</label>
-            <input type="text" id="eventCategory" class="form-control" required #eventCategoryInput>
-        </div>
-    
-        <div class="form-group">
-            <label for="ticketPrice">Precio del Evento:</label>
-            <input type="number" id="ticketPrice" class="form-control" required #ticketPriceInput>
-        </div>
-   
-        <button type="submit" class="btn btn-primary">Crear Evento</button>
-    </form>
-    
+    <div class="form-group">
+      <label for="eventOrganizer">Organizador del Evento:</label>
+      <input type="text" id="eventOrganizer" class="form-control" required [(ngModel)]="eventOrganizer" name="eventOrganizer">
+    </div>
+  
+    <div class="form-group">
+      <label for="eventCategory">Categoría del Evento:</label>
+      <input type="text" id="eventCategory" class="form-control" required [(ngModel)]="eventCategory" name="eventCategory">
+    </div>
+  
+    <div class="form-group">
+      <label for="ticketPrice">Precio del Evento:</label>
+      <input type="number" id="ticketPrice" class="form-control" required [(ngModel)]="ticketPrice" name="ticketPrice">
+    </div>
+  
+    <button type="submit" class="btn btn-primary">Crear Evento</button>
+  </form>
+
     <!-- En tu archivo de plantilla HTML -->
     <a [href]="'https://sepolia.etherscan.io/tx/' + transactionHash" target="_blank">{{ transactionMessage  }}</a>
-      
-    </div>
-  </div>
-  
+
+</div>
+
+</div>
