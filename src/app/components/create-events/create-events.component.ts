@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import Web3 from 'web3';
+import Web3, { Uint256 } from 'web3';
 import { WalletService } from 'src/app/wallet.service';
-import { ABI as factoryABI } from 'src/ABI/blockTickEventABI';
+import { EventEmitter } from '@angular/core';
+import { ABI as blockTickEventABI } from 'src/ABI/blockTickEventABI';
+import { from } from 'rxjs';
 
 declare let window: any;
 
@@ -13,17 +15,26 @@ declare let window: any;
 
 
 export class CreateEventsComponent implements OnInit {
+    // Añade un EventEmitter para manejar eventos de error
+    errorEvent: EventEmitter<string> = new EventEmitter<string>();
 
   wallet: any = {
     address: ''
   };
   web3: any;
-  contractAddress: string = '0x524b604B81aF68C06D9E09f45C6918825A55393B'; // dirección del contrato TicketAsset
+  contractAddress: string = '0x86C27e65542dB6ab00a82297A97bD3fD6412d2D6'; // dirección del contrato TicketAsset
   walletAddress: string = ''; // la dirección de la billetera del usuario
+  ownerAddress?: string; // Define la propiedad ownerAddress aquí
   connectWallet: any;
   contract: any;
-  gas: string = '200000';
+  gas: string = '300000';
   network: string = 'Desconocida';
+  hash: any;
+  transactionHash: string = '';
+  transactionMessage: string = ''; // Inicialmente vacío
+
+
+
 
 /**
  * Constructor de la clase TicketsComponent.
@@ -37,9 +48,14 @@ export class CreateEventsComponent implements OnInit {
     if (typeof window !== 'undefined' && typeof window.ethereum !== 'undefined') {
       this.web3 = new Web3(window.ethereum);
       window.ethereum.enable().then(() => {
+
         // Configura el contrato con su ABI y dirección
-        this.contract = new this.web3.eth.Contract(factoryABI.default, '0x524b604B81aF68C06D9E09f45C6918825A55393B');
+        this.contract = new this.web3.eth.Contract(blockTickEventABI.default, this.contractAddress);
       });
+
+ // Asigna un valor a this.ownerAddress, por ejemplo, el primer usuario que se conecta
+ this.ownerAddress = this.web3.eth.accounts[0]; // Asegúrate de que esto sea correcto
+
     } else {
       console.error('MetaMask no está instalado o configurado en el navegador.');
     }
@@ -119,29 +135,57 @@ export class CreateEventsComponent implements OnInit {
     this.walletService.wallet = this.wallet; 
   }
 
-  async createEvent(eventName: string, eventOrganizer: string, eventCategory: string, ticketPrice: number) {
+
+  async createEvent(_eventName: string, _eventOrganizer: string, _eventCategory: string, _ticketPrice: number) {
     try {
-      if (this.web3 && this.contract) {
-        const accounts = await this.web3.eth.getAccounts();
-        const owner = accounts[0];
+        console.log('Comenzando la función createEvent');
+
+        if (!this.web3 || !this.contract) {
+            console.error('Web3 o contrato no están definidos correctamente.');
+            return;
+        }
+
+        // Verifica que ticketPrice sea un número válido y mayor que cero
+        if (isNaN(_ticketPrice) || _ticketPrice <= 0) {
+            console.error('El precio del ticket no es válido.');
+            return;
+        }
 
         // Convierte el ticketPrice a Wei
-        const amountInWei = this.web3.utils.toWei(ticketPrice.toString(), 'ether');
+        const amountInWei = this.web3.utils.toWei(_ticketPrice.toString(), 'ether');
+        console.log('Precio en Wei:', amountInWei);
 
-        // Llama a la función createEvent del contrato y envía la transacción a través de MetaMask
-        await this.contract.methods.createEvent(eventName, eventOrganizer, eventCategory, amountInWei).send({
-          from: owner,
-          gas: this.gas 
-        });
+        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+        const ownerAddress = accounts[0]; // Obtiene la dirección activa de MetaMask
+        console.log('Dirección de cuenta activa:', ownerAddress);
 
-        console.log('Evento creado con éxito.');
-      } else {
-        console.error('Web3 o contrato no definidos. Verifica la configuración de MetaMask y la dirección del contrato.');
-      }
-    } catch (error) {
-      console.error('Error al crear el evento:', error);
+        console.log('Enviando transacción...');
+
+        // Envía la transacción y recibe el hash de la transacción.
+        const transaction: any = await this.contract.methods.createEvent(_eventName, _eventOrganizer, _eventCategory, _ticketPrice).send({
+          from: ownerAddress,
+          gas: this.gas,
+      })
+      .on('transactionHash', (hash: string) => {
+          this.transactionHash = hash; // Asigna el hash a la propiedad transactionHash
+          // Asigna un texto personalizado en lugar del hash
+          this.transactionMessage = 'Ver estado de la transacción en Sepolia';
+
+
+          console.log('Hash de la transacción:', hash);
+      });
+      
+
+        console.log('Resultado de la transacción:', transaction);
+
+        // Resto del código para llamar a la función del contrato...
+    } catch (error: any) {
+        console.error('Error al crear el evento:', error);
+        this.errorEvent.emit('Error al crear el evento: ' + error.message);
     }
-  }
+}
+
+  
 
   async getEventPrice(index: number) {
     try {

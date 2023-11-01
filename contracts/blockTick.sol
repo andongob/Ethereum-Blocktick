@@ -19,7 +19,7 @@ contract EventNFTManager is ERC721URIStorage, Ownable {
         string memory _eventCategory,
         address _owner,
         uint256 _ticketPrice
-    ) ERC721(string.concat(_eventName," TicketNFT"), "TICKET")  {
+    ) ERC721(string.concat(_eventName," TicketNFT"), "TICKET") Ownable(msg.sender) {
         eventName = _eventName;
         eventOrganizer = _eventOrganizer;
         eventCategory = _eventCategory;
@@ -106,5 +106,16 @@ contract EventFactory is Ownable{
     function getEventPrice(uint index) public view  returns (uint){
             return EventNFTManager(eventsCreated[index]).getPrice();
     }
+
+    constructor() Ownable(msg.sender){}
+
+}
+    }
+
+    function getEventPrice(uint index) public view  returns (uint){
+            return EventNFTManager(eventsCreated[index]).getPrice();
+    }
+
+    constructor() Ownable(msg.sender){}
 
 }

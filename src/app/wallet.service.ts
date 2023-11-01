@@ -204,9 +204,9 @@ async checkNetwork(): Promise<void> {
 
   window.ethereum.on('networkChanged', (networkId: string) => {
     if (networkId === '11155111') {
-      // Usuario en la red correcta (Sepolia)
+      // Usuario en la red correcta (sepolia)
     } else {
-      alert('Cambia a la red Sepolia en MetaMask para continuar.');
+      alert('Cambia a la red de Sepolia en MetaMask para continuar.');
     }
   });
 }
