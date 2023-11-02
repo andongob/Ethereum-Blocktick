@@ -221,6 +221,7 @@ async buyTickets() {
       return;
     }
 
+    
     const fromAddress = window.ethereum.selectedAddress;
 
     // Transacción
@@ -294,8 +295,24 @@ async buyOneTicketForMe() {
   if (parseInt(nftBalance) === 0) {
     console.log('El usuario no tiene NFTs para este evento. Puede comprar un ticket.');
 
-// Convierte el precio del ticket a una cadena hexadecimal
-const value = this.web3.utils.toHex(this.ticketPrice);
+  // Convierte el precio del ticket a una cadena hexadecimal
+  const value = this.web3.utils.toHex(this.ticketPrice);
+
+  // Genera la firma del ABI del método buyOneTicketForMe
+  const abiBuyOneTicketForMe = this.nftContract.methods.buyOneTicketForMe().encodeABI();
+  console.log('Firma generada por encodeABI:', abiBuyOneTicketForMe);
+
+  // Obtiene la firma esperada del contrato ABI
+  const expectedSignature = this.nftContract.methods.buyOneTicketForMe.cacheCall().input[0].slice(0, 10);
+  console.log('Firma esperada del ABI:', expectedSignature);
+
+  // Verifica la firma del método
+  if (expectedSignature === abiBuyOneTicketForMe.slice(0, 10)) {
+    console.log('La firma coincide con la función buyOneTicketForMe en el ABI.');
+  } else {
+    console.error('Las firmas no coinciden, verifica la definición de la función.');
+    return;
+  }
 
 interface Transaction {
   from: string;

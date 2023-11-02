@@ -57,33 +57,97 @@ export class CreateEventsComponent {
         console.error('La dirección del propietario no está definida.');
         return;
       }
-
+  
       const accounts = await this.web3!.eth.getAccounts();
       this.ownerAddress = accounts[0];
+  
+      // Mostrar detalles de la ABI
+      console.log('ABI completo:', this.contract.options.jsonInterface);
+  
+      // Para mostrar información específica sobre una función del contrato:
+      const createEventFunction = this.contract.methods.createEvent;
+      console.log('Detalles de la función createEvent:', createEventFunction._method);
+  
+      // También puedes imprimir detalles específicos de los eventos si los tienes en tu ABI:
+  
+      console.log('Valores de los parámetros:');
+      console.log('   Nombre del evento:', this.eventName);
+      console.log('   Organizador:', this.eventOrganizer);
+      console.log('   Categoría del evento:', this.eventCategory);
+      console.log('   Precio de los boletos:', this.ticketPrice);
 
-      const transaction = await this.contract.methods.createEvent(
+          // Agrega estos console.log para verificar los valores de los parámetros
+    console.log('   Tipo de _eventName:', typeof this.eventName);
+    console.log('   Tipo de _eventOrganizer:', typeof this.eventOrganizer);
+    console.log('   Tipo de _eventCategory:', typeof this.eventCategory);
+    console.log('   Tipo de _ticketPrice:', typeof this.ticketPrice);
+  
+      const contractMethod = createEventFunction(
         this.eventName,
         this.eventOrganizer,
         this.eventCategory,
         this.ticketPrice
-      ).send({
+      );
+  
+      // Verificar el método que se está aplicando
+      console.log('Método que se está aplicando:', contractMethod.encodeABI());
+  
+      // Verificar la dirección del contrato
+      console.log('Dirección del contrato:', this.contract.options.address);
+  
+      // Verificar la dirección del propietario
+      console.log('Dirección del propietario:', this.ownerAddress);
+  
+      // Verificar el gas
+      console.log('Valor de gas:', this.gas);
+  
+      // Obtén la firma de la función createEvent del ABI
+      const abiCreateEvent = this.contract.options.jsonInterface.find(
+        (item: any) =>
+          item.name === 'createEvent' &&
+          item.type === 'function' &&
+          item.inputs.length === 4
+      );
+      console.log('Firma de createEvent en el ABI:', abiCreateEvent.signature);
+  
+      // Verificar la firma de la función createEvent
+      if (contractMethod.encodeABI() === abiCreateEvent.signature) {
+        console.log('Las firmas coinciden, la función está definida correctamente.');
+      } else {
+        console.error('Las firmas no coinciden, verifica la definición de la función.');
+        return;
+      }
+  
+      // Antes de realizar la transacción
+      console.log('Realizando la transacción...');
+  
+      const transaction = await contractMethod.send({
         from: this.ownerAddress,
         gas: this.gas,
+        to: this.contract.options.address,
       })
         .on('transactionHash', (hash: string) => {
           this.transactionHash = hash;
           this.transactionMessage = 'Ver estado de la transacción en Sepolia';
           console.log('Hash de la transacción:', hash);
         });
-
+  
+      // Después de completar la transacción
+      console.log('Transacción completada.');
+  
+      console.log('Detalles de la transacción:', transaction);
       console.log('Transacción exitosa:', transaction);
     } catch (error) {
       console.error('Error al crear el evento:', error);
     }
   }
+  
+  
+  
 
   async getOwnerAddress() {
     const accounts = await this.web3!.eth.getAccounts();
     this.ownerAddress = accounts[0];
   }
 }
+
