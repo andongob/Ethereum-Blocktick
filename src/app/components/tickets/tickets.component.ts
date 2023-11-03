@@ -29,7 +29,7 @@ export class TicketsComponent implements OnInit {
   transactionResult: string = ''; //Resultado de una transacción reciente, como un mensaje de éxito o error.
   nftContract: any; //Instancia del contrato inteligente NFT utilizado para gestionar los tickets.
   nftContractAddress: any = '0x795398Aa3AE6bF8B4C7a8fef89899ffCA2aE1936'; //Dirección del contrato inteligente NFT utilizado para gestionar los tickets.
-  gas: string = '200000'; //Cantidad de gas utilizada en las transacciones de Ethereum.
+  gas: string = '300000'; //Cantidad de gas utilizada en las transacciones de Ethereum.
   network: string = 'Desconocida'; //Red de Ethereum actual a la que está conectido el usuario.
   balanceOf: number = 0; //Cantidad de tickets poseídos por el usuario actual.
   isProcessingTransaction: boolean = false;
