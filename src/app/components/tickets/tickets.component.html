@@ -1,13 +1,34 @@
-<!DOCTYPE html>
-<html>
+<div class="center-content">
+  <div class="button-group">
+    <button (click)="walletService.loginWithMetamask()">Conectar Metamask</button>
+    <button (click)="disconnectWallet()">Desconectar Metamask</button>
+  </div>
+  <div *ngIf="wallet.address">
+    <h2>Información de la Billetera</h2>
+    <p>Dirección de Billetera: {{ wallet.address }}</p>
+    <p *ngIf="walletService.wallet.balance">Balance: {{ walletService.wallet.balance }}</p>
+    <p>Red: {{ network }}</p>
+  </div>
+  
+    <h3>Compra de un Ticket para el Usuario Actual</h3>
+  
+    <!-- Formulario para comprar un ticket para el usuario actual -->
+    <form id="buyOneTicketForm" (ngSubmit)="buyOneTicketForMe()">
+      <label for="ticketPriceUser">Precio del Ticket (wei):</label>
+      <input type="number" id="ticketPriceUser" name="ticketPriceUser" [value]="ticketPrice" readonly>
+      <br><br>
+    
+      <p *ngIf="balanceOf === 0">
+        <button (click)="buyOneTicketForMe()" [disabled]="isProcessingTransaction">Comprar 1 Ticket</button>
+      </p>
 
-<head>
-    <title>Compra de Ticket</title>
-</head>
+      <p *ngIf="balanceOf === 1" class="error-message">Tienes un TICKET. No puedes comprar más.</p>
 
-<body>
-    <div class="center-content">
+    </form>   
+    
+    <div id="transactionStatus">{{ transactionResult }}</div>
 
+<<<<<<< HEAD
         <div class="button-group">
             <button (click)="walletService.loginWithMetamask()">Conectar Metamask</button>
             <button (click)="disconnectWallet()">Desconectar Metamask</button>
@@ -34,3 +55,27 @@
 </body>
 
 </html>
+=======
+
+    <!-- Maneja errores de stado de la transacción mientras al conectar con metamask para comprar un ticket-->
+    <div *ngIf="transactionStatus === 'processing'">
+      <p class="error-message">Procesando transacción...</p>
+    </div>
+    <div *ngIf="transactionStatus === 'success'">
+      <p class="success-message">La transacción se ha completado con éxito.</p>
+    </div>
+    <div *ngIf="transactionStatus === 'user_denied'" >
+      <p class="error-message">El usuario denegó la transacción.</p>
+    </div>
+    <div *ngIf="transactionStatus === 'canceled'">
+      <p class="error-message">El usuario canceló la transacción.</p>
+    </div>
+    <div *ngIf="transactionStatus === 'error'">
+      <p class="error-message">Ocurrió un error al procesar la transacción.</p>
+    </div>
+    
+    
+    
+  </div>
+  
+>>>>>>> website

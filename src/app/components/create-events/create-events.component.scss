@@ -1,98 +1,77 @@
-.center-content {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-  }
-  
-  .columns {
-    display: flex;
-    align-items: flex-start;
-  }
-  
-  .column {
-    flex: 1;
-    padding: 0 1rem;
-  }
-  
-  .form-field {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 2rem;
-  }
-  
-  .drag-drop-column {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-  }
-  
-  .drag-drop-area {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .spacer {
-    height: 2rem;
-  }
-  
-  .button-container {
-    text-align: center;
-    margin-top: 1rem;
-  }
-  
-  /* Ajusta la altura de la columna derecha */
-  .drag-drop-column {
-    height: calc(100vh - 2rem); 
-  }
-  
-  .button-container button[type="submit"] {
-    background-color: #007bff; 
-    color: white; 
-  }
-
-  body {
-    text-align: center;
-    font-family: Arial, sans-serif;
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 40vh;
 }
 
-form {
-    margin: 0 auto;
-    max-width: 400px;
+h1 {
+  text-align: center;
 }
 
-label {
-    display: block;
-    margin-bottom: 5px;
+.button-group {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+button {
+  margin: 5px;
+  background-color: blue; /* Agregar fondo azul */
+  color: white; /* Texto en blanco para mejor legibilidad */
+  padding: 10px 20px; /* Espaciado del botón */
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+button:hover {
+  background-color: darkblue; /* Cambiar color al pasar el mouse */
+}
+
+.form-group {
+  text-align: center;
 }
 
 input[type="text"],
 input[type="number"] {
-    width: 100%;
-    padding: 8px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+  width: 100%;
+  max-width: 300px;
+  padding: 10px;
+  margin: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
 
-button {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
+label {
+  font-weight: bold;
 }
 
-button:hover {
-    background-color: #0056b3;
+#buyTicketsForm {
+  text-align: center;
+  margin-top: 20px;
 }
 
-#transactionStatus {
-    margin-top: 10px;
-    font-weight: bold;
+#mensaje {
+  font-weight: bold;
+  margin-top: 20px;
+}
+.center-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 80vh; /* Asegura que ocupe el 100% de la altura de la ventana */
+  text-align: center; /* Centra el contenido horizontalmente */
+  margin: 0 auto; /* Centra horizontalmente dentro del contenedor padre */
+  max-width: 600px; /* Ajusta el ancho máximo según  preferencias */
 }
 
-    
+/* Estilos adicionales según sea necesario */
+.button-group {
+  margin-top: 20px; /* Espacio entre los botones y el contenido superior */
+}

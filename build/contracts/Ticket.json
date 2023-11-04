@@ -24483,12 +24483,12 @@
         }
       },
       "links": {},
-      "address": "0xd5A688b0Ac07FF1d0492a6e23FA780B5Dd9D9a5F",
-      "transactionHash": "0xd1d9efcc8c3b817e556a4354b811e1e05fba36f0b6c9684506f481babb141b77"
+      "address": "0xd0497eF4d5820Db9B96a727233DE9C59A0542EEc",
+      "transactionHash": "0xfd18162b13b28f1a3ef5ba39d703cc5c4ff349e5708888c1c1622268876c0928"
     }
   },
   "schemaVersion": "3.4.13",
-  "updatedAt": "2023-10-12T16:11:36.906Z",
+  "updatedAt": "2023-10-31T16:24:52.571Z",
   "networkType": "ethereum",
   "devdoc": {
     "events": {
