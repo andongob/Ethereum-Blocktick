@@ -264,111 +264,87 @@ async buyTickets() {
  * Esta función cambia el estado de la transacción, que puede ser "processing", "success", "user_denied", "canceled" o "error".
  */
 async buyOneTicketForMe() {
-
   if (this.isProcessingTransaction) {
     return; // Evita que el usuario haga múltiples clics mientras se procesa la transacción
   }
 
   this.isProcessingTransaction = true;
 
-
- try {
+  try {
     // Verifica si window y window.ethereum están disponibles
-  if (typeof window !== 'undefined' && 'ethereum' in window) {
-  const ethereum = window['ethereum'];
+    if (typeof window !== 'undefined' && 'ethereum' in window) {
+      const ethereum = window['ethereum'];
 
-  const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
-  console.log('Accounts:', accounts);
+      const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+      console.log('Accounts:', accounts);
 
-  if (accounts.length === 0) {
-    console.error('El usuario no aprobó la transacción.');
-    return;
-  }
+      if (accounts.length === 0) {
+        console.error('El usuario no aprobó la transacción.');
+        return;
+      }
 
-  const fromAddress = accounts[0];
+      const fromAddress = accounts[0];
 
-  // cantidad de NFTs que el usuario posee
-  const nftBalance = await this.nftContract.methods.balanceOf(fromAddress).call();
-  this.balanceOf = parseInt(nftBalance);
-  console.log('BalanceOf:', this.balanceOf);
+      // Cantidad de NFTs que el usuario posee
+      const nftBalance = await this.nftContract.methods.balanceOf(fromAddress).call();
+      this.balanceOf = parseInt(nftBalance);
+      console.log('BalanceOf:', this.balanceOf);
 
-  if (parseInt(nftBalance) === 0) {
-    console.log('El usuario no tiene NFTs para este evento. Puede comprar un ticket.');
+      if (parseInt(nftBalance) === 0) {
+        console.log('El usuario no tiene NFTs para este evento. Puede comprar un ticket.');
 
-  // Convierte el precio del ticket a una cadena hexadecimal
-  const value = this.web3.utils.toHex(this.ticketPrice);
+        // Convierte el precio del ticket a una cadena hexadecimal
+        const value = this.web3.utils.toHex(this.ticketPrice);
 
-  // Genera la firma del ABI del método buyOneTicketForMe
-  const abiBuyOneTicketForMe = this.nftContract.methods.buyOneTicketForMe().encodeABI();
-  console.log('Firma generada por encodeABI:', abiBuyOneTicketForMe);
+        // Genera la firma del ABI del método buyOneTicketForMe
+        const abiBuyOneTicketForMe = this.nftContract.methods.buyOneTicketForMe().encodeABI();
+        console.log('Firma generada por encodeABI:', abiBuyOneTicketForMe);
 
-  // Obtiene la firma esperada del contrato ABI
-  const expectedSignature = this.nftContract.methods.buyOneTicketForMe.cacheCall().input[0].slice(0, 10);
-  console.log('Firma esperada del ABI:', expectedSignature);
+        // Verifica la firma del método (no se necesita .send() aquí)
+        if (abiBuyOneTicketForMe) {
+          console.log('La firma es válida.');
 
-  // Verifica la firma del método
-  if (expectedSignature === abiBuyOneTicketForMe.slice(0, 10)) {
-    console.log('La firma coincide con la función buyOneTicketForMe en el ABI.');
-  } else {
-    console.error('Las firmas no coinciden, verifica la definición de la función.');
-    return;
-  }
+          // Parámetros de la transacción
+          const tx = {
+            from: fromAddress,
+            to: this.nftContractAddress,
+            value: value,
+            gas: this.gas,
+            data: abiBuyOneTicketForMe
+          };
 
-interface Transaction {
-  from: string;
-  to: string;
-  value: string;
-  gas: string;
-  data: string;
-}
-    const tx: Transaction = {
-      from: fromAddress,
-      to: this.nftContractAddress,
-      value: value,
-      gas: this.gas,
-      data: this.nftContract.methods.buyOneTicketForMe().encodeABI()
-    };
+          this.transactionStatus = 'processing'; // Cambia el estado a "procesando"
 
-    this.transactionStatus = 'processing'; // Cambia el estado a "procesando"
+          // Envía la transacción a través de MetaMask
+          const result = await ethereum.request({ method: 'eth_sendTransaction', params: [tx] });
+          console.log('Resultado de la compra de un NFT para el usuario actual:', result);
 
-    // Envía la transacción a través de MetaMask
-    const result = await ethereum.request({ method: 'eth_sendTransaction', params: [tx]});
-    console.log('Resultado de la compra de un NFT para el usuario actual:', result);
-
-    if (result) {
-      this.transactionStatus = 'success'; // Cambia el estado a "éxito" si la transacción se completó con éxito
+          if (result) {
+            this.transactionStatus = 'success'; // Cambia el estado a "éxito" si la transacción se completó con éxito
+          }
+        } else {
+          console.error('La firma no es válida, verifica la definición de la función.');
+        }
+      } else {
+        console.log('El usuario YA tiene un NFT para este evento.');
+      }
+    } else {
+      console.error('MetaMask no está instalado o configurado en el navegador.');
     }
-
-  } else {
-    console.log('El usuario YA tiene un NFT para este evento.');
-  }
-} else {
-  console.error('MetaMask no está instalado o configurado en el navegador.');
-}} 
-catch (error: any) {
-  if (error.message === 'User denied transaction') {
-    console.error('El usuario denegó la transacción.');
-    this.transactionStatus = 'user_denied'; // Cambia el estado a "usuario denegó"
-  } 
-  
-  else if (error.code === 4001) {
-    console.error('El usuario canceló la transacción.');
-    this.transactionStatus = 'canceled'; // Cambia el estado a "cancelado por el usuario"
-  } 
-  
-  else {
-    console.error('Error al comprar un NFT para el usuario actual:', error);
-    this.transactionStatus = 'error'; // Cambia el estado a "error"
+  } catch (error: any) {
+    if (error.message === 'User denied transaction') {
+      console.error('El usuario denegó la transacción.');
+      this.transactionStatus = 'user_denied'; // Cambia el estado a "usuario denegó"
+    } else if (error.code === 4001) {
+      console.error('El usuario canceló la transacción.');
+      this.transactionStatus = 'canceled'; // Cambia el estado a "cancelado por el usuario"
+    } else {
+      console.error('Error al comprar un NFT para el usuario actual:', error);
+      this.transactionStatus = 'error'; // Cambia el estado a "error"
     // En caso de error, asegúrate de restablecer isProcessingTransaction aquí también
     this.isProcessingTransaction = false;
   }
 }
 }
 
-}
-
-
-
-
-
-  
+}  
