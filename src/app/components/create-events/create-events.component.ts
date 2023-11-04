@@ -15,7 +15,8 @@ export class CreateEventsComponent {
   wallet: any = {
     address: ''
   };
-  contractAddress: string = '0x86C27e65542dB6ab00a82297A97bD3fD6412d2D6';
+  //contractAddress: string = '0x86C27e65542dB6ab00a82297A97bD3fD6412d2D6';
+  contractAddress: string = '0x387B70DEe5FAE65a384d60691De758f1dD1343B3';
   ownerAddress: string | undefined = '';
 
   web3: Web3 | undefined;
@@ -24,7 +25,7 @@ export class CreateEventsComponent {
   _eventOrganizer: string = '';
   _eventCategory: string = '';
   _ticketPrice: number = 0; // Inicializado con un valor predeterminado
-  gas: string = '3000000';
+  gas: string = '6000000';
   transactionHash: string = '';
   transactionMessage: string = '';
 
@@ -149,8 +150,9 @@ const value = this.web3.utils.toHex(ticketPriceInWei);
         this._ticketPrice
       ).send({
         from: this.ownerAddress,
+        to: this.contractAddress, // Agregar la dirección del contrato como "to"
         gas: this.gas,
-        data: this.contract.methods.createEvent(this._eventName,this._eventOrganizer, this._eventOrganizer, this._ticketPrice).encodeABI()
+        data: this.contract.methods.createEvent(this._eventName, this._eventOrganizer, this._eventCategory, this._ticketPrice).encodeABI()
       })
         .on('transactionHash', (hash: string) => {
           this.transactionHash = hash;
