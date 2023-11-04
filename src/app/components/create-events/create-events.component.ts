@@ -83,16 +83,16 @@ export class CreateEventsComponent {
       // También puedes imprimir detalles específicos de los eventos si los tienes en tu ABI:
   
       console.log('Valores de los parámetros:');
-      console.log('   Nombre del evento:', this.eventName);
-      console.log('   Organizador:', this.eventOrganizer);
-      console.log('   Categoría del evento:', this.eventCategory);
-      console.log('   Precio de los boletos:', this.ticketPrice);
+      console.log('Nombre del evento:', this.eventName);
+      console.log('Organizador:', this.eventOrganizer);
+      console.log('Categoría del evento:', this.eventCategory);
+      console.log('Precio de los boletos:', this.ticketPrice);
 
           // Agrega estos console.log para verificar los valores de los parámetros
-    console.log('   Tipo de eventName:', typeof this.eventName);
-    console.log('   Tipo de eventOrganizer:', typeof this.eventOrganizer);
-    console.log('   Tipo de eventCategory:', typeof this.eventCategory);
-    console.log('   Tipo de ticketPrice:', typeof this.ticketPrice);
+    console.log('Tipo de _eventName:', typeof this.eventName);
+    console.log('Tipo de _eventOrganizer:', typeof this.eventOrganizer);
+    console.log('Tipo de _eventCategory:', typeof this.eventCategory);
+    console.log('Tipo de _ticketPrice:', typeof this.ticketPrice);
   
       const contractMethod = createEventFunction(
         this.eventName,
@@ -122,28 +122,21 @@ export class CreateEventsComponent {
       );
       console.log('Firma de createEvent en el ABI:', abiCreateEvent.signature);
   
-      // Verificar la firma de la función createEvent
-      if (contractMethod.encodeABI() === abiCreateEvent.signature) {
-        console.log('Las firmas coinciden, la función está definida correctamente.');
-      } else {
-        console.error('Las firmas no coinciden, verifica la definición de la función.');
-        return;
-      }
+
   
       // Antes de realizar la transacción
       console.log('Realizando la transacción...');
   
-
-      // Llama a la función createEvent del contrato factory con los parámetros
-      const transaction = await this.contract.methods.createEvent(
-        this.eventName,
-        this.eventOrganizer,
-        this.eventCategory,
-        this.ticketPrice
-      ).send({
+      const transaction = await contractMethod.send({
         from: this.ownerAddress,
-        gas: this.gas
-      });
+        gas: this.gas,
+        to: this.contract.options.address,
+      })
+        .on('transactionHash', (hash: string) => {
+          this.transactionHash = hash;
+          this.transactionMessage = 'Ver estado de la transacción en Sepolia';
+          console.log('Hash de la transacción:', hash);
+        });
   
       // Después de completar la transacción
       console.log('Transacción completada.');
@@ -157,10 +150,10 @@ export class CreateEventsComponent {
   
   
   
+  
 
   async getOwnerAddress() {
     const accounts = await this.web3!.eth.getAccounts();
     this.ownerAddress = accounts[0];
   }
 }
-
