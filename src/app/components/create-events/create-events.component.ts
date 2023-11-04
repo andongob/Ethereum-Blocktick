@@ -127,10 +127,15 @@ export class CreateEventsComponent {
       // Antes de realizar la transacción
       console.log('Realizando la transacción...');
   
-      const transaction = await contractMethod.send({
+      const transaction = await this.contract.methods.createEvent(
+        this.eventName,
+        this.eventOrganizer,
+        this.eventCategory,
+        this.ticketPrice
+      ).send({
         from: this.ownerAddress,
         gas: this.gas,
-        to: this.contract.options.address,
+        to: this.contract.options.address, // Agregar la dirección del contrato como "to"
       })
         .on('transactionHash', (hash: string) => {
           this.transactionHash = hash;
@@ -138,10 +143,6 @@ export class CreateEventsComponent {
           console.log('Hash de la transacción:', hash);
         });
   
-      // Después de completar la transacción
-      console.log('Transacción completada.');
-  
-      console.log('Detalles de la transacción:', transaction);
       console.log('Transacción exitosa:', transaction);
     } catch (error) {
       console.error('Error al crear el evento:', error);
