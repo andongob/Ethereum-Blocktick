@@ -20,10 +20,10 @@ export class CreateEventsComponent {
 
   web3: Web3 | undefined;
   contract: any;
-  eventName?: string;
-  eventOrganizer?: string;
-  eventCategory?: string;
-  ticketPrice?: number;
+  _eventName: string = '';
+  _eventOrganizer: string = '';
+  _eventCategory: string = '';
+  _ticketPrice: number = 0; // Inicializado con un valor predeterminado
   gas: string = '3000000';
   transactionHash: string = '';
   transactionMessage: string = '';
@@ -69,6 +69,16 @@ export class CreateEventsComponent {
         console.error('La dirección del propietario no está definida.');
         return;
       }
+
+          // Asegúrate de que this.web3 tenga un valor definido
+    if (!this.web3) {
+      console.error('web3 no está inicializado correctamente.');
+      return;
+    }
+
+    // Obtener el nonce actual de la dirección del propietario
+    const nonce = await this.web3.eth.getTransactionCount(this.ownerAddress);
+    console.log(`Nonce actual de ${this.ownerAddress}: ${nonce}`); // Agregamos el console.log
   
       const accounts = await this.web3!.eth.getAccounts();
       this.ownerAddress = accounts[0];
@@ -83,22 +93,22 @@ export class CreateEventsComponent {
       // También puedes imprimir detalles específicos de los eventos si los tienes en tu ABI:
   
       console.log('Valores de los parámetros:');
-      console.log('Nombre del evento:', this.eventName);
-      console.log('Organizador:', this.eventOrganizer);
-      console.log('Categoría del evento:', this.eventCategory);
-      console.log('Precio de los boletos:', this.ticketPrice);
+      console.log('Nombre del evento:', this._eventName);
+      console.log('Organizador:', this._eventOrganizer);
+      console.log('Categoría del evento:', this._eventCategory);
+      console.log('Precio de los boletos:', this._ticketPrice);
 
           // Agrega estos console.log para verificar los valores de los parámetros
-    console.log('Tipo de _eventName:', typeof this.eventName);
-    console.log('Tipo de _eventOrganizer:', typeof this.eventOrganizer);
-    console.log('Tipo de _eventCategory:', typeof this.eventCategory);
-    console.log('Tipo de _ticketPrice:', typeof this.ticketPrice);
+    console.log('Tipo de _eventName:', typeof this._eventName);
+    console.log('Tipo de _eventOrganizer:', typeof this._eventOrganizer);
+    console.log('Tipo de _eventCategory:', typeof this._eventCategory);
+    console.log('Tipo de _ticketPrice:', typeof this._ticketPrice);
   
       const contractMethod = createEventFunction(
-        this.eventName,
-        this.eventOrganizer,
-        this.eventCategory,
-        this.ticketPrice
+        this._eventName,
+        this._eventOrganizer,
+        this._eventCategory,
+        this._ticketPrice
       );
   
       // Verificar el método que se está aplicando
@@ -126,16 +136,21 @@ export class CreateEventsComponent {
   
       // Antes de realizar la transacción
       console.log('Realizando la transacción...');
-  
+
+      // Convierte el precio del ticket a una cadena hexadecimal
+const ticketPriceInWei = this.web3.utils.toWei(this._ticketPrice.toString(), 'ether');
+const value = this.web3.utils.toHex(ticketPriceInWei);
+
+ 
       const transaction = await this.contract.methods.createEvent(
-        this.eventName,
-        this.eventOrganizer,
-        this.eventCategory,
-        this.ticketPrice
+        this._eventName,
+        this._eventOrganizer,
+        this._eventCategory,
+        this._ticketPrice
       ).send({
         from: this.ownerAddress,
         gas: this.gas,
-        to: this.contract.options.address, // Agregar la dirección del contrato como "to"
+        data: this.contract.methods.createEvent(this._eventName,this._eventOrganizer, this._eventOrganizer, this._ticketPrice).encodeABI()
       })
         .on('transactionHash', (hash: string) => {
           this.transactionHash = hash;
@@ -150,9 +165,6 @@ export class CreateEventsComponent {
   }
   
   
-  
-  
-
   async getOwnerAddress() {
     const accounts = await this.web3!.eth.getAccounts();
     this.ownerAddress = accounts[0];
