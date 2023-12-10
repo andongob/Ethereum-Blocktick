@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import Web3 from 'web3';
 import { WalletService } from 'src/app/wallet.service';
 import { ABI as blockTickEventABI } from 'src/ABI/blockTickEventABI';
@@ -17,7 +17,7 @@ declare let window: any;
 })
 
 
-export class CreateEventsComponent {
+export class CreateEventsComponent implements OnInit {
 
   wallet: any = { //Información sobre la billetera del usuario.
     address: ''
@@ -89,8 +89,24 @@ constructor(public walletService: WalletService) {
   }
 }
 
+async checkWeb3Connection() {
+  if (this.web3 && this.web3.currentProvider) {
+    try {
+      // Intenta realizar una llamada a una función que siempre debe estar disponible en Ethereum para verificar la conexión.
+      const blockNumber = await this.web3.eth.getBlockNumber();
 
-
+      if (blockNumber >= 0) {
+        console.log('Estás conectado a la red de blockchain.');
+      } else {
+        console.log('No estás conectado a la red de blockchain.');
+      }
+    } catch (error) {
+      console.error('Error al verificar la conexión:', error);
+    }
+  } else {
+    console.log('No se encontró un proveedor de Web3.');
+  }
+}
 /**
  * Inicializa el componente al cargar la página.
  *
@@ -114,6 +130,8 @@ async ngOnInit() {
     // Maneja y registra cualquier error que ocurra durante la inicialización.
     console.error('Error al inicializar la billetera:', error);
   }
+
+  this.checkWeb3Connection();
 }
 
 
