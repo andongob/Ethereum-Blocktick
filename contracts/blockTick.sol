@@ -19,7 +19,7 @@ contract EventNFTManager is ERC721URIStorage, Ownable {
         string memory _eventCategory,
         address _owner,
         uint256 _ticketPrice
-    ) ERC721(string.concat(_eventName," TicketNFT"), "TICKET") Ownable(msg.sender) {
+    ) ERC721(string.concat(_eventName," TicketNFT"), "TICKET") Ownable() {
         eventName = _eventName;
         eventOrganizer = _eventOrganizer;
         eventCategory = _eventCategory;
@@ -94,28 +94,21 @@ contract EventNFTManager is ERC721URIStorage, Ownable {
 
 }
 
-contract EventFactory is Ownable{
+contract EventFactory is Ownable {
     address[] public eventsCreated;
 
-    function createEvent( string memory  _eventName, string memory  _eventOrganizer,   string memory  _eventCategory ,    uint256 _ticketPrice  ) public onlyOwner {
-            address eventOwner = msg.sender;
-            EventNFTManager newEvent = new EventNFTManager(_eventName,_eventOrganizer,_eventCategory,eventOwner,_ticketPrice);
-            eventsCreated.push(address(newEvent));
+    function createEvent(string memory _eventName, string memory _eventOrganizer, string memory _eventCategory, uint256 _ticketPrice) public onlyOwner {
+        EventNFTManager newEvent = new EventNFTManager(_eventName, _eventOrganizer, _eventCategory, msg.sender, _ticketPrice);
+        eventsCreated.push(address(newEvent));
     }
 
-    function getEventPrice(uint index) public view  returns (uint){
-            return EventNFTManager(eventsCreated[index]).getPrice();
+    function getEventPrice(uint index) public view returns (uint) {
+        return EventNFTManager(eventsCreated[index]).getPrice();
     }
 
-    constructor() Ownable(msg.sender){}
-
+    constructor() Ownable() {
+        // El constructor de Ownable se llama sin argumentos
+    }
 }
-    }
 
-    function getEventPrice(uint index) public view  returns (uint){
-            return EventNFTManager(eventsCreated[index]).getPrice();
-    }
 
-    constructor() Ownable(msg.sender){}
-
-}
