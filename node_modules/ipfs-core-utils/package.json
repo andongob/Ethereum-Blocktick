@@ -156,7 +156,7 @@
     "it-to-stream": "^1.0.0",
     "merge-options": "^3.0.4",
     "multiformats": "^11.0.0",
-    "nanoid": "^4.0.0",
+    "nanoid": "^5.0.9",
     "parse-duration": "^1.0.0",
     "timeout-abort-controller": "^3.0.0",
     "uint8arrays": "^4.0.2"
